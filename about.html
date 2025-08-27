@@ -349,11 +349,11 @@
     <script>
         // Initialize map
         function initMap() {
-            // Coordinates for Jakarta (example)
-            const jakarta = [-6.2088, 106.8456];
+            // Coordinates for Jember
+            const Jember = [-8.156701024561334, 113.6751229067563];
             
             // Create map
-            const map = L.map('map').setView(jakarta, 13);
+            const map = L.map('map').setView(Jember, 13);
             
             // Add tile layer
             L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -361,9 +361,9 @@
             }).addTo(map);
             
             // Add marker
-            L.marker(jakarta)
+            L.marker(Jember)
                 .addTo(map)
-                .bindPopup('<strong>B13 Factory</strong><br>Jl. Contoh Alamat No. 123<br>Jakarta Selatan')
+                .bindPopup('<strong>B13 Factory (Garment & Advertising)</strong><br> Perum Kebon Agung Indah Blok 13 No. 16')
                 .openPopup();
         }
         
