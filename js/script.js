@@ -64,3 +64,31 @@ function initProductSlider(slider) {
         slides[currentSlide].classList.add('active');
     }, 5000);
 }
+
+function toggleBodyScroll(enable) {
+    if (enable) {
+        document.body.classList.remove('menu-open');
+    } else {
+        document.body.classList.add('menu-open');
+    }
+}
+
+// Update the menu toggle event
+if (menuToggle && navLinks) {
+    menuToggle.addEventListener('click', function() {
+        const isOpening = !navLinks.classList.contains('active');
+        navLinks.classList.toggle('active');
+        menuToggle.classList.toggle('active');
+        toggleBodyScroll(!isOpening);
+    });
+    
+    // Close menu when clicking on a link
+    const navItems = document.querySelectorAll('.nav-links a');
+    navItems.forEach(item => {
+        item.addEventListener('click', function() {
+            navLinks.classList.remove('active');
+            menuToggle.classList.remove('active');
+            toggleBodyScroll(true);
+        });
+    });
+}
