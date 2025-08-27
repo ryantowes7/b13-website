@@ -7,11 +7,20 @@ document.addEventListener('DOMContentLoaded', function() {
     // Mobile menu toggle
     const menuToggle = document.querySelector('.menu-toggle');
     const navLinks = document.querySelector('.nav-links');
+    const body = document.body;
     
     if (menuToggle && navLinks) {
-        menuToggle.addEventListener('click', function() {
+        // Toggle menu
+        menuToggle.addEventListener('click', function(e) {
+            e.stopPropagation();
             navLinks.classList.toggle('active');
             menuToggle.classList.toggle('active');
+            
+            if (navLinks.classList.contains('active')) {
+                body.style.overflow = 'hidden';
+            } else {
+                body.style.overflow = '';
+            }
         });
         
         // Close menu when clicking on a link
@@ -20,18 +29,24 @@ document.addEventListener('DOMContentLoaded', function() {
             item.addEventListener('click', function() {
                 navLinks.classList.remove('active');
                 menuToggle.classList.remove('active');
+                body.style.overflow = '';
             });
         });
         
         // Close menu when clicking outside
-        document.addEventListener('click', function(event) {
-            const isClickInsideNav = navLinks.contains(event.target);
-            const isClickInsideToggle = menuToggle.contains(event.target);
-            
-            if (!isClickInsideNav && !isClickInsideToggle && navLinks.classList.contains('active')) {
+        document.addEventListener('click', function(e) {
+            if (navLinks.classList.contains('active') && 
+                !navLinks.contains(e.target) && 
+                !menuToggle.contains(e.target)) {
                 navLinks.classList.remove('active');
                 menuToggle.classList.remove('active');
+                body.style.overflow = '';
             }
+        });
+        
+        // Prevent closing when clicking inside menu
+        navLinks.addEventListener('click', function(e) {
+            e.stopPropagation();
         });
     }
     
@@ -43,6 +58,15 @@ document.addEventListener('DOMContentLoaded', function() {
         const linkPage = link.getAttribute('href');
         if (linkPage === currentPage || (currentPage === '' && linkPage === 'index.html')) {
             link.classList.add('active');
+        }
+    });
+    
+    // Handle browser resize
+    window.addEventListener('resize', function() {
+        if (window.innerWidth > 768) {
+            navLinks.classList.remove('active');
+            menuToggle.classList.remove('active');
+            body.style.overflow = '';
         }
     });
 });

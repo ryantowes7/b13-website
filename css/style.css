@@ -119,30 +119,24 @@ nav {display:flex; justify-content:space-between; align-items:center; padding:1r
     }
 }
 
-/* Perbaikan untuk device sangat kecil */
+
+/* Additional improvements for very small devices */
 @media (max-width: 480px) {
-    .nav-links {
-        width: 250px;
-        top: 65px;
-    }
-    
-    .nav-links a {
-        padding: 0.7rem 1.2rem;
-    }
-    
     .logo h1 {
         font-size: 1.2rem;
     }
-}
-
-/* Animasi halus untuk menu */
-.nav-links {
-    transition: transform 0.3s ease, opacity 0.3s ease;
-}
-
-.nav-links:not(.active) {
-    transform: translateX(-10px);
-    opacity: 0;
+    
+    .logo span {
+        font-size: 0.7rem;
+    }
+    
+    .hero-text h2 {
+        font-size: 1.8rem;
+    }
+    
+    .section-title h2 {
+        font-size: 1.8rem;
+    }
 }
 
 /* Touch improvements untuk mobile */
