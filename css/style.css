@@ -13,21 +13,121 @@ nav {display:flex; justify-content:space-between; align-items:center; padding:1r
 .nav-links a:hover, .nav-links a.active {background:#e74c3c; color:#fff;}
 .search-box input {padding:0.4rem 0.8rem; border:1px solid #ccc; border-radius:20px; outline:none;}
 
-/* Mobile Menu */
+/* Mobile Menu Improvements */
 .menu-toggle {
     display: none;
     flex-direction: column;
     cursor: pointer;
-}
-.menu-toggle span {
-    height: 3px;
-    width: 25px;
-    background: #333;
-    margin-bottom: 5px;
-    border-radius: 2px;
-    transition: all 0.3s ease;
+    z-index: 1001;
+    padding: 5px;
 }
 
+.menu-toggle span {
+    width: 25px;
+    height: 3px;
+    background: #333;
+    margin: 3px 0;
+    transition: all 0.3s ease;
+    border-radius: 2px;
+}
+
+.menu-toggle.active span:nth-child(1) {
+    transform: rotate(-45deg) translate(-5px, 6px);
+}
+
+.menu-toggle.active span:nth-child(2) {
+    opacity: 0;
+}
+
+.menu-toggle.active span:nth-child(3) {
+    transform: rotate(45deg) translate(-5px, -6px);
+}
+
+/* Mobile Navigation */
+@media (max-width: 768px) {
+    .menu-toggle {
+        display: flex;
+    }
+    
+    .nav-links {
+        position: fixed;
+        top: 80px;
+        left: -100%;
+        width: 100%;
+        height: calc(100vh - 80px);
+        background: #fff;
+        flex-direction: column;
+        align-items: center;
+        justify-content: flex-start;
+        padding-top: 2rem;
+        transition: left 0.3s ease;
+        box-shadow: 0 5px 10px rgba(0,0,0,0.1);
+        overflow-y: auto;
+        z-index: 1000;
+    }
+    
+    .nav-links.active {
+        left: 0;
+    }
+    
+    .nav-links li {
+        margin: 1rem 0;
+        width: 100%;
+        text-align: center;
+    }
+    
+    .nav-links a {
+        display: block;
+        padding: 1rem;
+        width: 100%;
+        border-bottom: 1px solid #f1f1f1;
+    }
+    
+    .nav-links a:hover {
+        background: #f8f9fa;
+    }
+    
+    .search-box {
+        display: none;
+    }
+    
+    /* Improve touch targets for mobile */
+    .cta-button, .filter-btn, .add-to-cart {
+        min-height: 44px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    
+    /* Prevent zoom on input focus */
+    input, select, textarea {
+        font-size: 16px;
+    }
+}
+
+/* Additional improvements for very small devices */
+@media (max-width: 480px) {
+    .logo h1 {
+        font-size: 1.5rem;
+    }
+    
+    .logo span {
+        font-size: 0.7rem;
+    }
+    
+    .hero-text h2 {
+        font-size: 1.8rem;
+    }
+    
+    .section-title h2 {
+        font-size: 1.8rem;
+    }
+}
+
+/* Fix for mobile scrolling when menu is open */
+body.menu-open {
+    overflow: hidden;
+}
 /* Hero slider */
 .hero-slider{margin-top:80px; position:relative; overflow:hidden; height:500px;}
 .slide{position:absolute; inset:0; background-size:cover; background-position:center; opacity:0; transition:opacity 1s;}

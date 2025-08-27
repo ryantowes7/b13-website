@@ -8,9 +8,30 @@ document.addEventListener('DOMContentLoaded', function() {
     const menuToggle = document.querySelector('.menu-toggle');
     const navLinks = document.querySelector('.nav-links');
     
-    if (menuToggle) {
+    if (menuToggle && navLinks) {
         menuToggle.addEventListener('click', function() {
             navLinks.classList.toggle('active');
+            menuToggle.classList.toggle('active');
+        });
+        
+        // Close menu when clicking on a link
+        const navItems = document.querySelectorAll('.nav-links a');
+        navItems.forEach(item => {
+            item.addEventListener('click', function() {
+                navLinks.classList.remove('active');
+                menuToggle.classList.remove('active');
+            });
+        });
+        
+        // Close menu when clicking outside
+        document.addEventListener('click', function(event) {
+            const isClickInsideNav = navLinks.contains(event.target);
+            const isClickInsideToggle = menuToggle.contains(event.target);
+            
+            if (!isClickInsideNav && !isClickInsideToggle && navLinks.classList.contains('active')) {
+                navLinks.classList.remove('active');
+                menuToggle.classList.remove('active');
+            }
         });
     }
     
@@ -19,26 +40,11 @@ document.addEventListener('DOMContentLoaded', function() {
     const navLinksItems = document.querySelectorAll('.nav-links a');
     
     navLinksItems.forEach(link => {
-        if (link.getAttribute('href') === currentPage) {
+        const linkPage = link.getAttribute('href');
+        if (linkPage === currentPage || (currentPage === '' && linkPage === 'index.html')) {
             link.classList.add('active');
         }
     });
-    
-    // Close mobile menu when clicking on a link
-    const navItems = document.querySelectorAll('.nav-links a');
-    navItems.forEach(item => {
-        item.addEventListener('click', function() {
-            navLinks.classList.remove('active');
-        });
-    });
-    
-    // Product slider functionality (if exists)
-    const productSliders = document.querySelectorAll('.product-slider');
-    if (productSliders.length > 0) {
-        productSliders.forEach(slider => {
-            initProductSlider(slider);
-        });
-    }
 });
 
 // Function to initialize product sliders
