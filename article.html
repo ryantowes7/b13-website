@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Article - B13 Factory</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Article Page Styles */
+        .articles-container {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+
+        .article-card {
+            background: #fff;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transition: transform 0.3s;
+        }
+
+        .article-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .article-image {
+            height: 250px;
+            background-size: cover;
+            background-position: center;
+        }
+
+        .article-content {
+            padding: 2rem;
+        }
+
+        .article-meta {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        .article-meta i {
+            color: #e74c3c;
+        }
+
+        .article-content h3 {
+            color: #2c3e50;
+            margin-bottom: 1rem;
+            font-size: 1.5rem;
+        }
+
+        .article-content p {
+            color: #666;
+            margin-bottom: 1.5rem;
+            line-height: 1.8;
+        }
+
+        .read-more {
+            display: inline-block;
+            color: #e74c3c;
+            text-decoration: none;
+            font-weight: 600;
+            transition: color 0.3s;
+        }
+
+        .read-more:hover {
+            color: #c0392b;
+        }
+
+        .categories-sidebar {
+            background: #f8f9fa;
+            padding: 2rem;
+            border-radius: 10px;
+            margin-bottom: 2rem;
+        }
+
+        .categories-sidebar h3 {
+            color: #2c3e50;
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid #e74c3c;
+        }
+
+        .category-list {
+            list-style: none;
+        }
+
+        .category-list li {
+            margin-bottom: 0.8rem;
+        }
+
+        .category-list a {
+            color: #666;
+            text-decoration: none;
+            transition: color 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .category-list a:hover {
+            color: #e74c3c;
+        }
+
+        .category-list i {
+            color: #e74c3c;
+            font-size: 0.8rem;
+        }
+
+        /* Pagination */
+        .pagination {
+            display: flex;
+            justify-content: center;
+            gap: 0.5rem;
+            margin-top: 3rem;
+        }
+
+        .pagination a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            border: 2px solid #e74c3c;
+            color: #e74c3c;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .pagination a:hover,
+        .pagination a.active {
+            background: #e74c3c;
+            color: #fff;
+        }
+
+        /* Responsive Design */
+        @media (min-width: 768px) {
+            .articles-container {
+                grid-template-columns: 2fr 1fr;
+            }
+            
+            .categories-sidebar {
+                margin-bottom: 0;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .article-image {
+                height: 200px;
+            }
+            
+            .article-content {
+                padding: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container">
+            <nav>
+                <div class="logo">
+                    <h1>B13 FACTORY</h1>
+                    <span>Garment & Advertising</span>
+                </div>
+                <ul class="nav-links">
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="product.html">Product</a></li>
+                    <li><a href="article.html" class="active">Article</a></li>
+                    <li><a href="download.html">Download</a></li>
+                    <li><a href="about.html">About</a></li>
+                </ul>
+                <div class="search-box">
+                    <input type="text" placeholder="Cari artikel...">
+                </div>
+                <div class="menu-toggle">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container" style="margin-top: 120px;">
+        <div class="section-title">
+            <h2>Artikel & Tips</h2>
+            <p>Informasi terbaru seputar garment, digital printing, dan tips pemilihan produk</p>
+        </div>
+
+        <div class="articles-container">
+            <div class="articles-list">
+                <!-- Artikel 1 -->
+                <article class="article-card">
+                    <div class="article-image" style="background-image: url('https://images.unsplash.com/photo-1523381210434-271e8be1f52b?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80');"></div>
+                    <div class="article-content">
+                        <div class="article-meta">
+                            <span><i class="far fa-calendar"></i> 15 Agustus 2023</span>
+                            <span><i class="far fa-user"></i> Admin B13</span>
+                            <span><i class="far fa-folder"></i> Bahan Material</span>
+                        </div>
+                        <h3>5 Tips Memilih Bahan Kaos yang Berkualitas untuk Seragam Perusahaan</h3>
+                        <p>Pemilihan bahan kaos yang tepat sangat penting untuk kenyamanan dan daya tahan seragam perusahaan. Artikel ini membahas tips memilih bahan kaos terbaik berdasarkan kebutuhan dan budget...</p>
+                        <a href="#" class="read-more">Baca Selengkapnya <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </article>
+
+                <!-- Artikel 2 -->
+                <article class="article-card">
+                    <div class="article-image" style="background-image: url('https://images.unsplash.com/photo-1560472355-536de3962603?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80');"></div>
+                    <div class="article-content">
+                        <div class="article-meta">
+                            <span><i class="far fa-calendar"></i> 10 Agustus 2023</span>
+                            <span><i class="far fa-user"></i> Tim Desain</span>
+                            <span><i class="far fa-folder"></i> Desain</span>
+                        </div>
+                        <h3>Perbedaan Sablon Plastisol dan Digital Printing: Mana yang Terbaik?</h3>
+                        <p>Memahami perbedaan antara sablon plastisol dan digital printing dapat membantu Anda memilih teknik yang tepat untuk kebutuhan garment. Simak perbandingan lengkapnya dalam artikel ini...</p>
+                        <a href="#" class="read-more">Baca Selengkapnya <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </article>
+
+                <!-- Artikel 3 -->
+                <article class="article-card">
+                    <div class="article-image" style="background-image: url('https://images.unsplash.com/photo-1593642632823-8f785ba67e45?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80');"></div>
+                    <div class="article-content">
+                        <div class="article-meta">
+                            <span><i class="far fa-calendar"></i> 5 Agustus 2023</span>
+                            <span><i class="far fa-user"></i> Marketing</span>
+                            <span><i class="far fa-folder"></i> Promosi</span>
+                        </div>
+                        <h3>Cara Membuat Merchandise Branded yang Efektif untuk Promosi Bisnis</h3>
+                        <p>Merchandise branded merupakan alat promosi yang powerful. Pelajari cara membuat merchandise yang efektif, mulai dari pemilihan produk hingga desain yang menarik perhatian...</p>
+                        <a href="#" class="read-more">Baca Selengkapnya <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </article>
+            </div>
+
+            <aside class="categories-sidebar">
+                <h3>Kategori Artikel</h3>
+                <ul class="category-list">
+                    <li><a href="#"><i class="fas fa-chevron-right"></i> Bahan Material</a></li>
+                    <li><a href="#"><i class="fas fa-chevron-right"></i> Teknik Sablon</a></li>
+                    <li><a href="#"><i class="fas fa-chevron-right"></i> Desain</a></li>
+                    <li><a href="#"><i class="fas fa-chevron-right"></i> Perawatan Produk</a></li>
+                    <li><a href="#"><i class="fas fa-chevron-right"></i> Promosi</a></li>
+                    <li><a href="#"><i class="fas fa-chevron-right"></i> Tips & Trik</a></li>
+                    <li><a href="#"><i class="fas fa-chevron-right"></i> Berita</a></li>
+                </ul>
+
+                <h3 style="margin-top: 2rem;">Artikel Terpopuler</h3>
+                <div class="popular-articles">
+                    <div class="popular-item">
+                        <h4><a href="#">Cara Merawat Kaos Sablon Agar Tidak Cepat Rusak</a></h4>
+                        <span>1.2K dibaca</span>
+                    </div>
+                    <div class="popular-item">
+                        <h4><a href="#">Trend Warna Kaos Tahun 2023 untuk Branding</a></h4>
+                        <span>980 dibaca</span>
+                    </div>
+                    <div class="popular-item">
+                        <h4><a href="#">Perbandingan Harga Bahan Kaos: Combed vs Cotton</a></h4>
+                        <span>850 dibaca</span>
+                    </div>
+                </div>
+            </aside>
+        </div>
+
+        <div class="pagination">
+            <a href="#" class="active">1</a>
+            <a href="#">2</a>
+            <a href="#">3</a>
+            <a href="#"><i class="fas fa-chevron-right"></i></a>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <p>&copy; 2023 B13 Factory Garment & Advertising</p>
+            <p>www.b13factory.com</p>
+            <div class="social">
+                <a href="#"><i class="fab fa-facebook"></i></a>
+                <a href="#"><i class="fab fa-instagram"></i></a>
+                <a href="#"><i class="fab fa-tiktok"></i></a>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/script.js"></script>
+</body>
+</html>

@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Download - B13 Factory</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Download Page Styles */
+        .downloads-container {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+
+        .download-category {
+            background: #fff;
+            border-radius: 10px;
+            padding: 2rem;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .category-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid #f1f1f1;
+        }
+
+        .category-icon {
+            font-size: 2.5rem;
+            color: #e74c3c;
+            margin-right: 1rem;
+        }
+
+        .download-items {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .download-item {
+            background: #f8f9fa;
+            padding: 1.5rem;
+            border-radius: 8px;
+            border-left: 4px solid #e74c3c;
+            transition: transform 0.3s;
+        }
+
+        .download-item:hover {
+            transform: translateY(-3px);
+            background: #fff;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .download-item h4 {
+            color: #2c3e50;
+            margin-bottom: 0.5rem;
+        }
+
+        .download-item p {
+            color: #666;
+            margin-bottom: 1rem;
+            font-size: 0.9rem;
+        }
+
+        .download-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+            font-size: 0.8rem;
+            color: #888;
+        }
+
+        .download-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.6rem 1.2rem;
+            background: #e74c3c;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: 600;
+            transition: background 0.3s;
+        }
+
+        .download-btn:hover {
+            background: #c0392b;
+        }
+
+        .file-size {
+            background: #e74c3c;
+            color: #fff;
+            padding: 0.2rem 0.6rem;
+            border-radius: 15px;
+            font-size: 0.7rem;
+            font-weight: 600;
+        }
+
+        /* Search and Filter */
+        .downloads-header {
+            background: #fff;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            margin-bottom: 2rem;
+        }
+
+        .search-filter {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .search-download {
+            flex: 1;
+            min-width: 250px;
+        }
+
+        .search-download input {
+            width: 100%;
+            padding: 0.8rem;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 1rem;
+        }
+
+        .filter-btn {
+            padding: 0.8rem 1.5rem;
+            background: #f8f9fa;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .filter-btn:hover {
+            background: #e74c3c;
+            color: #fff;
+            border-color: #e74c3c;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .download-items {
+                grid-template-columns: 1fr;
+            }
+            
+            .search-filter {
+                flex-direction: column;
+            }
+            
+            .category-header {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .category-icon {
+                margin-right: 0;
+                margin-bottom: 1rem;
+            }
+        }
+
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container">
+            <nav>
+                <div class="logo">
+                    <h1>B13 FACTORY</h1>
+                    <span>Garment & Advertising</span>
+                </div>
+                <ul class="nav-links">
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="product.html">Product</a></li>
+                    <li><a href="article.html">Article</a></li>
+                    <li><a href="download.html" class="active">Download</a></li>
+                    <li><a href="about.html">About</a></li>
+                </ul>
+                <div class="search-box">
+                    <input type="text" placeholder="Cari download...">
+                </div>
+                <div class="menu-toggle">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container" style="margin-top: 120px;">
+        <div class="section-title">
+            <h2>Download Center</h2>
+            <p>Katalog, price list, dan materi lainnya untuk kebutuhan Anda</p>
+        </div>
+
+        <div class="downloads-header">
+            <div class="search-filter">
+                <div class="search-download">
+                    <input type="text" placeholder="Cari file download...">
+                </div>
+                <button class="filter-btn">
+                    <i class="fas fa-filter"></i> Filter Kategori
+                </button>
+                <button class="filter-btn">
+                    <i class="fas fa-sort"></i> Urutkan
+                </button>
+            </div>
+        </div>
+
+        <!-- Price List Category -->
+        <section class="download-category">
+            <div class="category-header">
+                <div class="category-icon">
+                    <i class="fas fa-file-invoice-dollar"></i>
+                </div>
+                <div>
+                    <h2>Price List</h2>
+                    <p>Daftar harga terbaru untuk semua produk dan layanan kami</p>
+                </div>
+            </div>
+
+            <div class="download-items">
+                <div class="download-item">
+                    <h4>Price List Kaos Combed 30s</h4>
+                    <p>Daftar harga lengkap untuk kaos bahan combed 30s dengan berbagai teknik sablon</p>
+                    <div class="download-meta">
+                        <span>Update: 15 Agu 2023</span>
+                        <span class="file-size">PDF 2.1MB</span>
+                    </div>
+                    <a href="#" class="download-btn">
+                        <i class="fas fa-download"></i> Download
+                    </a>
+                </div>
+
+                <div class="download-item">
+                    <h4>Price List Jaket & Hoodie</h4>
+                    <p>Harga terbaru untuk jaket, hoodie, dan outerwear dengan berbagai bahan</p>
+                    <div class="download-meta">
+                        <span>Update: 10 Agu 2023</span>
+                        <span class="file-size">PDF 1.8MB</span>
+                    </div>
+                    <a href="#" class="download-btn">
+                        <i class="fas fa-download"></i> Download
+                    </a>
+                </div>
+
+                <div class="download-item">
+                    <h4>Price List Digital Printing</h4>
+                    <p>Daftar harga layanan digital printing pada berbagai media</p>
+                    <div class="download-meta">
+                        <span>Update: 5 Agu 2023</span>
+                        <span class="file-size">PDF 1.5MB</span>
+                    </div>
+                    <a href="#" class="download-btn">
+                        <i class="fas fa-download"></i> Download
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Catalog Category -->
+        <section class="download-category">
+            <div class="category-header">
+                <div class="category-icon">
+                    <i class="fas fa-book"></i>
+                </div>
+                <div>
+                    <h2>Katalog Produk</h2>
+                    <p>Katalog lengkap produk garment dan advertising</p>
+                </div>
+            </div>
+
+            <div class="download-items">
+                <div class="download-item">
+                    <h4>Katalog Kaos & T-Shirt 2023</h4>
+                    <p>Katalog lengkap berbagai model kaos dan t-shirt dengan spesifikasi detail</p>
+                    <div class="download-meta">
+                        <span>Update: 20 Agu 2023</span>
+                        <span class="file-size">PDF 5.2MB</span>
+                    </div>
+                    <a href="#" class="download-btn">
+                        <i class="fas fa-download"></i> Download
+                    </a>
+                </div>
+
+                <div class="download-item">
+                    <h4>Katalog Jaket & Outerwear</h4>
+                    <p>Katalog jaket, hoodie, dan outerwear dengan berbagai model terbaru</p>
+                    <div class="download-meta">
+                        <span>Update: 18 Agu 2023</span>
+                        <span class="file-size">PDF 4.8MB</span>
+                    </div>
+                    <a href="#" class="download-btn">
+                        <i class="fas fa-download"></i> Download
+                    </a>
+                </div>
+
+                <div class="download-item">
+                    <h4>Katalog Produk Promosi</h4>
+                    <p>Katalog merchandise dan produk promosi untuk kebutuhan branding</p>
+                    <div class="download-meta">
+                        <span>Update: 12 Agu 2023</span>
+                        <span class="file-size">PDF 3.7MB</span>
+                    </div>
+                    <a href="#" class="download-btn">
+                        <i class="fas fa-download"></i> Download
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Template Category -->
+        <section class="download-category">
+            <div class="category-header">
+                <div class="category-icon">
+                    <i class="fas fa-palette"></i>
+                </div>
+                <div>
+                    <h2>Template & Guide</h2>
+                    <p>Template desain dan panduan untuk mempermudah pemesanan</p>
+                </div>
+            </div>
+
+            <div class="download-items">
+                <div class="download-item">
+                    <h4>Template Desain Kaos</h4>
+                    <p>Template siap pakai untuk desain kaos dengan ukuran yang tepat</p>
+                    <div class="download-meta">
+                        <span>Update: 25 Agu 2023</span>
+                        <span class="file-size">ZIP 8.3MB</span>
+                    </div>
+                    <a href="#" class="download-btn">
+                        <i class="fas fa-download"></i> Download
+                    </a>
+                </div>
+
+                <div class="download-item">
+                    <h4>Guide Pemilihan Bahan</h4>
+                    <p>Panduan lengkap memilih bahan yang tepat untuk kebutuhan Anda</p>
+                    <div class="download-meta">
+                        <span>Update: 22 Agu 2023</span>
+                        <span class="file-size">PDF 2.4MB</span>
+                    </div>
+                    <a href="#" class="download-btn">
+                        <i class="fas fa-download"></i> Download
+                    </a>
+                </div>
+
+                <div class="download-item">
+                    <h4>Template Artwork Guidelines</h4>
+                    <p>Panduan penyiapan artwork untuk proses produksi</p>
+                    <div class="download-meta">
+                        <span>Update: 15 Agu 2023</span>
+                        <span class="file-size">PDF 1.9MB</span>
+                    </div>
+                    <a href="#" class="download-btn">
+                        <i class="fas fa-download"></i> Download
+                    </a>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <p>&copy; 2023 B13 Factory Garment & Advertising</p>
+            <p>www.b13factory.com</p>
+            <div class="social">
+                <a href="#"><i class="fab fa-facebook"></i></a>
+                <a href="#"><i class="fab fa-instagram"></i></a>
+                <a href="#"><i class="fab fa-tiktok"></i></a>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/script.js"></script>
+</body>
+</html>
