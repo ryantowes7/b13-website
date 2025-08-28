@@ -1,14 +1,28 @@
 <!DOCTYPE html>
-<html>
+<html lang="id">
   <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>B13 Factory CMS</title>
-    <!-- Netlify Identity Widget -->
+    <meta charset="UTF-8">
+    <title>Admin Panel - B13 Factory</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Netlify Identity Widget (untuk login) -->
     <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
+    <!-- Netlify CMS -->
+    <script src="https://unpkg.com/netlify-cms-app@2.15.72/dist/netlify-cms.js"></script>
   </head>
   <body>
-    <!-- CMS Script -->
-    <script src="https://unpkg.com/netlify-cms@^2.0.0/dist/netlify-cms.js"></script>
+    <h2 style="text-align:center; margin-top:40px;">Loading Admin Panel...</h2>
+
+    <script>
+      // Auto redirect login setelah autentikasi
+      if (window.netlifyIdentity) {
+        window.netlifyIdentity.on("init", user => {
+          if (!user) {
+            window.netlifyIdentity.on("login", () => {
+              document.location.href = "/admin/";
+            });
+          }
+        });
+      }
+    </script>
   </body>
 </html>

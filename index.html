@@ -4,6 +4,10 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>B13 Factory - Garment & Advertising</title>
+  <meta name="description" content="B13 Factory adalah penyedia garment & advertising berkualitas: custom apparel, digital printing, dan desain kreatif.">
+  <meta property="og:title" content="B13 Factory - Garment & Advertising">
+  <meta property="og:description" content="Solusi terbaik untuk kebutuhan garment & advertising: custom apparel, digital printing, desain kreatif.">
+  <meta property="og:image" content="/assets/uploads/og-image.jpg">
   <link rel="stylesheet" href="css/style.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
@@ -11,88 +15,47 @@
 
   <!-- Header -->
   <header>
-      <div class="container">
-          <nav>
-              <div class="logo">
-                  <h1>B13 FACTORY</h1>
-                  <span>Garment & Advertising</span>
-              </div>
-              <ul class="nav-links">
-                  <li><a href="index.html">Home</a></li>
-                  <li><a href="product.html">Product</a></li>
-                  <li><a href="article.html">Article</a></li>
-                  <li><a href="download.html">Download</a></li>
-                  <li><a href="about.html">About</a></li>
-              </ul>
-              <div class="search-box">
-                  <input type="text" placeholder="Cari produk...">
-              </div>
-              <div class="menu-toggle">
-                  <span></span>
-                  <span></span>
-                  <span></span>
-              </div>
-          </nav>
-      </div>
+    <div class="container">
+      <nav>
+        <div class="logo">
+          <h1>B13 FACTORY</h1>
+          <span>Garment & Advertising</span>
+        </div>
+        <ul class="nav-links">
+          <li><a href="index.html" class="active">Home</a></li>
+          <li><a href="product.html">Product</a></li>
+          <li><a href="article.html">Article</a></li>
+          <li><a href="download.html">Download</a></li>
+          <li><a href="about.html">About</a></li>
+        </ul>
+        <div class="search-box">
+          <input type="text" placeholder="Cari produk...">
+        </div>
+        <div class="menu-toggle">
+          <span></span><span></span><span></span>
+        </div>
+      </nav>
+    </div>
   </header>
 
-  <!-- Hero Slider -->
-    <div class="hero-slider">
-        <div class="slide active" style="background-image:url('https://picsum.photos/id/1015/1600/600');">
-            <div class="hero-text">
-            <h2>Custom Apparel</h2>
-            <p>Buat kaos, jaket, jersey sesuai desain kamu</p>
-            </div>
-        </div>
-        <div class="slide" style="background-image:url('https://picsum.photos/id/1005/1600/600');">
-            <div class="hero-text">
-            <h2>Digital Printing</h2>
-            <p>Kualitas terbaik dengan mesin modern</p>
-            </div>
-        </div>
-        <div class="slide" style="background-image:url('https://picsum.photos/id/1031/1600/600');">
-            <div class="hero-text">
-            <h2>Desain Suka-Suka</h2>
-            <p>Konsultasi gratis untuk desain custom</p>
-            </div>
-        </div>
-    </div>
+  <!-- Hero Slider (dinamis dari CMS) -->
+  <div class="hero-slider" id="hero-slider"></div>
 
-    <!-- Jam Operasional (Latest Info style) -->
-    <section class="latest-info">
+  <!-- Info Rotator (Promo / Jam Operasional dari CMS) -->
+  <section class="latest-info">
     <div class="container">
-        <div class="info-rotator">
-        <span class="info-item active">🕒 Jam Operasional: Senin - Sabtu 08:30 - 17:00 WIB | Minggu & Hari Besar: Tutup</span>
-        <span class="info-item">🎉 Promo Merdeka! Diskon 17% semua produk hingga akhir bulan</span>
-        <span class="info-item">🆕 Produk baru: Polo Shirt Premium kini tersedia di katalog</span>
-        </div>
+      <div class="info-rotator" id="info-rotator"></div>
     </div>
-    </section>
+  </section>
 
-  <!-- Services -->
+  <!-- Services (CMS bisa atur) -->
   <section class="services">
     <div class="container">
       <div class="section-title">
         <h2>Layanan Kami</h2>
         <p>Pilihan terbaik untuk kebutuhan garment & advertising</p>
       </div>
-      <div class="services-grid">
-        <div class="service-card">
-          <i class="fas fa-tshirt service-icon"></i>
-          <h3>Custom Apparel</h3>
-          <p>Kaos, jersey, polo, jaket dengan desain sesuai keinginan Anda</p>
-        </div>
-        <div class="service-card">
-          <i class="fas fa-print service-icon"></i>
-          <h3>Digital Printing</h3>
-          <p>Printing di kain, kertas, vinyl dengan teknologi terkini</p>
-        </div>
-        <div class="service-card">
-          <i class="fas fa-pen-fancy service-icon"></i>
-          <h3>Jasa Desain</h3>
-          <p>Tim desainer siap membantu mewujudkan ide Anda</p>
-        </div>
-      </div>
+      <div class="services-grid" id="services-list"></div>
     </div>
   </section>
 
@@ -103,13 +66,7 @@
         <h2>Melayani Berbagai Kebutuhan</h2>
         <p>Dari perorangan hingga perusahaan besar</p>
       </div>
-      <div class="market-grid">
-        <div class="market-item"><i class="fas fa-building"></i><h4>Perusahaan</h4></div>
-        <div class="market-item"><i class="fas fa-school"></i><h4>Sekolah</h4></div>
-        <div class="market-item"><i class="fas fa-users"></i><h4>Komunitas</h4></div>
-        <div class="market-item"><i class="fas fa-glass-cheers"></i><h4>Acara & Reuni</h4></div>
-        <div class="market-item"><i class="fas fa-user"></i><h4>Perorangan</h4></div>
-      </div>
+      <div class="market-grid" id="market-list"></div>
     </div>
   </section>
 
@@ -120,45 +77,78 @@
         <h2>Spesifikasi Bahan</h2>
         <p>Menggunakan bahan berkualitas tinggi untuk hasil terbaik</p>
       </div>
-      <div class="specs-grid">
-        <div class="spec-item"><h4>Bahan Combed 30s</h4><p>Bahan kaos premium halus, lembut, nyaman</p></div>
-        <div class="spec-item"><h4>Sablon Plastisol</h4><p>Tinta plastisol dengan warna cerah dan tahan lama</p></div>
-        <div class="spec-item"><h4>Desain Custom</h4><p>Desain sesuai keinginan Anda, konsultasi gratis</p></div>
-      </div>
+      <div class="specs-grid" id="specs-list"></div>
     </div>
   </section>
 
   <!-- Footer -->
   <footer>
-    <p>&copy; 2023 B13 Factory Garment & Advertising</p>
+    <p>&copy; <span id="year"></span> B13 Factory Garment & Advertising</p>
     <p>www.b13factory.com</p>
-    <div class="social">
-      <a href="#"><i class="fab fa-facebook"></i></a>
-      <a href="#"><i class="fab fa-instagram"></i></a>
-      <a href="#"><i class="fab fa-tiktok"></i></a>
-    </div>
+    <div class="social" id="social-links"></div>
   </footer>
 
   <script src="js/script.js"></script>
   <script>
-    // Slider otomatis
-    let slides = document.querySelectorAll('.slide');
-    let index = 0;
-    setInterval(() => {
-      slides[index].classList.remove('active');
-      index = (index + 1) % slides.length;
-      slides[index].classList.add('active');
-    }, 4000);
+    // === Load konten dinamis dari CMS JSON ===
+    async function loadHomePage() {
+      try {
+        const res = await fetch("/content/home.json");
+        const data = await res.json();
 
-    // Info rotator
-    let infos = document.querySelectorAll('.info-item');
-    let infoIndex = 0;
-    setInterval(() => {
-      infos[infoIndex].classList.remove('active');
-      infoIndex = (infoIndex + 1) % infos.length;
-      infos[infoIndex].classList.add('active');
-    }, 5000); // ganti setiap 5 detik
+        // Hero slider
+        const slider = document.getElementById("hero-slider");
+        slider.innerHTML = data.hero.map((s, i) => `
+          <div class="slide ${i===0?'active':''}" style="background-image:url('${s.image}')">
+            <div class="hero-text">
+              <h2>${s.title}</h2>
+              <p>${s.subtitle}</p>
+            </div>
+          </div>
+        `).join("");
+
+        // Info rotator
+        const info = document.getElementById("info-rotator");
+        info.innerHTML = data.info.map((text, i) => `
+          <span class="info-item ${i===0?'active':''}">${text}</span>
+        `).join("");
+
+        // Services
+        const services = document.getElementById("services-list");
+        services.innerHTML = data.services.map(s => `
+          <div class="service-card">
+            <i class="${s.icon} service-icon"></i>
+            <h3>${s.title}</h3>
+            <p>${s.description}</p>
+          </div>
+        `).join("");
+
+        // Market
+        const market = document.getElementById("market-list");
+        market.innerHTML = data.market.map(m => `
+          <div class="market-item"><i class="${m.icon}"></i><h4>${m.title}</h4></div>
+        `).join("");
+
+        // Specs
+        const specs = document.getElementById("specs-list");
+        specs.innerHTML = data.specs.map(s => `
+          <div class="spec-item"><h4>${s.title}</h4><p>${s.description}</p></div>
+        `).join("");
+
+        // Social
+        const social = document.getElementById("social-links");
+        social.innerHTML = data.social.map(s => `
+          <a href="${s.url}" target="_blank"><i class="${s.icon}"></i></a>
+        `).join("");
+
+        // Tahun otomatis
+        document.getElementById("year").textContent = new Date().getFullYear();
+
+      } catch (err) {
+        console.error("Gagal load homepage data:", err);
+      }
+    }
+    loadHomePage();
   </script>
-  <script src="js/cms-loader.js"></script>
 </body>
 </html>
