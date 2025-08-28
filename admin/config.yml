@@ -1,36 +1,18 @@
 backend:
   name: git-gateway
-  branch: main   # sesuaikan dengan branch utama kamu (main/master)
-
-publish_mode: editorial_workflow
+  branch: main   # kalau repo kamu masih pakai "master", ganti jadi master
 
 media_folder: "assets/uploads"
 public_folder: "/assets/uploads"
 
-site_url: https://b13factory-garmentadv.netlify.app
-
-identity:
-  roles: ['admin']
-
 collections:
-  - name: "articles"
-    label: "Articles"
-    folder: "website/data/articles"
-    create: true
-    slug: "{{slug}}"
-    fields:
-      - { label: "Title", name: "title", widget: "string" }
-      - { label: "Date", name: "date", widget: "datetime" }
-      - { label: "Image", name: "image", widget: "image" }
-      - { label: "Body", name: "body", widget: "markdown" }
-
-  - name: "products"
-    label: "Products"
-    folder: "website/data/products"
-    create: true
-    slug: "{{slug}}"
-    fields:
-      - { label: "Product Name", name: "name", widget: "string" }
-      - { label: "Price", name: "price", widget: "number" }
-      - { label: "Image", name: "image", widget: "image" }
-      - { label: "Description", name: "body", widget: "markdown" }
+  - name: "pages"
+    label: "Pages"
+    files:
+      - label: "Home Page"
+        name: "home"
+        file: "content/home.json"
+        format: "json"
+        fields:
+          - { label: "Judul Website", name: "title", widget: "string" }
+          - { label: "Deskripsi Singkat", name: "description", widget: "text" }
