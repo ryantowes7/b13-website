@@ -1,12 +1,11 @@
 backend:
   name: git-gateway
-  branch: main   # ganti ke "master" jika repo default branch masih master
+  branch: main   # kalau repo default master, ganti ke "master"
 
-media_folder: "assets/uploads"   # tempat simpan file di repo
-public_folder: "/assets/uploads" # akses file dari website
+media_folder: "assets/uploads"   # tempat penyimpanan file di repo
+public_folder: "/assets/uploads" # URL publik untuk file upload
 
 collections:
-  # ========== HOME ==========
   - name: "home"
     label: "Home"
     file: "content/home.json"
@@ -14,45 +13,7 @@ collections:
     fields:
       - { label: "Judul Website", name: "title", widget: "string" }
       - { label: "Deskripsi", name: "description", widget: "text" }
-      - label: "Slider"
-        name: "slider"
-        widget: "list"
-        fields:
-          - { label: "Gambar", name: "image", widget: "image" }
-          - { label: "Teks", name: "text", widget: "string" }
-      - label: "Info Rotator"
-        name: "info"
-        widget: "list"
-        field: { label: "Teks", name: "text", widget: "string" }
-      - label: "Layanan"
-        name: "services"
-        widget: "list"
-        fields:
-          - { label: "Ikon", name: "icon", widget: "string" }
-          - { label: "Judul", name: "title", widget: "string" }
-          - { label: "Deskripsi", name: "description", widget: "text" }
-      - label: "Pasar"
-        name: "market"
-        widget: "list"
-        fields:
-          - { label: "Ikon", name: "icon", widget: "string" }
-          - { label: "Judul", name: "title", widget: "string" }
-          - { label: "Deskripsi", name: "description", widget: "text" }
-      - label: "Spesifikasi"
-        name: "specs"
-        widget: "list"
-        fields:
-          - { label: "Judul", name: "title", widget: "string" }
-          - { label: "Deskripsi", name: "description", widget: "text" }
-      - label: "Social Media"
-        name: "social"
-        widget: "list"
-        fields:
-          - { label: "Nama", name: "name", widget: "string" }
-          - { label: "URL", name: "url", widget: "string" }
-          - { label: "Ikon", name: "icon", widget: "string" }
 
-  # ========== ABOUT ==========
   - name: "about"
     label: "About"
     file: "content/about.json"
@@ -65,7 +26,6 @@ collections:
       - { label: "Telepon", name: "phone", widget: "string" }
       - { label: "Email", name: "email", widget: "string" }
 
-  # ========== PRODUCTS ==========
   - name: "products"
     label: "Products"
     file: "content/products/index.json"
@@ -81,7 +41,6 @@ collections:
           - { label: "Badge", name: "badge", widget: "string", required: false }
           - { label: "Kategori", name: "category", widget: "string" }
 
-  # ========== ARTICLES ==========
   - name: "articles"
     label: "Articles"
     file: "content/articles/index.json"
@@ -99,7 +58,6 @@ collections:
           - { label: "Excerpt", name: "excerpt", widget: "text" }
           - { label: "URL", name: "url", widget: "string" }
 
-  # ========== DOWNLOADS ==========
   - name: "downloads"
     label: "Downloads"
     file: "content/downloads/index.json"
