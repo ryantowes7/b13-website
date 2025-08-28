@@ -74,28 +74,50 @@
         }
       }
       
-      // Initialize Netlify Identity
-      window.netlifyIdentity.on('init', function(user) {
-        if (user) {
-          status.textContent = 'Login successful! Redirecting to CMS...';
-          window.netlifyIdentity.on('login', function() {
-            window.location.href = '/admin/';
-          });
-        } else {
-          status.textContent = 'Please login to continue';
-          loginBtn.style.display = 'inline-block';
+      // Auto-login for development
+      const allowedEmails = ["your-email@gmail.com", "your-other@email.com"]; // Ganti dengan email Anda
+
+      window.netlifyIdentity.on("init", function(user) {
+        if (!user) {
+          // Try to auto-login
+          const storedEmail = localStorage.getItem('b13-admin-email');
+          if (storedEmail && allowedEmails.includes(storedEmail)) {
+            window.netlifyIdentity.login({
+              email: storedEmail,
+              password: 'b13-factory-admin'
+            });
+          }
         }
       });
       
-      // Login button handler
-      loginBtn.addEventListener('click', function(e) {
-        e.preventDefault();
-        window.netlifyIdentity.open('login');
-      });
-      
-      // Handle tokens on page load
-      handleToken();
-      
+      // Simple login form for admin
+      function setupSimpleLogin() {
+        const loginHTML = `
+          <div style="max-width: 400px; margin: 50px auto; padding: 20px; background: white; border-radius: 10px;">
+            <h2>B13 Factory Admin Login</h2>
+            <input type="email" id="admin-email" placeholder="Your email" style="width: 100%; padding: 10px; margin: 10px 0;">
+            <input type="password" id="admin-password" placeholder="Password" style="width: 100%; padding: 10px; margin: 10px 0;">
+            <button onclick="attemptLogin()" style="width: 100%; padding: 10px; background: #e74c3c; color: white; border: none; border-radius: 5px;">
+              Login
+            </button>
+            <p style="margin-top: 20px;">
+              <a href="#" onclick="showPasswordReset()">Lupa password?</a>
+            </p>
+          </div>
+        `;
+        
+        document.body.innerHTML = loginHTML;
+      }
+
+      function attemptLogin() {
+        const email = document.getElementById('admin-email').value;
+        const password = document.getElementById('admin-password').value;
+        
+        window.netlifyIdentity.login({
+          email: email,
+          password: password
+        });
+      }
       // Auto-open login if no token
       setTimeout(function() {
         if (!window.location.hash && !window.netlifyIdentity.currentUser()) {
