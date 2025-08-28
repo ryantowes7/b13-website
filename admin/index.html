@@ -75,12 +75,16 @@
       }
       
       // Initialize Netlify Identity
-      // Confirm your token automatically
       window.netlifyIdentity.on('init', function(user) {
-          if (!user) {
-              window.netlifyIdentity.confirm('vMUbpgSy7lEjKWGlFfT56Q', true);
-              console.log('Confirmation processed! Try refreshing the page.');
-          }
+        if (user) {
+          status.textContent = 'Login successful! Redirecting to CMS...';
+          window.netlifyIdentity.on('login', function() {
+            window.location.href = '/admin/';
+          });
+        } else {
+          status.textContent = 'Please login to continue';
+          loginBtn.style.display = 'inline-block';
+        }
       });
       
       // Login button handler
@@ -92,10 +96,12 @@
       // Handle tokens on page load
       handleToken();
       
-      // Refresh page after confirmation
+      // Auto-open login if no token
       setTimeout(function() {
-          window.location.reload();
-      }, 3000);
+        if (!window.location.hash && !window.netlifyIdentity.currentUser()) {
+          window.netlifyIdentity.open('login');
+        }
+      }, 2000);
     });
   </script>
 </body>
