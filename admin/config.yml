@@ -4,8 +4,8 @@ backend:
 
 publish_mode: editorial_workflow
 
-media_folder: "static/img"    # tempat file di repo
-public_folder: "/img"
+media_folder: "images/uploads"
+public_folder: "/images/uploads"
 
 site_url: https://b13factory-garmentadv.netlify.app
 
