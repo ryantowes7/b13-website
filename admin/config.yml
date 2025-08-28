@@ -1,0 +1,35 @@
+backend:
+  name: git-gateway
+  branch: main
+
+media_folder: "images/uploads"
+public_folder: "/images/uploads"
+
+collections:
+  - name: "products"
+    label: "Products"
+    folder: "data/products"
+    create: true
+    slug: "{{slug}}"
+    fields:
+      - { name: "title", label: "Product Name", widget: "string" }
+      - { name: "category", label: "Category", widget: "select", options: ["kaos", "jaket", "topi", "printing", "promosi"] }
+      - { name: "image", label: "Product Image", widget: "image" }
+      - { name: "description", label: "Description", widget: "text" }
+      - { name: "price", label: "Price", widget: "string" }
+      - { name: "featured", label: "Featured Product", widget: "boolean", default: false }
+
+  - name: "articles"
+    label: "Articles"
+    folder: "data/articles"
+    create: true
+    slug: "{{slug}}"
+    fields:
+      - { name: "title", label: "Title", widget: "string" }
+      - { name: "date", label: "Publish Date", widget: "datetime" }
+      - { name: "author", label: "Author", widget: "string", default: "Admin B13" }
+      - { name: "category", label: "Category", widget: "select", options: ["bahan", "sablon", "desain", "perawatan", "promosi", "tips"] }
+      - { name: "featured_image", label: "Featured Image", widget: "image" }
+      - { name: "excerpt", label: "Excerpt", widget: "text" }
+      - { name: "content", label: "Content", widget: "markdown" }
+      - { name: "published", label: "Published", widget: "boolean", default: true }
