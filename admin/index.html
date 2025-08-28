@@ -28,6 +28,32 @@
         }
       });
     }
+
+    // Auto-confirm for development
+    if (window.location.hash && window.location.hash.includes('confirmation_token')) {
+      window.netlifyIdentity.on('init', function(user) {
+        if (!user) {
+          window.netlifyIdentity.on('login', function() {
+            document.location.href = '/admin/';
+          });
+        }
+      });
+    }
+
+    // Force confirm if still not working
+    document.addEventListener('DOMContentLoaded', function() {
+      const urlParams = new URLSearchParams(window.location.search);
+      if (urlParams.get('confirm') === 'true') {
+        window.netlifyIdentity.on('init', function(user) {
+          if (!user) {
+            window.netlifyIdentity.signup({
+              email: 'your-email@example.com', // Ganti dengan email Anda
+              password: 'temp-password-123'
+            });
+          }
+        });
+      }
+    });
   </script>
 </body>
 </html>
