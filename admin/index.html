@@ -292,6 +292,11 @@
             border-radius: 8px;
             box-shadow: 0 4px 12px rgba(0,0,0,0.15);
         }
+        
+        .cms-manual-link {
+            margin-top: 20px;
+            text-align: center;
+        }
     </style>
 </head>
 <body>
@@ -305,7 +310,7 @@
         <div class="content">
             <div class="status-box" id="status-box">
                 <div class="status-title">Status Sistem</div>
-                <p id="status-message">Memuat antarmuka admin...</p>
+                <p id="status-message">Memeriksa status login...</p>
             </div>
             
             <div class="loader" id="loader">
@@ -335,7 +340,12 @@
                 
                 <div class="status-box status-warning" id="cms-warning">
                     <div class="status-title">Memuat CMS Editor...</div>
-                    <p>Jika CMS tidak muncul, pastikan Git Gateway sudah diaktifkan di Netlify.</p>
+                    <p>Jika CMS tidak muncul dalam 10 detik, coba muat ulang halaman atau klik tombol di bawah.</p>
+                    <button class="btn btn-retry" id="force-load-cms">Paksa Muat CMS</button>
+                </div>
+                
+                <div class="cms-manual-link">
+                    <p>Atau coba akses CMS langsung melalui: <a href="#" id="direct-cms-link">/#/</a></p>
                 </div>
             </div>
             
@@ -462,14 +472,17 @@ backend:<br>
         const tabs = document.querySelectorAll('.tab');
         const tabContents = document.querySelectorAll('.tab-content');
         const cmsWarning = document.getElementById('cms-warning');
+        const forceLoadCmsBtn = document.getElementById('force-load-cms');
+        const directCmsLink = document.getElementById('direct-cms-link');
         
         // Status
         let identityLoaded = false;
         let cmsLoaded = false;
         let currentUser = null;
         let cmsLoadAttempts = 0;
-        const maxCmsLoadAttempts = 3;
+        const maxCmsLoadAttempts = 5; // Meningkatkan jumlah percobaan
         let cmsInitialized = false;
+        let cmsLoadTimeout = null;
         
         // Tab functionality
         tabs.forEach(tab => {
@@ -531,8 +544,11 @@ backend:<br>
                 script.src = 'https://unpkg.com/netlify-cms@^2.0.0/dist/netlify-cms.js';
             } else if (cmsLoadAttempts === 2) {
                 script.src = 'https://cdn.jsdelivr.net/npm/netlify-cms@2.10.192/dist/netlify-cms.js';
-            } else {
+            } else if (cmsLoadAttempts === 3) {
                 script.src = 'https://cdnjs.cloudflare.com/ajax/libs/netlify-cms/2.10.192/netlify-cms.js';
+            } else {
+                // Alternatif lain
+                script.src = 'https://cdn.jsdelivr.net/npm/netlify-cms@latest/dist/netlify-cms.js';
             }
             
             script.onload = function() {
@@ -552,7 +568,7 @@ backend:<br>
                 
                 if (cmsLoadAttempts < maxCmsLoadAttempts) {
                     // Coba lagi dengan sumber berbeda
-                    setTimeout(loadNetlifyCMS, 1000);
+                    setTimeout(loadNetlifyCMS, 1500);
                 } else {
                     showError('Netlify CMS gagal dimuat dari semua sumber yang dicoba.');
                 }
@@ -563,6 +579,9 @@ backend:<br>
         
         // Inisialisasi CMS setelah script dimuat
         function initializeCMS() {
+            // Clear timeout jika ada
+            if (cmsLoadTimeout) clearTimeout(cmsLoadTimeout);
+            
             // Tunggu sebentar untuk memastikan CMS sepenuhnya terload
             setTimeout(() => {
                 if (typeof CMS !== 'undefined') {
@@ -599,6 +618,11 @@ backend:<br>
                 } else {
                     console.error('CMS is not defined after script load');
                     showError('CMS tidak terdefinisi setelah script dimuat.');
+                    
+                    // Coba load lagi
+                    if (cmsLoadAttempts < maxCmsLoadAttempts) {
+                        setTimeout(loadNetlifyCMS, 1000);
+                    }
                 }
             }, 1000);
         }
@@ -635,6 +659,7 @@ backend:<br>
                     
                     // Update URL debug info
                     currentUrl.textContent = window.location.href;
+                    directCmsLink.href = window.location.origin + '/#/';
                     
                     if (user) {
                         // Pengguna sudah login
@@ -650,6 +675,13 @@ backend:<br>
                         
                         // Load CMS setelah login berhasil
                         loadNetlifyCMS();
+                        
+                        // Set timeout untuk menampilkan warning jika CMS lama dimuat
+                        cmsLoadTimeout = setTimeout(() => {
+                            if (!cmsInitialized && cmsWarning) {
+                                cmsWarning.style.display = 'block';
+                            }
+                        }, 10000);
                     } else {
                         // Pengguna belum login
                         console.log('No user found');
@@ -694,6 +726,12 @@ backend:<br>
                     errorSection.classList.add('hidden');
                     loader.classList.remove('hidden');
                     statusMessage.textContent = 'Mencoba memuat ulang CMS...';
+                    cmsLoadAttempts = 0;
+                    loadNetlifyCMS();
+                });
+                
+                // Setup tombol force load CMS
+                forceLoadCmsBtn.addEventListener('click', function() {
                     cmsLoadAttempts = 0;
                     loadNetlifyCMS();
                 });
