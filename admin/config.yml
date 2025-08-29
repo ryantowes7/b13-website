@@ -1,34 +1,36 @@
 backend:
   name: git-gateway
-  branch: main
+  branch: main   # sesuaikan dengan branch utama kamu (main/master)
 
-media_folder: "assets/uploads"
-public_folder: "/assets/uploads"
+publish_mode: editorial_workflow
+
+media_folder: "website/images"   # tempat simpan file upload (di repo)
+public_folder: "/images"         # path publik di website
+
+site_url: https://b13factory-garmentadv.netlify.app
+
+identity:
+  roles: ['admin']
 
 collections:
-  - name: "home"
-    label: "Home"
-    file: "content/home.json"
-    fields:
-      - { label: "Judul Website", name: "title", widget: "string" }
-      - { label: "Deskripsi", name: "description", widget: "text" }
-
-  - name: "about"
-    label: "About"
-    file: "content/about.json"
-    fields:
-      - { label: "Judul", name: "title", widget: "string" }
-      - { label: "Deskripsi", name: "description", widget: "markdown" }
-      - { label: "Foto", name: "image", widget: "image" }
-
   - name: "articles"
     label: "Articles"
-    file: "content/articles/index.json"
+    folder: "website/data/articles"
+    create: true
+    slug: "{{slug}}"
     fields:
-      - label: "Artikel"
-        name: "articles"
-        widget: "list"
-        fields:
-          - { label: "Judul", name: "title", widget: "string" }
-          - { label: "Tanggal", name: "date", widget: "datetime" }
-          - { label: "Penulis", name: "author", widget: "string" }
+      - { label: "Title", name: "title", widget: "string" }
+      - { label: "Date", name: "date", widget: "datetime" }
+      - { label: "Image", name: "image", widget: "image" }
+      - { label: "Body", name: "body", widget: "markdown" }
+
+  - name: "products"
+    label: "Products"
+    folder: "website/data/products"
+    create: true
+    slug: "{{slug}}"
+    fields:
+      - { label: "Product Name", name: "name", widget: "string" }
+      - { label: "Price", name: "price", widget: "number" }
+      - { label: "Image", name: "image", widget: "image" }
+      - { label: "Description", name: "body", widget: "markdown" }
