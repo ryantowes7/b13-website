@@ -5,6 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>B13 Factory CMS - Admin Panel</title>
     
+    <!-- Favicon inline untuk menghindari error 404 -->
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🏭</text></svg>">
+    
     <!-- Netlify Identity -->
     <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
     
@@ -312,12 +315,27 @@
             <div id="login-section" class="hidden">
                 <p>Anda perlu login untuk mengakses CMS. Pastikan Anda telah diundang sebagai pengguna.</p>
                 <button class="btn" id="login-btn">Buka Form Login</button>
+                
+                <div class="solution-box">
+                    <h3>Jika login tidak berhasil:</h3>
+                    <ol>
+                        <li>Pastikan Anda telah diundang melalui email oleh administrator</li>
+                        <li>Periksa folder spam jika tidak menemukan undangan</li>
+                        <li>Pastikan Anda mengklik link konfirmasi dalam email undangan</li>
+                        <li>Coba buka halaman ini di mode incognito/private browsing</li>
+                    </ol>
+                </div>
             </div>
             
             <div id="user-section" class="hidden">
                 <div class="user-info">
                     <p>Anda telah login sebagai: <strong id="user-email"></strong></p>
                     <button class="btn btn-logout" id="logout-btn">Logout</button>
+                </div>
+                
+                <div class="status-box status-warning" id="cms-warning">
+                    <div class="status-title">Memuat CMS Editor...</div>
+                    <p>Jika CMS tidak muncul, pastikan Git Gateway sudah diaktifkan di Netlify.</p>
                 </div>
             </div>
             
@@ -379,6 +397,7 @@ backend:<br>
                         <p>Netlify CMS - <span id="cms-status">Loading...</span></p>
                         <p>Status Login: <span id="login-status">Tidak diketahui</span></p>
                         <p>User: <span id="user-info">Tidak diketahui</span></p>
+                        <p>URL: <span id="current-url">Loading...</span></p>
                     </div>
                 </div>
             </div>
@@ -439,8 +458,10 @@ backend:<br>
         const loginStatus = document.getElementById('login-status');
         const userInfo = document.getElementById('user-info');
         const errorDetails = document.getElementById('error-details');
+        const currentUrl = document.getElementById('current-url');
         const tabs = document.querySelectorAll('.tab');
         const tabContents = document.querySelectorAll('.tab-content');
+        const cmsWarning = document.getElementById('cms-warning');
         
         // Status
         let identityLoaded = false;
@@ -565,6 +586,9 @@ backend:<br>
                         console.log('Netlify CMS initialized successfully');
                         cmsInitialized = true;
                         
+                        // Sembunyikan peringatan CMS
+                        if (cmsWarning) cmsWarning.style.display = 'none';
+                        
                         // Tampilkan status sukses
                         showSuccess('CMS berhasil dimuat! Silakan gunakan panel di sudut kanan bawah untuk kontrol.');
                         
@@ -608,6 +632,9 @@ backend:<br>
                 window.netlifyIdentity.on("init", (user) => {
                     loader.classList.add('hidden');
                     currentUser = user;
+                    
+                    // Update URL debug info
+                    currentUrl.textContent = window.location.href;
                     
                     if (user) {
                         // Pengguna sudah login
