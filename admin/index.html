@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="id">
+<html>
   <head>
     <meta charset="UTF-8" />
     <title>B13 Factory CMS</title>
@@ -43,6 +43,14 @@
           }
         }
       });
+
+      // Auto-open login if no token
+      setTimeout(function() {
+        if (!window.location.hash && !window.netlifyIdentity.currentUser()) {
+          window.netlifyIdentity.open('login');
+        }
+      }, 2000);
+    
     </script>
   </body>
 </html>
