@@ -1,95 +1,63 @@
 backend:
   name: git-gateway
   branch: main
+  commit_messages:
+    create: "Create {{collection}} “{{slug}}”"
+    update: "Update {{collection}} “{{slug}}”"
+    delete: "Delete {{collection}} “{{slug}}”"
+    uploadMedia: "Upload “{{path}}”"
+    deleteMedia: "Delete “{{path}}”"
 
+publish_mode: editorial_workflow
 media_folder: "assets/uploads"
 public_folder: "/assets/uploads"
 
 collections:
-  # ========= HOME =========
-  - name: "home"
-    label: "Home"
+  - name: "pages"
+    label: "Pages"
     files:
       - file: "content/home.json"
         label: "Home Page"
         name: "home"
-        format: "json"
         fields:
-          - { label: "Judul Website", name: "title", widget: "string" }
-          - { label: "Deskripsi", name: "description", widget: "text" }
+          - {label: "Judul Website", name: "title", widget: "string"}
+          - {label: "Deskripsi", name: "description", widget: "text"}
 
-  # ========= ABOUT =========
-  - name: "about"
-    label: "About"
-    files:
-      - file: "content/about.json"
-        label: "About Page"
-        name: "about"
-        format: "json"
-        fields:
-          - { label: "Judul", name: "title", widget: "string" }
-          - { label: "Deskripsi", name: "description", widget: "markdown" }
-          - { label: "Foto", name: "image", widget: "image" }
-          - { label: "Alamat", name: "address", widget: "string" }
-          - { label: "Telepon", name: "phone", widget: "string" }
-          - { label: "Email", name: "email", widget: "string" }
-
-  # ========= PRODUCTS =========
   - name: "products"
     label: "Products"
-    files:
-      - file: "content/product/index.json"
-        label: "Products"
-        name: "products"
-        format: "json"
-        fields:
-          - label: "Daftar Produk"
-            name: "products"
-            widget: "list"
-            fields:
-              - { label: "Nama Produk", name: "title", widget: "string" }
-              - { label: "Deskripsi", name: "description", widget: "text" }
-              - { label: "Gambar", name: "image", widget: "image" }
-              - { label: "Badge", name: "badge", widget: "string", required: false }
-              - { label: "Kategori", name: "category", widget: "string" }
+    folder: "content/products"
+    create: true
+    slug: "{{slug}}"
+    fields:
+      - {label: "Title", name: "title", widget: "string"}
+      - {label: "Description", name: "description", widget: "text"}
+      - {label: "Image", name: "image", widget: "image"}
+      - {label: "Badge", name: "badge", widget: "string", required: false}
+      - {label: "Category", name: "category", widget: "string"}
 
-  # ========= ARTICLES =========
   - name: "articles"
     label: "Articles"
-    files:
-      - file: "content/articles/index.json"
-        label: "Articles"
-        name: "articles"
-        format: "json"
-        fields:
-          - label: "Artikel"
-            name: "articles"
-            widget: "list"
-            fields:
-              - { label: "Judul", name: "title", widget: "string" }
-              - { label: "Tanggal", name: "date", widget: "datetime", format: "YYYY-MM-DD" }
-              - { label: "Penulis", name: "author", widget: "string" }
-              - { label: "Kategori", name: "category", widget: "string" }
-              - { label: "Gambar", name: "image", widget: "image" }
-              - { label: "Excerpt", name: "excerpt", widget: "text" }
-              - { label: "URL", name: "url", widget: "string" }
+    folder: "content/articles"
+    create: true
+    slug: "{{slug}}"
+    fields:
+      - {label: "Title", name: "title", widget: "string"}
+      - {label: "Date", name: "date", widget: "datetime"}
+      - {label: "Author", name: "author", widget: "string"}
+      - {label: "Category", name: "category", widget: "string"}
+      - {label: "Image", name: "image", widget: "image"}
+      - {label: "Excerpt", name: "excerpt", widget: "text"}
+      - {label: "URL", name: "url", widget: "string"}
 
-  # ========= DOWNLOADS =========
   - name: "downloads"
     label: "Downloads"
-    files:
-      - file: "content/downloads/index.json"
-        label: "Downloads"
-        name: "downloads"
-        format: "json"
-        fields:
-          - label: "Daftar File"
-            name: "downloads"
-            widget: "list"
-            fields:
-              - { label: "Judul", name: "title", widget: "string" }
-              - { label: "Deskripsi", name: "description", widget: "text" }
-              - { label: "File", name: "file", widget: "file" }
-              - { label: "Ukuran", name: "size", widget: "string" }
-              - { label: "Tanggal", name: "date", widget: "datetime", format: "YYYY-MM-DD" }
-              - { label: "Kategori", name: "category", widget: "string" }
+    folder: "content/downloads"
+    create: true
+    slug: "{{slug}}"
+    fields:
+      - {label: "Title", name: "title", widget: "string"}
+      - {label: "Description", name: "description", widget: "text"}
+      - {label: "File", name: "file", widget: "file"}
+      - {label: "Size", name: "size", widget: "string"}
+      - {label: "Date", name: "date", widget: "datetime"}
+      - {label: "Category", name: "category", widget: "string"}
