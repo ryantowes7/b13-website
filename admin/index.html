@@ -1,269 +1,96 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>B13 Factory CMS - Admin Panel</title>
-    <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
-    <script src="https://unpkg.com/netlify-cms-app@^2.0.0/dist/netlify-cms.js"></script>
-    <style>
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-        
-        body {
-            background: linear-gradient(135deg, #1a2a6c, #b21f1f, #fdbb2d);
-            color: #333;
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            padding: 20px;
-        }
-        
-        .container {
-            width: 100%;
-            max-width: 800px;
-            background: white;
-            border-radius: 12px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-            overflow: hidden;
-            margin-top: 40px;
-        }
-        
-        header {
-            background: #2c3e50;
-            color: white;
-            padding: 25px;
-            text-align: center;
-        }
-        
-        h1 {
-            font-size: 28px;
-            margin-bottom: 10px;
-        }
-        
-        .subtitle {
-            font-size: 16px;
-            opacity: 0.8;
-        }
-        
-        .content {
-            padding: 30px;
-        }
-        
-        .status-box {
-            background: #f8f9fa;
-            border-left: 4px solid #3498db;
-            padding: 15px;
-            margin-bottom: 25px;
-            border-radius: 4px;
-        }
-        
-        .status-title {
-            font-weight: bold;
-            margin-bottom: 8px;
-            color: #2c3e50;
-        }
-        
-        .loader {
-            display: flex;
-            justify-content: center;
-            margin: 30px 0;
-        }
-        
-        .spinner {
-            width: 50px;
-            height: 50px;
-            border: 5px solid #f3f3f3;
-            border-top: 5px solid #3498db;
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-        }
-        
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-        
-        .btn {
-            display: inline-block;
-            background: #3498db;
-            color: white;
-            padding: 12px 24px;
-            border-radius: 6px;
-            text-decoration: none;
-            font-weight: bold;
-            border: none;
-            cursor: pointer;
-            transition: background 0.3s;
-            margin-top: 10px;
-        }
-        
-        .btn:hover {
-            background: #2980b9;
-        }
-        
-        .instructions {
-            margin-top: 30px;
-            background: #e8f4fc;
-            padding: 20px;
-            border-radius: 8px;
-        }
-        
-        .instructions h3 {
-            color: #2c3e50;
-            margin-bottom: 15px;
-        }
-        
-        .instructions ol {
-            padding-left: 20px;
-            line-height: 1.6;
-        }
-        
-        .instructions li {
-            margin-bottom: 10px;
-        }
-        
-        footer {
-            text-align: center;
-            margin-top: 30px;
-            color: white;
-            font-size: 14px;
-        }
-        
-        #nc-root {
-            width: 100%;
-        }
-        
-        .hidden {
-            display: none;
-        }
-    </style>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>B13 Factory CMS</title>
+
+  <!-- Netlify Identity -->
+  <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
+
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      margin: 0;
+      padding: 40px;
+      background: #f5f5f5;
+      text-align: center;
+    }
+    .container {
+      max-width: 600px;
+      margin: 0 auto;
+      background: white;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+    h1 {
+      color: #e74c3c;
+    }
+    .btn {
+      background: #e74c3c;
+      color: white;
+      padding: 12px 24px;
+      text-decoration: none;
+      border-radius: 5px;
+      display: inline-block;
+      margin: 10px;
+    }
+  </style>
 </head>
 <body>
-    <div class="container">
-        <header>
-            <h1>B13 Factory CMS</h1>
-            <p class="subtitle">Panel Admin untuk Mengelola Konten Website</p>
-        </header>
-        
-        <div class="content">
-            <div class="status-box">
-                <div class="status-title">Status Sistem</div>
-                <p>Memuat antarmuka admin...</p>
-            </div>
-            
-            <div class="loader">
-                <div class="spinner"></div>
-            </div>
-            
-            <div id="login-section" class="hidden">
-                <p>Anda perlu login untuk mengakses CMS. Pastikan Anda telah diundang sebagai pengguna.</p>
-                <button class="btn" id="login-btn">Buka Form Login</button>
-            </div>
-            
-            <div class="instructions">
-                <h3>Panduan Login:</h3>
-                <ol>
-                    <li>Klik tombol "Buka Form Login" di atas</li>
-                    <li>Gunakan email dan password yang telah didaftarkan</li>
-                    <li>Jika belum memiliki akses, hubungi administrator</li>
-                    <li>Setelah login, Anda dapat mengelola konten website</li>
-                </ol>
-            </div>
-        </div>
-    </div>
-    
-    <div id="nc-root"></div>
-    
-    <footer>
-        <p>© 2023 B13 Factory - Content Management System</p>
-    </footer>
+  <div class="container">
+    <h1>B13 Factory CMS</h1>
+    <p>Redirecting to Netlify Identity...</p>
+    <p>Jika tidak redirect otomatis, klik tombol dibawah:</p>
+    <a href="#" class="btn" id="login-btn">Login to CMS</a>
+    <p id="status">Checking authentication status...</p>
+  </div>
 
-    <script>
-        // Inisialisasi CMS
-        if (typeof CMS !== 'undefined') {
-            CMS.init();
-            console.log('Netlify CMS diinisialisasi');
-        } else {
-            console.error('CMS is not defined - pastikan script netlify-cms-app dimuat');
+  <!-- Netlify CMS (auto init, tidak perlu CMS.init()) -->
+  <script src="https://unpkg.com/netlify-cms@2.15.72/dist/netlify-cms.js"></script>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const loginBtn = document.getElementById('login-btn');
+      const status = document.getElementById('status');
+
+      // Token handling
+      function handleToken() {
+        const hash = window.location.hash;
+        if (hash.includes('invite_token=')) {
+          const token = hash.replace('#invite_token=', '');
+          window.location.href = `/#confirmation_token=${token}`;
+          return;
         }
-        
-        // Fungsi untuk menangani login
-        function initNetlifyIdentity() {
-            if (window.netlifyIdentity) {
-                window.netlifyIdentity.on("init", (user) => {
-                    const loader = document.querySelector('.loader');
-                    const loginSection = document.getElementById('login-section');
-                    
-                    if (user) {
-                        // Pengguna sudah login
-                        console.log('User logged in:', user);
-                        loader.classList.add('hidden');
-                        document.querySelector('.status-title').textContent = 'Status: Terautentikasi';
-                        document.querySelector('.status-box p').textContent = `Halo ${user.user_metadata.full_name || user.email}! Anda telah login.`;
-                    } else {
-                        // Pengguna belum login
-                        console.log('No user found');
-                        loader.classList.add('hidden');
-                        loginSection.classList.remove('hidden');
-                        document.querySelector('.status-title').textContent = 'Status: Menunggu Login';
-                        document.querySelector('.status-box p').textContent = 'Silakan login untuk mengakses CMS.';
-                    }
-                });
-                
-                // Setup tombol login
-                document.getElementById('login-btn').addEventListener('click', function() {
-                    window.netlifyIdentity.open('login');
-                });
-                
-                // Redirect setelah login berhasil
-                window.netlifyIdentity.on("login", () => {
-                    console.log("Login successful");
-                    document.location.href = "/admin/";
-                });
-            } else {
-                console.error('Netlify Identity widget gagal dimuat');
-                document.querySelector('.status-title').textContent = 'Error: Tidak dapat memuat sistem login';
-                document.querySelector('.status-box p').textContent = 'Silakan refresh halaman atau coba lagi nanti.';
-            }
-        }
-        
-        // Auto login untuk development (opsional)
-        const allowedEmails = ["your-email@gmail.com", "your-other@email.com"];
-        
-        window.netlifyIdentity.on("init", function(user) {
+        if (hash.includes('confirmation_token=')) {
+          status.textContent = 'Processing confirmation token...';
+          const token = hash.replace('#confirmation_token=', '');
+          window.netlifyIdentity.on('init', function(user) {
             if (!user) {
-                // Coba auto-login untuk development
-                const storedEmail = localStorage.getItem('b13-admin-email');
-                if (storedEmail && allowedEmails.includes(storedEmail)) {
-                    window.netlifyIdentity.login({
-                        email: storedEmail,
-                        password: 'b13-factory-admin'
-                    });
-                }
+              window.netlifyIdentity.confirm(token, true);
             }
-        });
-        
-        // Jalankan inisialisasi setelah halaman dimuat
-        document.addEventListener('DOMContentLoaded', function() {
-            initNetlifyIdentity();
-            
-            // Fallback: tampilkan tombol login setelah 3 detik
-            setTimeout(function() {
-                const loader = document.querySelector('.loader');
-                const loginSection = document.getElementById('login-section');
-                
-                if (loader && !document.querySelector('.status-box').textContent.includes('Terautentikasi')) {
-                    loader.classList.add('hidden');
-                    loginSection.classList.remove('hidden');
-                }
-            }, 3000);
-        });
-    </script>
+          });
+          return;
+        }
+      }
+      handleToken();
+
+      // Login button
+      loginBtn.addEventListener("click", function (e) {
+        e.preventDefault();
+        if (window.netlifyIdentity) {
+          window.netlifyIdentity.open("login");
+        }
+      });
+
+      // Auto open login
+      setTimeout(function() {
+        if (!window.location.hash && !window.netlifyIdentity.currentUser()) {
+          window.netlifyIdentity.open("login");
+        }
+      }, 2000);
+    });
+  </script>
 </body>
 </html>
