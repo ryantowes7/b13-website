@@ -1,130 +1,32 @@
 <!DOCTYPE html>
-<html>
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>B13 Factory CMS</title>
-  <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
-  <style>
-    body {
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-      margin: 0;
-      padding: 40px;
-      background: #f5f5f5;
-      text-align: center;
-    }
-    .container {
-      max-width: 600px;
-      margin: 0 auto;
-      background: white;
-      padding: 30px;
-      border-radius: 10px;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-    }
-    h1 {
-      color: #e74c3c;
-    }
-    .btn {
-      background: #e74c3c;
-      color: white;
-      padding: 12px 24px;
-      text-decoration: none;
-      border-radius: 5px;
-      display: inline-block;
-      margin: 10px;
-    }
-  </style>
-</head>
-<body>
-  <div class="container">
-    <h1>B13 Factory CMS</h1>
-    <p>Redirecting to Netlify Identity...</p>
-    <p>Jika tidak redirect otomatis, klik tombol dibawah:</p>
-    <a href="#" class="btn" id="login-btn">Login to CMS</a>
-    <p id="status">Checking authentication status...</p>
-  </div>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <title>B13 Factory CMS</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-  <script src="https://unpkg.com/netlify-cms@^2.0.0/dist/netlify-cms.js"></script>
-  
-  <script>
-    document.addEventListener('DOMContentLoaded', function() {
-      const loginBtn = document.getElementById('login-btn');
-      const status = document.getElementById('status');
-      
-      // Handle invite tokens
-      function handleToken() {
-        const hash = window.location.hash;
-        if (hash.includes('invite_token=')) {
-          const token = hash.replace('#invite_token=', '');
-          window.location.href = `/#confirmation_token=${token}`;
-          return;
-        }
-        
-        if (hash.includes('confirmation_token=')) {
-          status.textContent = 'Processing confirmation token...';
-          const token = hash.replace('#confirmation_token=', '');
-          
-          // Auto-confirm with token
-          window.netlifyIdentity.on('init', function(user) {
-            if (!user) {
-              window.netlifyIdentity.confirm(token, true);
-            }
-          });
-          return;
-        }
-      }
-      
-      // Auto-login for development
-      const allowedEmails = ["your-email@gmail.com", "your-other@email.com"]; // Ganti dengan email Anda
+    <!-- Netlify Identity Widget -->
+    <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
+    <!-- Netlify CMS (pakai yang lama, bukan netlify-cms-app) -->
+    <script src="https://unpkg.com/netlify-cms@^2.0.0/dist/netlify-cms.js"></script>
+  </head>
+  <body>
+    <div style="text-align:center; margin-top:50px;">
+      <h2>B13 Factory CMS</h2>
+      <p>Loading Content Manager...</p>
+    </div>
 
-      window.netlifyIdentity.on("init", function(user) {
-        if (!user) {
-          // Try to auto-login
-          const storedEmail = localStorage.getItem('b13-admin-email');
-          if (storedEmail && allowedEmails.includes(storedEmail)) {
-            window.netlifyIdentity.login({
-              email: storedEmail,
-              password: 'b13-factory-admin'
+    <script>
+      // Auto redirect login dengan Netlify Identity
+      if (window.netlifyIdentity) {
+        window.netlifyIdentity.on("init", (user) => {
+          if (!user) {
+            window.netlifyIdentity.on("login", () => {
+              document.location.href = "/admin/";
             });
           }
-        }
-      });
-      
-      // Simple login form for admin
-      function setupSimpleLogin() {
-        const loginHTML = `
-          <div style="max-width: 400px; margin: 50px auto; padding: 20px; background: white; border-radius: 10px;">
-            <h2>B13 Factory Admin Login</h2>
-            <input type="email" id="admin-email" placeholder="Your email" style="width: 100%; padding: 10px; margin: 10px 0;">
-            <input type="password" id="admin-password" placeholder="Password" style="width: 100%; padding: 10px; margin: 10px 0;">
-            <button onclick="attemptLogin()" style="width: 100%; padding: 10px; background: #e74c3c; color: white; border: none; border-radius: 5px;">
-              Login
-            </button>
-            <p style="margin-top: 20px;">
-              <a href="#" onclick="showPasswordReset()">Lupa password?</a>
-            </p>
-          </div>
-        `;
-        
-        document.body.innerHTML = loginHTML;
-      }
-
-      function attemptLogin() {
-        const email = document.getElementById('admin-email').value;
-        const password = document.getElementById('admin-password').value;
-        
-        window.netlifyIdentity.login({
-          email: email,
-          password: password
         });
       }
-      // Auto-open login if no token
-      setTimeout(function() {
-        if (!window.location.hash && !window.netlifyIdentity.currentUser()) {
-          window.netlifyIdentity.open('login');
-        }
-      }, 2000);
-    });
-  </script>
-</body>
+    </script>
+  </body>
 </html>
