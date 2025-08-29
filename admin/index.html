@@ -8,9 +8,6 @@
     <!-- Netlify Identity -->
     <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
     
-    <!-- Netlify CMS -->
-    <script src="https://unpkg.com/netlify-cms@^2.0.0/dist/netlify-cms.js"></script>
-    
     <style>
         * {
             box-sizing: border-box;
@@ -258,6 +255,12 @@
         .tab-content.active {
             display: block;
         }
+        
+        .success-checkmark {
+            color: #2ecc71;
+            font-size: 24px;
+            margin-right: 10px;
+        }
     </style>
 </head>
 <body>
@@ -291,13 +294,14 @@
             
             <div id="error-section" class="hidden">
                 <div class="status-box status-error">
-                    <div class="status-title">Error: Izin Tidak Cukup</div>
-                    <p>Anda login tetapi tidak memiliki izin untuk mengakses CMS. Kemungkinan penyebab:</p>
+                    <div class="status-title">Error: Gagal Memuat CMS</div>
+                    <p id="error-details">Netlify CMS tidak dapat dimuat. Kemungkinan penyebab:</p>
                     <ul>
-                        <li>Email Anda belum diundang ke situs Netlify</li>
-                        <li>Git Gateway belum dikonfigurasi dengan benar</li>
-                        <li>Repository GitHub tidak dapat diakses</li>
+                        <li>Error teknis dalam pemuatan script</li>
+                        <li>Masalah dengan konfigurasi CMS</li>
+                        <li>Blokir oleh kebijakan keamanan browser</li>
                     </ul>
+                    <button class="btn btn-retry" id="retry-btn">Coba Muat Ulang CMS</button>
                 </div>
                 
                 <div class="tabs">
@@ -310,41 +314,36 @@
                     <div class="solution-box">
                         <h3>Langkah-langkah Perbaikan:</h3>
                         <ol>
-                            <li>Buka <a href="https://app.netlify.com" target="_blank">Dashboard Netlify</a></li>
-                            <li>Pilih situs Anda</li>
-                            <li>Pergi ke <strong>Identity → Invite users</strong></li>
-                            <li>Undang email Anda dengan role <strong>Editor</strong> atau <strong>Administrator</strong></li>
-                            <li>Periksa email Anda untuk menerima undangan</li>
-                            <li>Setelah menerima undangan, login kembali ke CMS</li>
+                            <li>Refresh halaman ini (Ctrl+F5 untuk refresh lengkap)</li>
+                            <li>Pastikan Anda menggunakan browser modern (Chrome, Firefox, Edge)</li>
+                            <li>Coba buka di mode incognito/private browsing</li>
+                            <li>Nonaktifkan ekstensi browser yang mungkin memblokir script</li>
+                            <li>Hubungi administrator jika masalah berlanjut</li>
                         </ol>
-                        <button class="btn btn-retry" id="retry-btn">Coba Login Kembali</button>
                     </div>
                 </div>
                 
                 <div class="tab-content" id="config-tab">
                     <div class="config-help">
-                        <h3>Konfigurasi Backend</h3>
-                        <p>Pastikan konfigurasi <code>config.yml</code> Anda sudah benar:</p>
-                        <div class="config-code">
-# config.yml<br>
-backend:<br>
-&nbsp;&nbsp;name: git-gateway<br>
-&nbsp;&nbsp;branch: main<br>
-&nbsp;&nbsp;repo: your-username/your-repo-name  # Ganti dengan repo Anda<br>
-<br>
-# Pengaturan Identity<br>
-local_backend: true  # Untuk development lokal<br>
-<br>
-# Izinkan semua pengguna yang diundang<br>
-publish_mode: editorial_workflow
-                        </div>
-                        <p>Pastikan Git Gateway sudah diaktifkan di Netlify:</p>
+                        <h3>Konfigurasi yang Diperlukan:</h3>
+                        <p>Pastikan Anda telah mengaktifkan Git Gateway di Netlify:</p>
                         <ol>
                             <li>Buka <strong>Settings → Identity → Services → Git Gateway</strong></li>
                             <li>Klik <strong>Enable Git Gateway</strong></li>
                             <li>Pilih provider yang sesuai (biasanya GitHub)</li>
                             <li>Autorisasi akses ke repository Anda</li>
                         </ol>
+                        
+                        <p>Pastikan file <code>config.yml</code> Anda berisi:</p>
+                        <div class="config-code">
+backend:<br>
+&nbsp;&nbsp;name: git-gateway<br>
+&nbsp;&nbsp;branch: main<br>
+<br>
+publish_mode: editorial_workflow<br>
+media_folder: "assets/uploads"<br>
+public_folder: "/assets/uploads"
+                        </div>
                     </div>
                 </div>
                 
@@ -353,24 +352,21 @@ publish_mode: editorial_workflow
                         <p>Debug Info: Netlify Identity - <span id="identity-status">Loading...</span></p>
                         <p>Netlify CMS - <span id="cms-status">Loading...</span></p>
                         <p>Status Login: <span id="login-status">Tidak diketahui</span></p>
-                        <p>User Role: <span id="user-role">Tidak diketahui</span></p>
-                        <p>Error Details: <span id="error-details">Tidak ada</span></p>
+                        <p>User: <span id="user-info">Tidak diketahui</span></p>
                     </div>
                 </div>
             </div>
             
-            <div class="instructions">
-                <h3>Panduan Login:</h3>
-                <ol>
-                    <li>Klik tombol "Buka Form Login" di atas</li>
-                    <li>Gunakan email dan password yang telah didaftarkan</li>
-                    <li>Jika belum memiliki akses, hubungi administrator</li>
-                    <li>Setelah login, Anda dapat mengelola konten website</li>
-                </ol>
+            <div id="success-section" class="hidden">
+                <div class="status-box status-success">
+                    <div class="status-title">✓ Berhasil Dimuat</div>
+                    <p>Netlify CMS berhasil dimuat. Anda dapat mulai mengelola konten.</p>
+                </div>
             </div>
         </div>
     </div>
     
+    <!-- Container untuk Netlify CMS -->
     <div id="nc-root" class="hidden"></div>
     
     <footer>
@@ -389,19 +385,22 @@ publish_mode: editorial_workflow
         const logoutBtn = document.getElementById('logout-btn');
         const errorSection = document.getElementById('error-section');
         const retryBtn = document.getElementById('retry-btn');
+        const successSection = document.getElementById('success-section');
         const cmsRoot = document.getElementById('nc-root');
         const identityStatus = document.getElementById('identity-status');
         const cmsStatus = document.getElementById('cms-status');
         const loginStatus = document.getElementById('login-status');
-        const userRole = document.getElementById('user-role');
+        const userInfo = document.getElementById('user-info');
         const errorDetails = document.getElementById('error-details');
         const tabs = document.querySelectorAll('.tab');
         const tabContents = document.querySelectorAll('.tab-content');
         
-        // Status awal
+        // Status
         let identityLoaded = false;
         let cmsLoaded = false;
         let currentUser = null;
+        let cmsLoadAttempts = 0;
+        const maxCmsLoadAttempts = 2;
         
         // Tab functionality
         tabs.forEach(tab => {
@@ -434,37 +433,103 @@ publish_mode: editorial_workflow
             }
         }
         
-        // Periksa status Netlify CMS
-        function checkCMS() {
-            if (typeof CMS !== 'undefined') {
-                cmsLoaded = true;
+        // Load Netlify CMS dengan metode yang lebih robust
+        function loadNetlifyCMS() {
+            if (cmsLoadAttempts >= maxCmsLoadAttempts) {
+                cmsStatus.textContent = 'Gagal setelah beberapa percobaan';
+                cmsStatus.style.color = 'red';
+                showError('Netlify CMS gagal dimuat setelah beberapa percobaan. Silakan refresh halaman.');
+                return;
+            }
+            
+            cmsLoadAttempts++;
+            console.log(`Loading Netlify CMS (attempt ${cmsLoadAttempts})`);
+            
+            // Coba load CMS dengan metode yang berbeda
+            const script = document.createElement('script');
+            
+            // Coba dari sumber yang berbeda berdasarkan percobaan
+            if (cmsLoadAttempts === 1) {
+                script.src = 'https://unpkg.com/netlify-cms@^2.0.0/dist/netlify-cms.js';
+            } else {
+                script.src = 'https://cdn.jsdelivr.net/npm/netlify-cms@2.10.192/dist/netlify-cms.js';
+            }
+            
+            script.onload = function() {
+                console.log('Netlify CMS script loaded');
                 cmsStatus.textContent = 'Loaded';
                 cmsStatus.style.color = 'green';
-                console.log('Netlify CMS loaded successfully');
-                return true;
-            } else {
-                cmsStatus.textContent = 'Failed to load';
+                cmsLoaded = true;
+                
+                // Inisialisasi CMS setelah dimuat
+                initializeCMS();
+            };
+            
+            script.onerror = function() {
+                console.error('Netlify CMS script failed to load');
+                cmsStatus.textContent = `Failed to load (attempt ${cmsLoadAttempts})`;
                 cmsStatus.style.color = 'red';
-                console.error('Netlify CMS failed to load');
-                return false;
+                
+                if (cmsLoadAttempts < maxCmsLoadAttempts) {
+                    // Coba lagi dengan sumber berbeda
+                    setTimeout(loadNetlifyCMS, 1000);
+                } else {
+                    showError('Netlify CMS gagal dimuat dari semua sumber yang dicoba.');
+                }
+            };
+            
+            document.head.appendChild(script);
+        }
+        
+        // Inisialisasi CMS setelah script dimuat
+        function initializeCMS() {
+            if (typeof CMS !== 'undefined') {
+                try {
+                    // Pastikan elemen root ada sebelum menginisialisasi
+                    if (!document.getElementById('nc-root')) {
+                        const rootDiv = document.createElement('div');
+                        rootDiv.id = 'nc-root';
+                        document.body.appendChild(rootDiv);
+                    }
+                    
+                    // Inisialisasi CMS
+                    CMS.init();
+                    console.log('Netlify CMS initialized successfully');
+                    
+                    // Tampilkan CMS
+                    cmsRoot.classList.remove('hidden');
+                    successSection.classList.remove('hidden');
+                    
+                } catch (error) {
+                    console.error('Error initializing CMS:', error);
+                    showError('Error dalam menginisialisasi CMS: ' + error.message);
+                }
+            } else {
+                console.error('CMS is not defined after script load');
+                showError('CMS tidak terdefinisi setelah script dimuat.');
             }
         }
         
-        // Tangani error permission
-        function handlePermissionError() {
-            console.log('Permission error detected');
+        // Tampilkan error
+        function showError(message) {
             statusBox.classList.remove('status-success');
             statusBox.classList.add('status-error');
-            statusMessage.innerHTML = 'Error: <strong>Anda tidak memiliki izin yang cukup</strong>. Silakan periksa tab Solusi di bawah.';
+            statusMessage.innerHTML = message;
+            errorDetails.innerHTML = message;
+            loader.classList.add('hidden');
             errorSection.classList.remove('hidden');
+            loginSection.classList.add('hidden');
             userSection.classList.add('hidden');
-            
-            // Coba dapatkan info user
-            if (currentUser) {
-                userRole.textContent = currentUser.role || 'Tidak diketahui';
-            }
-            
-            errorDetails.textContent = 'Tidak memiliki izin untuk mengakses Netlify CMS';
+        }
+        
+        // Tampilkan success
+        function showSuccess(message) {
+            statusBox.classList.remove('status-error');
+            statusBox.classList.add('status-success');
+            statusMessage.innerHTML = message;
+            loader.classList.add('hidden');
+            errorSection.classList.add('hidden');
+            successSection.classList.remove('hidden');
         }
         
         // Fungsi untuk menangani login
@@ -479,30 +544,21 @@ publish_mode: editorial_workflow
                         console.log('User logged in:', user);
                         loginStatus.textContent = 'Logged in';
                         loginStatus.style.color = 'green';
+                        userInfo.textContent = user.email;
                         
                         statusBox.classList.add('status-success');
                         statusMessage.textContent = `Halo ${user.user_metadata.full_name || user.email}! Anda telah login.`;
                         userEmail.textContent = user.email;
                         userSection.classList.remove('hidden');
                         
-                        // Periksa CMS setelah login berhasil
-                        if (checkCMS()) {
-                            cmsRoot.classList.remove('hidden');
-                            
-                            // Monitor untuk error permission
-                            setTimeout(() => {
-                                // Jika setelah beberapa detik CMS masih tidak muncul, kemungkinan ada error permission
-                                if (cmsRoot.querySelector && cmsRoot.querySelector('.nc-loadingPage') && 
-                                    cmsRoot.querySelector('.nc-loadingPage').textContent.includes('permission')) {
-                                    handlePermissionError();
-                                }
-                            }, 3000);
-                        }
+                        // Load CMS setelah login berhasil
+                        loadNetlifyCMS();
                     } else {
                         // Pengguna belum login
                         console.log('No user found');
                         loginStatus.textContent = 'Not logged in';
                         loginStatus.style.color = 'red';
+                        userInfo.textContent = 'Tidak ada user';
                         
                         statusBox.classList.remove('status-success');
                         statusMessage.textContent = 'Silakan login untuk mengakses CMS.';
@@ -522,10 +578,11 @@ publish_mode: editorial_workflow
                 
                 // Setup tombol retry
                 retryBtn.addEventListener('click', function() {
-                    window.netlifyIdentity.logout();
-                    setTimeout(() => {
-                        window.netlifyIdentity.open('login');
-                    }, 1000);
+                    errorSection.classList.add('hidden');
+                    loader.classList.remove('hidden');
+                    statusMessage.textContent = 'Mencoba memuat ulang CMS...';
+                    cmsLoadAttempts = 0;
+                    loadNetlifyCMS();
                 });
                 
                 // Redirect setelah login berhasil
@@ -541,50 +598,26 @@ publish_mode: editorial_workflow
                     document.location.href = "/admin/";
                 });
                 
-                // Listen for CMS errors
-                window.addEventListener('message', (event) => {
-                    if (event.data && event.data.type === 'NETLIFY_CMS_ERROR') {
-                        if (event.data.payload && event.data.payload.toString().includes('permission')) {
-                            handlePermissionError();
-                        }
-                    }
-                });
-                
             } else {
-                console.error('Netlify Identity widget gagal dimuat');
-                statusBox.classList.add('status-error');
-                statusMessage.textContent = 'Error: Tidak dapat memuat sistem login. Silakan refresh halaman atau coba lagi nanti.';
-                loader.classList.add('hidden');
-                loginSection.classList.remove('hidden');
-                errorSection.classList.remove('hidden');
+                showError('Netlify Identity widget gagal dimuat. Silakan refresh halaman.');
             }
         }
         
         // Jalankan inisialisasi setelah halaman dimuat
         document.addEventListener('DOMContentLoaded', function() {
-            // Periksa status script
+            // Periksa status Identity
             checkIdentity();
-            checkCMS();
             
             // Inisialisasi Identity
             initNetlifyIdentity();
             
-            // Fallback: tampilkan tombol login setelah 5 detik
+            // Fallback: tampilkan login section setelah 5 detik
             setTimeout(function() {
                 if (loader && !statusMessage.textContent.includes('login')) {
                     loader.classList.add('hidden');
                     loginSection.classList.remove('hidden');
                 }
             }, 5000);
-            
-            // Monitor for permission errors
-            const originalConsoleError = console.error;
-            console.error = function() {
-                if (arguments[0] && arguments[0].toString().includes('sufficient permissions')) {
-                    handlePermissionError();
-                }
-                originalConsoleError.apply(console, arguments);
-            };
         });
     </script>
 </body>
