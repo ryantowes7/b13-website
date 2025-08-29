@@ -25,7 +25,7 @@ collections:
 
   - name: "products"
     label: "Products"
-    folder: "content/products"
+    folder: "content/product"
     create: true
     slug: "{{slug}}"
     fields:
