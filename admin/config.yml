@@ -2,15 +2,15 @@ backend:
   name: git-gateway
   branch: main
   commit_messages:
-    create: "Create {{collection}} “{{slug}}”"
-    update: "Update {{collection}} “{{slug}}”"
-    delete: "Delete {{collection}} “{{slug}}”"
-    uploadMedia: "Upload “{{path}}”"
-    deleteMedia: "Delete “{{path}}”"
+    create: "Create {{collection}} \"{{slug}}\""
+    update: "Update {{collection}} \"{{slug}}\""
+    delete: "Delete {{collection}} \"{{slug}}\""
+    uploadMedia: "Upload \"{{path}}\""
+    deleteMedia: "Delete \"{{path}}\""
 
-publish_mode: editorial_workflow
 media_folder: "assets/uploads"
 public_folder: "/assets/uploads"
+publish_mode: editorial_workflow
 
 collections:
   - name: "pages"
@@ -25,7 +25,7 @@ collections:
 
   - name: "products"
     label: "Products"
-    folder: "content/product"
+    folder: "content/products"
     create: true
     slug: "{{slug}}"
     fields:
@@ -61,3 +61,17 @@ collections:
       - {label: "Size", name: "size", widget: "string"}
       - {label: "Date", name: "date", widget: "datetime"}
       - {label: "Category", name: "category", widget: "string"}
+
+  - name: "settings"
+    label: "Settings"
+    files:
+      - file: "content/about.json"
+        label: "About Page"
+        name: "about"
+        fields:
+          - {label: "Title", name: "title", widget: "string"}
+          - {label: "Description", name: "description", widget: "markdown"}
+          - {label: "Image", name: "image", widget: "image"}
+          - {label: "Address", name: "address", widget: "string"}
+          - {label: "Phone", name: "phone", widget: "string"}
+          - {label: "Email", name: "email", widget: "string"}
