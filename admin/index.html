@@ -7,7 +7,6 @@
     
     <!-- Favicon untuk mencegah error 404 -->
     <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🏭</text></svg>">
-    <link rel="shortcut icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🏭</text></svg>">
     
     <!-- Netlify Identity -->
     <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
@@ -185,6 +184,8 @@
         #nc-root {
             width: 100%;
             min-height: 400px;
+            position: relative;
+            z-index: 1000;
         }
         
         .hidden {
@@ -280,6 +281,17 @@
             padding: 15px;
             background: #e8f4fc;
             border-radius: 8px;
+        }
+        
+        /* CSS untuk memastikan CMS tampil dengan benar */
+        .nc-root {
+            position: relative;
+            z-index: 1000;
+        }
+        
+        /* Reset untuk elemen CMS */
+        #nc-root > div {
+            position: static !important;
         }
     </style>
 </head>
@@ -396,7 +408,7 @@ public_folder: "/assets/uploads"
         </div>
     </div>
     
-    <!-- Container untuk Netlify CMS -->
+    <!-- Container untuk Netlify CMS - DIPINDAHKAN ke akhir body -->
     <div id="nc-root" class="hidden"></div>
     
     <footer>
@@ -479,6 +491,7 @@ public_folder: "/assets/uploads"
             
             // Coba load CMS dengan metode yang berbeda
             const script = document.createElement('script');
+            script.id = 'netlify-cms-script';
             
             // Coba dari sumber yang berbeda berdasarkan percobaan
             if (cmsLoadAttempts === 1) {
@@ -526,18 +539,27 @@ public_folder: "/assets/uploads"
                             document.body.appendChild(rootDiv);
                         }
                         
+                        // Sembunyikan container utama untuk memberi ruang pada CMS
+                        document.querySelector('.container').classList.add('hidden');
+                        document.querySelector('footer').classList.add('hidden');
+                        
+                        // Tampilkan CMS root
+                        cmsRoot.classList.remove('hidden');
+                        
                         // Inisialisasi CMS
                         CMS.init();
                         console.log('Netlify CMS initialized successfully');
                         
-                        // Tampilkan CMS
-                        cmsRoot.classList.remove('hidden');
-                        successSection.classList.remove('hidden');
-                        statusMessage.textContent = 'CMS berhasil dimuat!';
+                        // Tampilkan status sukses
+                        showSuccess('CMS berhasil dimuat!');
                         
                     } catch (error) {
                         console.error('Error initializing CMS:', error);
                         showError('Error dalam menginisialisasi CMS: ' + error.message);
+                        
+                        // Tampilkan kembali container utama jika error
+                        document.querySelector('.container').classList.remove('hidden');
+                        document.querySelector('footer').classList.remove('hidden');
                     }
                 } else {
                     console.error('CMS is not defined after script load');
@@ -619,6 +641,13 @@ public_folder: "/assets/uploads"
                     loader.classList.remove('hidden');
                     statusMessage.textContent = 'Mencoba memuat ulang CMS...';
                     cmsLoadAttempts = 0;
+                    
+                    // Hapus script CMS lama jika ada
+                    const oldScript = document.getElementById('netlify-cms-script');
+                    if (oldScript) {
+                        oldScript.remove();
+                    }
+                    
                     loadNetlifyCMS();
                 });
                 
