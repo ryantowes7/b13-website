@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>B13 Factory CMS - Admin Panel</title>
     
-    <!-- Favicon inline untuk menghindari error 404 -->
+    <!-- Favicon inline -->
     <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🏭</text></svg>">
     
     <!-- Netlify Identity -->
@@ -32,7 +32,7 @@
         
         .admin-container {
             width: 100%;
-            max-width: 900px;
+            max-width: 1000px;
             background: white;
             border-radius: 12px;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
@@ -154,32 +154,60 @@
             background: #e67e22;
         }
         
-        .instructions {
-            margin-top: 30px;
-            background: #e8f4fc;
-            padding: 20px;
+        .btn-success {
+            background: #2ecc71;
+        }
+        
+        .btn-success:hover {
+            background: #27ae60;
+        }
+        
+        .diagnostic-section {
+            margin-top: 20px;
+            padding: 15px;
+            background: #f8f9fa;
             border-radius: 8px;
+            border-left: 4px solid #95a5a6;
         }
         
-        .instructions h3 {
-            color: #2c3e50;
-            margin-bottom: 15px;
+        .diagnostic-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid #eee;
         }
         
-        .instructions ol {
-            padding-left: 20px;
-            line-height: 1.6;
+        .diagnostic-status {
+            font-weight: bold;
         }
         
-        .instructions li {
-            margin-bottom: 10px;
+        .status-ok {
+            color: #2ecc71;
         }
         
-        footer {
-            text-align: center;
+        .status-fail {
+            color: #e74c3c;
+        }
+        
+        .status-warning {
+            color: #f39c12;
+        }
+        
+        .token-info {
+            font-family: monospace;
+            font-size: 12px;
+            background: #2c3e50;
             color: white;
-            font-size: 14px;
             padding: 10px;
+            border-radius: 4px;
+            overflow-x: auto;
+            margin-top: 10px;
+            max-height: 100px;
+            overflow-y: auto;
+        }
+        
+        .hidden {
+            display: none;
         }
         
         #cms-fullscreen {
@@ -193,109 +221,22 @@
             display: none;
         }
         
-        .hidden {
-            display: none;
-        }
-        
-        .user-info {
-            background: #eaf7ff;
-            padding: 15px;
-            border-radius: 8px;
-            margin: 15px 0;
-        }
-        
-        .debug-info {
-            font-size: 12px;
-            color: #666;
-            margin-top: 20px;
-            padding: 10px;
-            background: #f5f5f5;
-            border-radius: 4px;
-        }
-        
-        .solution-box {
-            margin-top: 20px;
-            padding: 15px;
-            background: #fff4e6;
-            border-radius: 8px;
-            border-left: 4px solid #ffa94d;
-        }
-        
-        .solution-box h3 {
-            color: #d35400;
-            margin-bottom: 10px;
-        }
-        
-        .config-help {
-            margin-top: 20px;
-            padding: 15px;
-            background: #e8f6f3;
-            border-radius: 8px;
-            border-left: 4px solid #1abc9c;
-        }
-        
-        .config-help h3 {
-            color: #16a085;
-            margin-bottom: 10px;
-        }
-        
-        .config-code {
-            background: #2c3e50;
+        .debug-panel {
+            background: #34495e;
             color: white;
             padding: 15px;
-            border-radius: 5px;
+            border-radius: 8px;
+            margin-top: 20px;
             font-family: monospace;
-            font-size: 13px;
-            overflow-x: auto;
-            margin: 10px 0;
+            font-size: 12px;
+            max-height: 200px;
+            overflow-y: auto;
         }
         
-        .tabs {
-            display: flex;
-            border-bottom: 1px solid #ddd;
-            margin-bottom: 15px;
-        }
-        
-        .tab {
-            padding: 10px 15px;
-            cursor: pointer;
-            border-bottom: 3px solid transparent;
-        }
-        
-        .tab.active {
-            border-bottom-color: #3498db;
+        .debug-title {
             font-weight: bold;
-        }
-        
-        .tab-content {
-            display: none;
-        }
-        
-        .tab-content.active {
-            display: block;
-        }
-        
-        .cms-loading-info {
-            margin-top: 20px;
-            padding: 15px;
-            background: #e8f4fc;
-            border-radius: 8px;
-        }
-        
-        .cms-controls {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            z-index: 10001;
-            background: white;
-            padding: 10px;
-            border-radius: 8px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-        }
-        
-        .cms-manual-link {
-            margin-top: 20px;
-            text-align: center;
+            margin-bottom: 10px;
+            color: #3498db;
         }
     </style>
 </head>
@@ -320,16 +261,6 @@
             <div id="login-section" class="hidden">
                 <p>Anda perlu login untuk mengakses CMS. Pastikan Anda telah diundang sebagai pengguna.</p>
                 <button class="btn" id="login-btn">Buka Form Login</button>
-                
-                <div class="solution-box">
-                    <h3>Jika login tidak berhasil:</h3>
-                    <ol>
-                        <li>Pastikan Anda telah diundang melalui email oleh administrator</li>
-                        <li>Periksa folder spam jika tidak menemukan undangan</li>
-                        <li>Pastikan Anda mengklik link konfirmasi dalam email undangan</li>
-                        <li>Coba buka halaman ini di mode incognito/private browsing</li>
-                    </ol>
-                </div>
             </div>
             
             <div id="user-section" class="hidden">
@@ -338,93 +269,64 @@
                     <button class="btn btn-logout" id="logout-btn">Logout</button>
                 </div>
                 
-                <div class="status-box status-warning" id="cms-warning">
-                    <div class="status-title">Memuat CMS Editor...</div>
-                    <p>Jika CMS tidak muncul dalam 10 detik, coba muat ulang halaman atau klik tombol di bawah.</p>
-                    <button class="btn btn-retry" id="force-load-cms">Paksa Muat CMS</button>
+                <div class="diagnostic-section">
+                    <h3>Diagnostic Tools</h3>
+                    
+                    <div class="diagnostic-item">
+                        <span>Netlify Identity Status:</span>
+                        <span class="diagnostic-status" id="diag-identity">Checking...</span>
+                    </div>
+                    
+                    <div class="diagnostic-item">
+                        <span>Authentication Token:</span>
+                        <span class="diagnostic-status" id="diag-token">Checking...</span>
+                    </div>
+                    
+                    <div class="diagnostic-item">
+                        <span>Git Gateway Connection:</span>
+                        <span class="diagnostic-status" id="diag-gateway">Checking...</span>
+                    </div>
+                    
+                    <div class="diagnostic-item">
+                        <span>CMS Script Loaded:</span>
+                        <span class="diagnostic-status" id="diag-cms">Checking...</span>
+                    </div>
+                    
+                    <div class="token-info" id="token-preview">
+                        Token will be shown here...
+                    </div>
+                    
+                    <button class="btn btn-success" id="test-token">Test Token</button>
+                    <button class="btn" id="refresh-token">Refresh Token</button>
                 </div>
                 
-                <div class="cms-manual-link">
-                    <p>Atau coba akses CMS langsung melalui: <a href="#" id="direct-cms-link">/#/</a></p>
+                <div class="status-box status-warning">
+                    <div class="status-title">Memuat CMS Editor...</div>
+                    <p>Jika CMS tidak muncul, coba salah satu solusi berikut:</p>
+                    
+                    <div style="margin-top: 15px;">
+                        <button class="btn btn-retry" id="force-load-cms">Paksa Muat CMS</button>
+                        <button class="btn" id="load-alternative-cms">Gunakan CMS Alternatif</button>
+                        <button class="btn" id="open-cms-direct">Buka CMS Langsung</button>
+                    </div>
+                    
+                    <div style="margin-top: 15px;">
+                        <p><strong>Alternatif 1:</strong> <a href="#" id="direct-cms-link">/#/</a></p>
+                        <p><strong>Alternatif 2:</strong> <a href="#" id="direct-cms-link-2">/admin/index.html#/</a></p>
+                    </div>
+                </div>
+                
+                <div class="debug-panel">
+                    <div class="debug-title">Debug Information:</div>
+                    <div id="debug-output">Loading debug information...</div>
                 </div>
             </div>
             
             <div id="error-section" class="hidden">
                 <div class="status-box status-error">
                     <div class="status-title">Error: Gagal Memuat CMS</div>
-                    <p id="error-details">Netlify CMS tidak dapat dimuat. Kemungkinan penyebab:</p>
-                    <ul>
-                        <li>Error teknis dalam pemuatan script</li>
-                        <li>Masalah dengan konfigurasi CMS</li>
-                        <li>Blokir oleh kebijakan keamanan browser</li>
-                    </ul>
+                    <p id="error-details">Netlify CMS tidak dapat dimuat.</p>
                     <button class="btn btn-retry" id="retry-btn">Coba Muat Ulang CMS</button>
-                </div>
-                
-                <div class="tabs">
-                    <div class="tab active" data-tab="solution">Solusi</div>
-                    <div class="tab" data-tab="config">Konfigurasi</div>
-                    <div class="tab" data-tab="debug">Debug Info</div>
-                </div>
-                
-                <div class="tab-content active" id="solution-tab">
-                    <div class="solution-box">
-                        <h3>Langkah-langkah Perbaikan:</h3>
-                        <ol>
-                            <li>Refresh halaman ini (Ctrl+F5 untuk refresh lengkap)</li>
-                            <li>Pastikan Anda menggunakan browser modern (Chrome, Firefox, Edge)</li>
-                            <li>Coba buka di mode incognito/private browsing</li>
-                            <li>Nonaktifkan ekstensi browser yang mungkin memblokir script</li>
-                            <li>Hubungi administrator jika masalah berlanjut</li>
-                        </ol>
-                    </div>
-                </div>
-                
-                <div class="tab-content" id="config-tab">
-                    <div class="config-help">
-                        <h3>Konfigurasi yang Diperlukan:</h3>
-                        <p>Pastikan Anda telah mengaktifkan Git Gateway di Netlify:</p>
-                        <ol>
-                            <li>Buka <strong>Settings → Identity → Services → Git Gateway</strong></li>
-                            <li>Klik <strong>Enable Git Gateway</strong></li>
-                            <li>Pilih provider yang sesuai (biasanya GitHub)</li>
-                            <li>Autorisasi akses ke repository Anda</li>
-                        </ol>
-                        
-                        <p>Pastikan file config.yml Anda berisi:</p>
-                        <div class="config-code">
-backend:<br>
-&nbsp;&nbsp;name: git-gateway<br>
-&nbsp;&nbsp;branch: main<br><br>
-# ... konfigurasi lainnya
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="tab-content" id="debug-tab">
-                    <div class="debug-info">
-                        <p>Debug Info: Netlify Identity - <span id="identity-status">Loading...</span></p>
-                        <p>Netlify CMS - <span id="cms-status">Loading...</span></p>
-                        <p>Status Login: <span id="login-status">Tidak diketahui</span></p>
-                        <p>User: <span id="user-info">Tidak diketahui</span></p>
-                        <p>URL: <span id="current-url">Loading...</span></p>
-                    </div>
-                </div>
-            </div>
-            
-            <div id="success-section" class="hidden">
-                <div class="status-box status-success">
-                    <div class="status-title">✓ Berhasil Dimuat</div>
-                    <p>Netlify CMS berhasil dimuat. Anda dapat mulai mengelola konten.</p>
-                </div>
-                
-                <div class="cms-loading-info">
-                    <p>Jika CMS tidak muncul dalam beberapa detik, pastikan:</p>
-                    <ol>
-                        <li>Git Gateway sudah diaktifkan di Netlify</li>
-                        <li>Anda memiliki akses ke repository GitHub</li>
-                        <li>File config.yml sudah dikonfigurasi dengan benar</li>
-                    </ol>
                 </div>
             </div>
         </div>
@@ -434,16 +336,6 @@ backend:<br>
     <div id="cms-fullscreen">
         <!-- CMS akan dimuat di sini -->
     </div>
-    
-    <!-- Controls untuk CMS -->
-    <div class="cms-controls hidden" id="cms-controls">
-        <button class="btn btn-logout" id="cms-logout-btn">Logout</button>
-        <button class="btn" id="cms-toggle-btn">Toggle Admin Panel</button>
-    </div>
-    
-    <footer>
-        <p>© 2023 B13 Factory - Content Management System</p>
-    </footer>
 
     <script>
         // Elemen UI
@@ -458,317 +350,293 @@ backend:<br>
         const logoutBtn = document.getElementById('logout-btn');
         const errorSection = document.getElementById('error-section');
         const retryBtn = document.getElementById('retry-btn');
-        const successSection = document.getElementById('success-section');
-        const cmsFullscreen = document.getElementById('cms-fullscreen');
-        const cmsControls = document.getElementById('cms-controls');
-        const cmsLogoutBtn = document.getElementById('cms-logout-btn');
-        const cmsToggleBtn = document.getElementById('cms-toggle-btn');
-        const identityStatus = document.getElementById('identity-status');
-        const cmsStatus = document.getElementById('cms-status');
-        const loginStatus = document.getElementById('login-status');
-        const userInfo = document.getElementById('user-info');
-        const errorDetails = document.getElementById('error-details');
-        const currentUrl = document.getElementById('current-url');
-        const tabs = document.querySelectorAll('.tab');
-        const tabContents = document.querySelectorAll('.tab-content');
-        const cmsWarning = document.getElementById('cms-warning');
+        const debugOutput = document.getElementById('debug-output');
+        const tokenPreview = document.getElementById('token-preview');
+        
+        // Diagnostic elements
+        const diagIdentity = document.getElementById('diag-identity');
+        const diagToken = document.getElementById('diag-token');
+        const diagGateway = document.getElementById('diag-gateway');
+        const diagCms = document.getElementById('diag-cms');
+        
+        // Control buttons
         const forceLoadCmsBtn = document.getElementById('force-load-cms');
-        const directCmsLink = document.getElementById('direct-cms-link');
+        const loadAlternativeCmsBtn = document.getElementById('load-alternative-cms');
+        const openCmsDirectBtn = document.getElementById('open-cms-direct');
+        const testTokenBtn = document.getElementById('test-token');
+        const refreshTokenBtn = document.getElementById('refresh-token');
         
         // Status
         let identityLoaded = false;
         let cmsLoaded = false;
         let currentUser = null;
+        let currentToken = null;
         let cmsLoadAttempts = 0;
-        const maxCmsLoadAttempts = 5; // Meningkatkan jumlah percobaan
-        let cmsInitialized = false;
-        let cmsLoadTimeout = null;
+        const maxCmsLoadAttempts = 3;
         
-        // Tab functionality
-        tabs.forEach(tab => {
-            tab.addEventListener('click', () => {
-                const tabId = tab.getAttribute('data-tab');
-                
-                // Deactivate all tabs
-                tabs.forEach(t => t.classList.remove('active'));
-                tabContents.forEach(tc => tc.classList.remove('active'));
-                
-                // Activate current tab
-                tab.classList.add('active');
-                document.getElementById(`${tabId}-tab`).classList.add('active');
-            });
-        });
+        // Update debug information
+        function updateDebugInfo() {
+            const info = [
+                `Timestamp: ${new Date().toLocaleString()}`,
+                `Identity Loaded: ${identityLoaded}`,
+                `User: ${currentUser ? currentUser.email : 'None'}`,
+                `Token: ${currentToken ? 'Present' : 'None'}`,
+                `CMS Load Attempts: ${cmsLoadAttempts}`,
+                `User Agent: ${navigator.userAgent}`,
+                `URL: ${window.location.href}`
+            ];
+            
+            debugOutput.innerHTML = info.join('<br>');
+        }
         
-        // Periksa status Netlify Identity
-        function checkIdentity() {
-            if (window.netlifyIdentity) {
-                identityLoaded = true;
-                identityStatus.textContent = 'Loaded';
-                identityStatus.style.color = 'green';
-                console.log('Netlify Identity loaded successfully');
-                return true;
-            } else {
-                identityStatus.textContent = 'Failed to load';
-                identityStatus.style.color = 'red';
-                console.error('Netlify Identity failed to load');
+        // Test token validity
+        async function testTokenValidity() {
+            if (!currentToken) {
+                diagToken.textContent = 'No Token';
+                diagToken.className = 'diagnostic-status status-fail';
+                return false;
+            }
+            
+            try {
+                diagToken.textContent = 'Testing...';
+                
+                // Test token by trying to access a generic API endpoint
+                const response = await fetch('/.netlify/identity/user', {
+                    headers: {
+                        'Authorization': `Bearer ${currentToken}`
+                    }
+                });
+                
+                if (response.ok) {
+                    diagToken.textContent = 'Valid';
+                    diagToken.className = 'diagnostic-status status-ok';
+                    return true;
+                } else {
+                    diagToken.textContent = 'Invalid';
+                    diagToken.className = 'diagnostic-status status-fail';
+                    return false;
+                }
+            } catch (error) {
+                diagToken.textContent = 'Error Testing';
+                diagToken.className = 'diagnostic-status status-fail';
                 return false;
             }
         }
         
-        // Load Netlify CMS dengan metode yang lebih robust
-        function loadNetlifyCMS() {
+        // Test Git Gateway connection
+        async function testGitGateway() {
+            try {
+                diagGateway.textContent = 'Testing...';
+                
+                // This is a simple test to see if we can reach the Git Gateway
+                const response = await fetch('/.netlify/git/github/repos', {
+                    method: 'HEAD'
+                });
+                
+                // We don't care about the response status, just that we get a response
+                diagGateway.textContent = 'Connected';
+                diagGateway.className = 'diagnostic-status status-ok';
+                return true;
+            } catch (error) {
+                diagGateway.textContent = 'Disconnected';
+                diagGateway.className = 'diagnostic-status status-fail';
+                return false;
+            }
+        }
+        
+        // Load Netlify CMS
+        function loadNetlifyCMS(alternative = false) {
             if (cmsLoadAttempts >= maxCmsLoadAttempts) {
-                cmsStatus.textContent = 'Gagal setelah beberapa percobaan';
-                cmsStatus.style.color = 'red';
-                showError('Netlify CMS gagal dimuat setelah beberapa percobaan. Silakan refresh halaman.');
+                diagCms.textContent = 'Failed after retries';
+                diagCms.className = 'diagnostic-status status-fail';
                 return;
             }
             
             cmsLoadAttempts++;
-            console.log(`Loading Netlify CMS (attempt ${cmsLoadAttempts})`);
-            cmsStatus.textContent = `Loading (attempt ${cmsLoadAttempts})`;
-            cmsStatus.style.color = 'orange';
+            diagCms.textContent = `Loading (attempt ${cmsLoadAttempts})`;
+            diagCms.className = 'diagnostic-status status-warning';
             
-            // Hapus script CMS lama jika ada
+            // Remove old script if exists
             const oldScript = document.getElementById('netlify-cms-script');
-            if (oldScript) {
-                oldScript.remove();
-            }
+            if (oldScript) oldScript.remove();
             
-            // Coba load CMS dengan metode yang berbeda
             const script = document.createElement('script');
             script.id = 'netlify-cms-script';
             
-            // Coba dari sumber yang berbeda berdasarkan percobaan
-            if (cmsLoadAttempts === 1) {
-                script.src = 'https://unpkg.com/netlify-cms@^2.0.0/dist/netlify-cms.js';
-            } else if (cmsLoadAttempts === 2) {
+            if (alternative) {
+                // Use alternative CDN
                 script.src = 'https://cdn.jsdelivr.net/npm/netlify-cms@2.10.192/dist/netlify-cms.js';
-            } else if (cmsLoadAttempts === 3) {
-                script.src = 'https://cdnjs.cloudflare.com/ajax/libs/netlify-cms/2.10.192/netlify-cms.js';
             } else {
-                // Alternatif lain
-                script.src = 'https://cdn.jsdelivr.net/npm/netlify-cms@latest/dist/netlify-cms.js';
+                // Use default CDN
+                script.src = 'https://unpkg.com/netlify-cms@^2.0.0/dist/netlify-cms.js';
             }
             
             script.onload = function() {
-                console.log('Netlify CMS script loaded');
-                cmsStatus.textContent = 'Loaded';
-                cmsStatus.style.color = 'green';
                 cmsLoaded = true;
-                
-                // Inisialisasi CMS setelah dimuat
+                diagCms.textContent = 'Loaded';
+                diagCms.className = 'diagnostic-status status-ok';
                 initializeCMS();
             };
             
             script.onerror = function() {
-                console.error('Netlify CMS script failed to load');
-                cmsStatus.textContent = `Failed to load (attempt ${cmsLoadAttempts})`;
-                cmsStatus.style.color = 'red';
+                diagCms.textContent = `Failed (attempt ${cmsLoadAttempts})`;
+                diagCms.className = 'diagnostic-status status-fail';
                 
                 if (cmsLoadAttempts < maxCmsLoadAttempts) {
-                    // Coba lagi dengan sumber berbeda
-                    setTimeout(loadNetlifyCMS, 1500);
-                } else {
-                    showError('Netlify CMS gagal dimuat dari semua sumber yang dicoba.');
+                    setTimeout(() => loadNetlifyCMS(true), 1000);
                 }
             };
             
             document.head.appendChild(script);
+            updateDebugInfo();
         }
         
-        // Inisialisasi CMS setelah script dimuat
+        // Initialize CMS
         function initializeCMS() {
-            // Clear timeout jika ada
-            if (cmsLoadTimeout) clearTimeout(cmsLoadTimeout);
-            
-            // Tunggu sebentar untuk memastikan CMS sepenuhnya terload
-            setTimeout(() => {
-                if (typeof CMS !== 'undefined') {
-                    try {
-                        // Pastikan elemen root ada sebelum menginisialisasi
-                        if (!document.getElementById('nc-root')) {
-                            const rootDiv = document.createElement('div');
-                            rootDiv.id = 'nc-root';
-                            cmsFullscreen.appendChild(rootDiv);
-                        }
-                        
-                        // Tampilkan CMS fullscreen
-                        cmsFullscreen.style.display = 'block';
-                        cmsControls.classList.remove('hidden');
-                        
-                        // Sembunyikan admin container
-                        adminContainer.style.opacity = '0.3';
-                        
-                        // Inisialisasi CMS
-                        CMS.init();
-                        console.log('Netlify CMS initialized successfully');
-                        cmsInitialized = true;
-                        
-                        // Sembunyikan peringatan CMS
-                        if (cmsWarning) cmsWarning.style.display = 'none';
-                        
-                        // Tampilkan status sukses
-                        showSuccess('CMS berhasil dimuat! Silakan gunakan panel di sudut kanan bawah untuk kontrol.');
-                        
-                    } catch (error) {
-                        console.error('Error initializing CMS:', error);
-                        showError('Error dalam menginisialisasi CMS: ' + error.message);
+            if (typeof CMS !== 'undefined') {
+                try {
+                    // Create CMS root element if not exists
+                    if (!document.getElementById('nc-root')) {
+                        const rootDiv = document.createElement('div');
+                        rootDiv.id = 'nc-root';
+                        document.getElementById('cms-fullscreen').appendChild(rootDiv);
                     }
-                } else {
-                    console.error('CMS is not defined after script load');
-                    showError('CMS tidak terdefinisi setelah script dimuat.');
                     
-                    // Coba load lagi
-                    if (cmsLoadAttempts < maxCmsLoadAttempts) {
-                        setTimeout(loadNetlifyCMS, 1000);
-                    }
+                    // Initialize CMS
+                    CMS.init();
+                    
+                    // Show CMS
+                    document.getElementById('cms-fullscreen').style.display = 'block';
+                    statusMessage.textContent = 'CMS berhasil dimuat!';
+                    
+                } catch (error) {
+                    console.error('CMS initialization error:', error);
+                    statusMessage.textContent = 'Error inisialisasi CMS: ' + error.message;
                 }
-            }, 1000);
+            } else {
+                console.error('CMS is not defined');
+                statusMessage.textContent = 'CMS tidak terdefinisi';
+            }
+            updateDebugInfo();
         }
         
-        // Tampilkan error
-        function showError(message) {
-            statusBox.classList.remove('status-success');
-            statusBox.classList.add('status-error');
-            statusMessage.innerHTML = message;
-            errorDetails.innerHTML = message;
-            loader.classList.add('hidden');
-            errorSection.classList.remove('hidden');
-            loginSection.classList.add('hidden');
-            userSection.classList.add('hidden');
-            successSection.classList.add('hidden');
-        }
-        
-        // Tampilkan success
-        function showSuccess(message) {
-            statusBox.classList.remove('status-error');
-            statusBox.classList.add('status-success');
-            statusMessage.innerHTML = message;
-            loader.classList.add('hidden');
-            errorSection.classList.add('hidden');
-            successSection.classList.remove('hidden');
-        }
-        
-        // Fungsi untuk menangani login
+        // Initialize Netlify Identity
         function initNetlifyIdentity() {
             if (window.netlifyIdentity) {
-                window.netlifyIdentity.on("init", (user) => {
+                identityLoaded = true;
+                diagIdentity.textContent = 'Loaded';
+                diagIdentity.className = 'diagnostic-status status-ok';
+                
+                netlifyIdentity.on('init', user => {
                     loader.classList.add('hidden');
                     currentUser = user;
                     
-                    // Update URL debug info
-                    currentUrl.textContent = window.location.href;
-                    directCmsLink.href = window.location.origin + '/#/';
-                    
                     if (user) {
-                        // Pengguna sudah login
-                        console.log('User logged in:', user);
-                        loginStatus.textContent = 'Logged in';
-                        loginStatus.style.color = 'green';
-                        userInfo.textContent = user.email;
-                        
-                        statusBox.classList.add('status-success');
-                        statusMessage.textContent = `Halo ${user.user_metadata.full_name || user.email}! Anda telah login.`;
+                        // User is logged in
                         userEmail.textContent = user.email;
                         userSection.classList.remove('hidden');
                         
-                        // Load CMS setelah login berhasil
+                        // Get current token
+                        currentToken = netlifyIdentity.currentUser().token.access_token;
+                        tokenPreview.textContent = currentToken ? 
+                            currentToken.substring(0, 20) + '...' : 'No token available';
+                        
+                        // Run diagnostics
+                        testTokenValidity();
+                        testGitGateway();
+                        
+                        // Load CMS
                         loadNetlifyCMS();
-                        
-                        // Set timeout untuk menampilkan warning jika CMS lama dimuat
-                        cmsLoadTimeout = setTimeout(() => {
-                            if (!cmsInitialized && cmsWarning) {
-                                cmsWarning.style.display = 'block';
-                            }
-                        }, 10000);
                     } else {
-                        // Pengguna belum login
-                        console.log('No user found');
-                        loginStatus.textContent = 'Not logged in';
-                        loginStatus.style.color = 'red';
-                        userInfo.textContent = 'Tidak ada user';
-                        
-                        statusBox.classList.remove('status-success');
-                        statusMessage.textContent = 'Silakan login untuk mengakses CMS.';
+                        // User is not logged in
                         loginSection.classList.remove('hidden');
                     }
+                    updateDebugInfo();
                 });
                 
-                // Setup tombol login
-                loginBtn.addEventListener('click', function() {
-                    window.netlifyIdentity.open('login');
-                });
-                
-                // Setup tombol logout
-                logoutBtn.addEventListener('click', function() {
-                    window.netlifyIdentity.logout();
-                });
-                
-                // Setup tombol logout CMS
-                cmsLogoutBtn.addEventListener('click', function() {
-                    window.netlifyIdentity.logout();
-                });
-                
-                // Setup tombol toggle admin panel
-                cmsToggleBtn.addEventListener('click', function() {
-                    if (adminContainer.style.opacity === '0.3') {
-                        adminContainer.style.opacity = '1';
-                        cmsFullscreen.style.zIndex = '10000';
-                    } else {
-                        adminContainer.style.opacity = '0.3';
-                        cmsFullscreen.style.zIndex = '10001';
-                    }
-                });
-                
-                // Setup tombol retry
-                retryBtn.addEventListener('click', function() {
-                    errorSection.classList.add('hidden');
-                    loader.classList.remove('hidden');
-                    statusMessage.textContent = 'Mencoba memuat ulang CMS...';
-                    cmsLoadAttempts = 0;
-                    loadNetlifyCMS();
-                });
-                
-                // Setup tombol force load CMS
-                forceLoadCmsBtn.addEventListener('click', function() {
-                    cmsLoadAttempts = 0;
-                    loadNetlifyCMS();
-                });
-                
-                // Redirect setelah login berhasil
-                window.netlifyIdentity.on("login", (user) => {
-                    console.log("Login successful", user);
+                netlifyIdentity.on('login', user => {
                     currentUser = user;
-                    document.location.href = "/admin/";
+                    currentToken = netlifyIdentity.currentUser().token.access_token;
+                    tokenPreview.textContent = currentToken ? 
+                        currentToken.substring(0, 20) + '...' : 'No token available';
+                    
+                    userEmail.textContent = user.email;
+                    loginSection.classList.add('hidden');
+                    userSection.classList.remove('hidden');
+                    
+                    testTokenValidity();
+                    testGitGateway();
+                    loadNetlifyCMS();
+                    updateDebugInfo();
                 });
                 
-                // Handle logout
-                window.netlifyIdentity.on("logout", () => {
-                    console.log("Logout successful");
-                    document.location.href = "/admin/";
+                netlifyIdentity.on('logout', () => {
+                    currentUser = null;
+                    currentToken = null;
+                    userSection.classList.add('hidden');
+                    loginSection.classList.remove('hidden');
+                    updateDebugInfo();
+                });
+                
+                netlifyIdentity.on('error', err => {
+                    console.error('Identity error:', err);
+                    statusMessage.textContent = 'Error: ' + err.message;
+                    updateDebugInfo();
                 });
                 
             } else {
-                showError('Netlify Identity widget gagal dimuat. Silakan refresh halaman.');
+                diagIdentity.textContent = 'Failed to load';
+                diagIdentity.className = 'diagnostic-status status-fail';
+                loader.classList.add('hidden');
+                loginSection.classList.remove('hidden');
             }
+            updateDebugInfo();
         }
         
-        // Jalankan inisialisasi setelah halaman dimuat
+        // Setup event listeners
+        loginBtn.addEventListener('click', () => netlifyIdentity.open('login'));
+        logoutBtn.addEventListener('click', () => netlifyIdentity.logout());
+        retryBtn.addEventListener('click', () => loadNetlifyCMS());
+        forceLoadCmsBtn.addEventListener('click', () => loadNetlifyCMS(true));
+        
+        loadAlternativeCmsBtn.addEventListener('click', () => {
+            // Load from alternative CDN
+            const script = document.createElement('script');
+            script.src = 'https://cdn.jsdelivr.net/npm/netlify-cms@latest/dist/netlify-cms.js';
+            document.head.appendChild(script);
+            
+            script.onload = () => {
+                initializeCMS();
+            };
+        });
+        
+        openCmsDirectBtn.addEventListener('click', () => {
+            window.open(window.location.origin + '/#/', '_blank');
+        });
+        
+        testTokenBtn.addEventListener('click', () => {
+            testTokenValidity();
+        });
+        
+        refreshTokenBtn.addEventListener('click', () => {
+            if (netlifyIdentity.currentUser()) {
+                netlifyIdentity.refresh().then(() => {
+                    currentToken = netlifyIdentity.currentUser().token.access_token;
+                    tokenPreview.textContent = currentToken ? 
+                        currentToken.substring(0, 20) + '...' : 'No token available';
+                    testTokenValidity();
+                });
+            }
+        });
+        
+        // Set direct CMS links
+        document.getElementById('direct-cms-link').href = window.location.origin + '/#/';
+        document.getElementById('direct-cms-link-2').href = window.location.origin + '/admin/index.html#/';
+        
+        // Initialize
         document.addEventListener('DOMContentLoaded', function() {
-            // Periksa status Identity
-            checkIdentity();
-            
-            // Inisialisasi Identity
             initNetlifyIdentity();
-            
-            // Fallback: tampilkan login section setelah 5 detik
-            setTimeout(function() {
-                if (loader && !statusMessage.textContent.includes('login')) {
-                    loader.classList.add('hidden');
-                    loginSection.classList.remove('hidden');
-                }
-            }, 5000);
+            updateDebugInfo();
         });
     </script>
 </body>
