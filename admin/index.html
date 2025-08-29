@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>B13 Factory CMS - Admin Panel</title>
+    <title>B13 Factory CMS - Admin Panel (Fixed)</title>
     
     <!-- Favicon inline -->
     <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🏭</text></svg>">
@@ -238,6 +238,25 @@
             margin-bottom: 10px;
             color: #3498db;
         }
+        
+        .config-help {
+            margin-top: 20px;
+            padding: 15px;
+            background: #e8f6f3;
+            border-radius: 8px;
+            border-left: 4px solid #1abc9c;
+        }
+        
+        .config-code {
+            background: #2c3e50;
+            color: white;
+            padding: 15px;
+            border-radius: 5px;
+            font-family: monospace;
+            font-size: 13px;
+            overflow-x: auto;
+            margin: 10px 0;
+        }
     </style>
 </head>
 <body>
@@ -245,7 +264,7 @@
         <header>
             <div class="favicon-placeholder">🏭</div>
             <h1>B13 Factory CMS</h1>
-            <p class="subtitle">Panel Admin untuk Mengelola Konten Website</p>
+            <p class="subtitle">Panel Admin - Versi Diperbaiki</p>
         </header>
         
         <div class="content">
@@ -309,10 +328,37 @@
                         <button class="btn" id="load-alternative-cms">Gunakan CMS Alternatif</button>
                         <button class="btn" id="open-cms-direct">Buka CMS Langsung</button>
                     </div>
-                    
-                    <div style="margin-top: 15px;">
-                        <p><strong>Alternatif 1:</strong> <a href="#" id="direct-cms-link">/#/</a></p>
-                        <p><strong>Alternatif 2:</strong> <a href="#" id="direct-cms-link-2">/admin/index.html#/</a></p>
+                </div>
+                
+                <div class="config-help">
+                    <h3>Konfigurasi yang Diperlukan:</h3>
+                    <p>Pastikan file config.yml Anda berisi:</p>
+                    <div class="config-code">
+# File: config.yml
+backend:
+  name: git-gateway
+  branch: main
+  commit_messages:
+    create: "Create {{collection}} “{{slug}}”"
+    update: "Update {{collection}} “{{slug}}”"
+    delete: "Delete {{collection}} “{{slug}}”"
+    uploadMedia: "Upload “{{path}}”"
+    deleteMedia: "Delete “{{path}}”"
+
+publish_mode: editorial_workflow
+media_folder: "assets/uploads"
+public_folder: "/assets/uploads"
+
+collections:
+  - name: "pages"
+    label: "Pages"
+    files:
+      - file: "content/home.json"
+        label: "Home Page"
+        name: "home"
+        fields:
+          - {label: "Judul Website", name: "title", widget: "string"}
+          - {label: "Deskripsi", name: "description", widget: "text"}
                     </div>
                 </div>
                 
@@ -628,10 +674,6 @@
                 });
             }
         });
-        
-        // Set direct CMS links
-        document.getElementById('direct-cms-link').href = window.location.origin + '/#/';
-        document.getElementById('direct-cms-link-2').href = window.location.origin + '/admin/index.html#/';
         
         // Initialize
         document.addEventListener('DOMContentLoaded', function() {
