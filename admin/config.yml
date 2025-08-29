@@ -1,75 +1,14 @@
 backend:
   name: git-gateway
-  branch: main   # kalau repo default master, ganti ke "master"
+  branch: main
 
-media_folder: "assets/uploads"   # tempat penyimpanan file di repo
-public_folder: "/assets/uploads" # URL publik untuk file upload
+media_folder: "assets/uploads"
+public_folder: "/assets/uploads"
 
 collections:
   - name: "home"
     label: "Home"
     file: "content/home.json"
-    format: "json"
     fields:
       - { label: "Judul Website", name: "title", widget: "string" }
       - { label: "Deskripsi", name: "description", widget: "text" }
-
-  - name: "about"
-    label: "About"
-    file: "content/about.json"
-    format: "json"
-    fields:
-      - { label: "Judul", name: "title", widget: "string" }
-      - { label: "Deskripsi", name: "description", widget: "markdown" }
-      - { label: "Foto", name: "image", widget: "image" }
-      - { label: "Alamat", name: "address", widget: "string" }
-      - { label: "Telepon", name: "phone", widget: "string" }
-      - { label: "Email", name: "email", widget: "string" }
-
-  - name: "products"
-    label: "Products"
-    file: "content/products/index.json"
-    format: "json"
-    fields:
-      - label: "Daftar Produk"
-        name: "products"
-        widget: "list"
-        fields:
-          - { label: "Nama Produk", name: "title", widget: "string" }
-          - { label: "Deskripsi", name: "description", widget: "text" }
-          - { label: "Gambar", name: "image", widget: "image" }
-          - { label: "Badge", name: "badge", widget: "string", required: false }
-          - { label: "Kategori", name: "category", widget: "string" }
-
-  - name: "articles"
-    label: "Articles"
-    file: "content/articles/index.json"
-    format: "json"
-    fields:
-      - label: "Artikel"
-        name: "articles"
-        widget: "list"
-        fields:
-          - { label: "Judul", name: "title", widget: "string" }
-          - { label: "Tanggal", name: "date", widget: "datetime", format: "YYYY-MM-DD" }
-          - { label: "Penulis", name: "author", widget: "string" }
-          - { label: "Kategori", name: "category", widget: "string" }
-          - { label: "Gambar", name: "image", widget: "image" }
-          - { label: "Excerpt", name: "excerpt", widget: "text" }
-          - { label: "URL", name: "url", widget: "string" }
-
-  - name: "downloads"
-    label: "Downloads"
-    file: "content/downloads/index.json"
-    format: "json"
-    fields:
-      - label: "Daftar File"
-        name: "downloads"
-        widget: "list"
-        fields:
-          - { label: "Judul", name: "title", widget: "string" }
-          - { label: "Deskripsi", name: "description", widget: "text" }
-          - { label: "File", name: "file", widget: "file" }
-          - { label: "Ukuran", name: "size", widget: "string" }
-          - { label: "Tanggal", name: "date", widget: "datetime", format: "YYYY-MM-DD" }
-          - { label: "Kategori", name: "category", widget: "string" }
