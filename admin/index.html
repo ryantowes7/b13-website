@@ -5,14 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>B13 Factory CMS - Admin Panel</title>
     
-    <!-- Favicon untuk mencegah error 404 -->
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🏭</text></svg>">
-    
     <!-- Netlify Identity -->
     <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
     
     <style>
-        /* Reset CSS untuk menghindari konflik dengan CMS */
         * {
             box-sizing: border-box;
             margin: 0;
@@ -39,7 +35,6 @@
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
             overflow: hidden;
             margin-bottom: 20px;
-            transition: opacity 0.3s ease;
         }
         
         header {
@@ -367,6 +362,14 @@
                             <li>Pilih provider yang sesuai (biasanya GitHub)</li>
                             <li>Autorisasi akses ke repository Anda</li>
                         </ol>
+                        
+                        <p>Pastikan file config.yml Anda berisi:</p>
+                        <div class="config-code">
+backend:<br>
+&nbsp;&nbsp;name: git-gateway<br>
+&nbsp;&nbsp;branch: main<br><br>
+# ... konfigurasi lainnya
+                        </div>
                     </div>
                 </div>
                 
