@@ -12,3 +12,23 @@ collections:
     fields:
       - { label: "Judul Website", name: "title", widget: "string" }
       - { label: "Deskripsi", name: "description", widget: "text" }
+
+  - name: "about"
+    label: "About"
+    file: "content/about.json"
+    fields:
+      - { label: "Judul", name: "title", widget: "string" }
+      - { label: "Deskripsi", name: "description", widget: "markdown" }
+      - { label: "Foto", name: "image", widget: "image" }
+
+  - name: "articles"
+    label: "Articles"
+    file: "content/articles/index.json"
+    fields:
+      - label: "Artikel"
+        name: "articles"
+        widget: "list"
+        fields:
+          - { label: "Judul", name: "title", widget: "string" }
+          - { label: "Tanggal", name: "date", widget: "datetime" }
+          - { label: "Penulis", name: "author", widget: "string" }
