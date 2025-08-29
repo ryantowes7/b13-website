@@ -12,31 +12,34 @@
     <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
     
     <style>
+        /* Reset CSS untuk menghindari konflik dengan CMS */
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
         
         body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
             background: linear-gradient(135deg, #1a2a6c, #b21f1f, #fdbb2d);
             color: #333;
             min-height: 100vh;
             display: flex;
             flex-direction: column;
             align-items: center;
+            justify-content: center;
             padding: 20px;
         }
         
-        .container {
+        .admin-container {
             width: 100%;
             max-width: 900px;
             background: white;
             border-radius: 12px;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
             overflow: hidden;
-            margin-top: 40px;
+            margin-bottom: 20px;
+            transition: opacity 0.3s ease;
         }
         
         header {
@@ -176,16 +179,20 @@
         
         footer {
             text-align: center;
-            margin-top: 30px;
             color: white;
             font-size: 14px;
+            padding: 10px;
         }
         
-        #nc-root {
+        #cms-fullscreen {
+            position: fixed;
+            top: 0;
+            left: 0;
             width: 100%;
-            min-height: 400px;
-            position: relative;
-            z-index: 1000;
+            height: 100%;
+            z-index: 10000;
+            background: white;
+            display: none;
         }
         
         .hidden {
@@ -270,12 +277,6 @@
             display: block;
         }
         
-        .success-checkmark {
-            color: #2ecc71;
-            font-size: 24px;
-            margin-right: 10px;
-        }
-        
         .cms-loading-info {
             margin-top: 20px;
             padding: 15px;
@@ -283,20 +284,20 @@
             border-radius: 8px;
         }
         
-        /* CSS untuk memastikan CMS tampil dengan benar */
-        .nc-root {
-            position: relative;
-            z-index: 1000;
-        }
-        
-        /* Reset untuk elemen CMS */
-        #nc-root > div {
-            position: static !important;
+        .cms-controls {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 10001;
+            background: white;
+            padding: 10px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
         }
     </style>
 </head>
 <body>
-    <div class="container">
+    <div class="admin-container" id="admin-container">
         <header>
             <div class="favicon-placeholder">🏭</div>
             <h1>B13 Factory CMS</h1>
@@ -366,17 +367,6 @@
                             <li>Pilih provider yang sesuai (biasanya GitHub)</li>
                             <li>Autorisasi akses ke repository Anda</li>
                         </ol>
-                        
-                        <p>Pastikan file <code>config.yml</code> Anda berisi:</p>
-                        <div class="config-code">
-backend:<br>
-&nbsp;&nbsp;name: git-gateway<br>
-&nbsp;&nbsp;branch: main<br>
-<br>
-publish_mode: editorial_workflow<br>
-media_folder: "assets/uploads"<br>
-public_folder: "/assets/uploads"
-                        </div>
                     </div>
                 </div>
                 
@@ -408,8 +398,16 @@ public_folder: "/assets/uploads"
         </div>
     </div>
     
-    <!-- Container untuk Netlify CMS - DIPINDAHKAN ke akhir body -->
-    <div id="nc-root" class="hidden"></div>
+    <!-- Container untuk Netlify CMS - Fullscreen -->
+    <div id="cms-fullscreen">
+        <!-- CMS akan dimuat di sini -->
+    </div>
+    
+    <!-- Controls untuk CMS -->
+    <div class="cms-controls hidden" id="cms-controls">
+        <button class="btn btn-logout" id="cms-logout-btn">Logout</button>
+        <button class="btn" id="cms-toggle-btn">Toggle Admin Panel</button>
+    </div>
     
     <footer>
         <p>© 2023 B13 Factory - Content Management System</p>
@@ -417,6 +415,7 @@ public_folder: "/assets/uploads"
 
     <script>
         // Elemen UI
+        const adminContainer = document.getElementById('admin-container');
         const statusBox = document.getElementById('status-box');
         const statusMessage = document.getElementById('status-message');
         const loader = document.getElementById('loader');
@@ -428,7 +427,10 @@ public_folder: "/assets/uploads"
         const errorSection = document.getElementById('error-section');
         const retryBtn = document.getElementById('retry-btn');
         const successSection = document.getElementById('success-section');
-        const cmsRoot = document.getElementById('nc-root');
+        const cmsFullscreen = document.getElementById('cms-fullscreen');
+        const cmsControls = document.getElementById('cms-controls');
+        const cmsLogoutBtn = document.getElementById('cms-logout-btn');
+        const cmsToggleBtn = document.getElementById('cms-toggle-btn');
         const identityStatus = document.getElementById('identity-status');
         const cmsStatus = document.getElementById('cms-status');
         const loginStatus = document.getElementById('login-status');
@@ -442,7 +444,8 @@ public_folder: "/assets/uploads"
         let cmsLoaded = false;
         let currentUser = null;
         let cmsLoadAttempts = 0;
-        const maxCmsLoadAttempts = 2;
+        const maxCmsLoadAttempts = 3;
+        let cmsInitialized = false;
         
         // Tab functionality
         tabs.forEach(tab => {
@@ -489,6 +492,12 @@ public_folder: "/assets/uploads"
             cmsStatus.textContent = `Loading (attempt ${cmsLoadAttempts})`;
             cmsStatus.style.color = 'orange';
             
+            // Hapus script CMS lama jika ada
+            const oldScript = document.getElementById('netlify-cms-script');
+            if (oldScript) {
+                oldScript.remove();
+            }
+            
             // Coba load CMS dengan metode yang berbeda
             const script = document.createElement('script');
             script.id = 'netlify-cms-script';
@@ -496,8 +505,10 @@ public_folder: "/assets/uploads"
             // Coba dari sumber yang berbeda berdasarkan percobaan
             if (cmsLoadAttempts === 1) {
                 script.src = 'https://unpkg.com/netlify-cms@^2.0.0/dist/netlify-cms.js';
-            } else {
+            } else if (cmsLoadAttempts === 2) {
                 script.src = 'https://cdn.jsdelivr.net/npm/netlify-cms@2.10.192/dist/netlify-cms.js';
+            } else {
+                script.src = 'https://cdnjs.cloudflare.com/ajax/libs/netlify-cms/2.10.192/netlify-cms.js';
             }
             
             script.onload = function() {
@@ -536,36 +547,33 @@ public_folder: "/assets/uploads"
                         if (!document.getElementById('nc-root')) {
                             const rootDiv = document.createElement('div');
                             rootDiv.id = 'nc-root';
-                            document.body.appendChild(rootDiv);
+                            cmsFullscreen.appendChild(rootDiv);
                         }
                         
-                        // Sembunyikan container utama untuk memberi ruang pada CMS
-                        document.querySelector('.container').classList.add('hidden');
-                        document.querySelector('footer').classList.add('hidden');
+                        // Tampilkan CMS fullscreen
+                        cmsFullscreen.style.display = 'block';
+                        cmsControls.classList.remove('hidden');
                         
-                        // Tampilkan CMS root
-                        cmsRoot.classList.remove('hidden');
+                        // Sembunyikan admin container
+                        adminContainer.style.opacity = '0.3';
                         
                         // Inisialisasi CMS
                         CMS.init();
                         console.log('Netlify CMS initialized successfully');
+                        cmsInitialized = true;
                         
                         // Tampilkan status sukses
-                        showSuccess('CMS berhasil dimuat!');
+                        showSuccess('CMS berhasil dimuat! Silakan gunakan panel di sudut kanan bawah untuk kontrol.');
                         
                     } catch (error) {
                         console.error('Error initializing CMS:', error);
                         showError('Error dalam menginisialisasi CMS: ' + error.message);
-                        
-                        // Tampilkan kembali container utama jika error
-                        document.querySelector('.container').classList.remove('hidden');
-                        document.querySelector('footer').classList.remove('hidden');
                     }
                 } else {
                     console.error('CMS is not defined after script load');
                     showError('CMS tidak terdefinisi setelah script dimuat.');
                 }
-            }, 500);
+            }, 1000);
         }
         
         // Tampilkan error
@@ -635,19 +643,28 @@ public_folder: "/assets/uploads"
                     window.netlifyIdentity.logout();
                 });
                 
+                // Setup tombol logout CMS
+                cmsLogoutBtn.addEventListener('click', function() {
+                    window.netlifyIdentity.logout();
+                });
+                
+                // Setup tombol toggle admin panel
+                cmsToggleBtn.addEventListener('click', function() {
+                    if (adminContainer.style.opacity === '0.3') {
+                        adminContainer.style.opacity = '1';
+                        cmsFullscreen.style.zIndex = '10000';
+                    } else {
+                        adminContainer.style.opacity = '0.3';
+                        cmsFullscreen.style.zIndex = '10001';
+                    }
+                });
+                
                 // Setup tombol retry
                 retryBtn.addEventListener('click', function() {
                     errorSection.classList.add('hidden');
                     loader.classList.remove('hidden');
                     statusMessage.textContent = 'Mencoba memuat ulang CMS...';
                     cmsLoadAttempts = 0;
-                    
-                    // Hapus script CMS lama jika ada
-                    const oldScript = document.getElementById('netlify-cms-script');
-                    if (oldScript) {
-                        oldScript.remove();
-                    }
-                    
                     loadNetlifyCMS();
                 });
                 
