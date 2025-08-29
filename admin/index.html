@@ -5,6 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>B13 Factory CMS - Admin Panel</title>
     
+    <!-- Favicon untuk mencegah error 404 -->
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🏭</text></svg>">
+    <link rel="shortcut icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🏭</text></svg>">
+    
     <!-- Netlify Identity -->
     <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
     
@@ -41,6 +45,15 @@
             color: white;
             padding: 25px;
             text-align: center;
+            position: relative;
+        }
+        
+        .favicon-placeholder {
+            position: absolute;
+            left: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 24px;
         }
         
         h1 {
@@ -261,11 +274,19 @@
             font-size: 24px;
             margin-right: 10px;
         }
+        
+        .cms-loading-info {
+            margin-top: 20px;
+            padding: 15px;
+            background: #e8f4fc;
+            border-radius: 8px;
+        }
     </style>
 </head>
 <body>
     <div class="container">
         <header>
+            <div class="favicon-placeholder">🏭</div>
             <h1>B13 Factory CMS</h1>
             <p class="subtitle">Panel Admin untuk Mengelola Konten Website</p>
         </header>
@@ -362,6 +383,15 @@ public_folder: "/assets/uploads"
                     <div class="status-title">✓ Berhasil Dimuat</div>
                     <p>Netlify CMS berhasil dimuat. Anda dapat mulai mengelola konten.</p>
                 </div>
+                
+                <div class="cms-loading-info">
+                    <p>Jika CMS tidak muncul dalam beberapa detik, pastikan:</p>
+                    <ol>
+                        <li>Git Gateway sudah diaktifkan di Netlify</li>
+                        <li>Anda memiliki akses ke repository GitHub</li>
+                        <li>File config.yml sudah dikonfigurasi dengan benar</li>
+                    </ol>
+                </div>
             </div>
         </div>
     </div>
@@ -444,6 +474,8 @@ public_folder: "/assets/uploads"
             
             cmsLoadAttempts++;
             console.log(`Loading Netlify CMS (attempt ${cmsLoadAttempts})`);
+            cmsStatus.textContent = `Loading (attempt ${cmsLoadAttempts})`;
+            cmsStatus.style.color = 'orange';
             
             // Coba load CMS dengan metode yang berbeda
             const script = document.createElement('script');
@@ -483,31 +515,35 @@ public_folder: "/assets/uploads"
         
         // Inisialisasi CMS setelah script dimuat
         function initializeCMS() {
-            if (typeof CMS !== 'undefined') {
-                try {
-                    // Pastikan elemen root ada sebelum menginisialisasi
-                    if (!document.getElementById('nc-root')) {
-                        const rootDiv = document.createElement('div');
-                        rootDiv.id = 'nc-root';
-                        document.body.appendChild(rootDiv);
+            // Tunggu sebentar untuk memastikan CMS sepenuhnya terload
+            setTimeout(() => {
+                if (typeof CMS !== 'undefined') {
+                    try {
+                        // Pastikan elemen root ada sebelum menginisialisasi
+                        if (!document.getElementById('nc-root')) {
+                            const rootDiv = document.createElement('div');
+                            rootDiv.id = 'nc-root';
+                            document.body.appendChild(rootDiv);
+                        }
+                        
+                        // Inisialisasi CMS
+                        CMS.init();
+                        console.log('Netlify CMS initialized successfully');
+                        
+                        // Tampilkan CMS
+                        cmsRoot.classList.remove('hidden');
+                        successSection.classList.remove('hidden');
+                        statusMessage.textContent = 'CMS berhasil dimuat!';
+                        
+                    } catch (error) {
+                        console.error('Error initializing CMS:', error);
+                        showError('Error dalam menginisialisasi CMS: ' + error.message);
                     }
-                    
-                    // Inisialisasi CMS
-                    CMS.init();
-                    console.log('Netlify CMS initialized successfully');
-                    
-                    // Tampilkan CMS
-                    cmsRoot.classList.remove('hidden');
-                    successSection.classList.remove('hidden');
-                    
-                } catch (error) {
-                    console.error('Error initializing CMS:', error);
-                    showError('Error dalam menginisialisasi CMS: ' + error.message);
+                } else {
+                    console.error('CMS is not defined after script load');
+                    showError('CMS tidak terdefinisi setelah script dimuat.');
                 }
-            } else {
-                console.error('CMS is not defined after script load');
-                showError('CMS tidak terdefinisi setelah script dimuat.');
-            }
+            }, 500);
         }
         
         // Tampilkan error
@@ -520,6 +556,7 @@ public_folder: "/assets/uploads"
             errorSection.classList.remove('hidden');
             loginSection.classList.add('hidden');
             userSection.classList.add('hidden');
+            successSection.classList.add('hidden');
         }
         
         // Tampilkan success
