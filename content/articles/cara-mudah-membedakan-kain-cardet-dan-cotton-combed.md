@@ -2,7 +2,7 @@
 title: Cara Mudah Membedakan Kain Cardet dan Cotton Combed
 date: 2025-08-28T15:04:41.634Z
 author: B13 Factory
-category: Garment
+category: Bahan Material
 image: /assets/uploads/combed.jpg
 excerpt: >
   Cara Mudah Membedakan Kain Kardet dan Cotton Combed
