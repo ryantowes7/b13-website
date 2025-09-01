@@ -20,78 +20,100 @@ collections:
         label: "Home Page"
         name: "home"
         fields:
-          - { label: "Judul Website", name: "title", widget: "string" }
-          - { label: "Deskripsi", name: "description", widget: "text" }
+          - {label: "Judul Website", name: "title", widget: "string"}
+          - {label: "Deskripsi", name: "description", widget: "text"}
+          - 
+            label: "Hero Slider"
+            name: "hero"
+            widget: "list"
+            fields:
+              - {label: "Judul", name: "title", widget: "string"}
+              - {label: "Subjudul", name: "subtitle", widget: "string"}
+              - {label: "Gambar", name: "image", widget: "image"}
+          - 
+            label: "Info Rotator"
+            name: "info"
+            widget: "list"
+            field: {label: "Info", name: "text", widget: "string"}
+          - 
+            label: "Layanan"
+            name: "services"
+            widget: "list"
+            fields:
+              - {label: "Icon", name: "icon", widget: "string"}
+              - {label: "Judul", name: "title", widget: "string"}
+              - {label: "Deskripsi", name: "description", widget: "text"}
+          - 
+            label: "Target Pasar"
+            name: "market"
+            widget: "list"
+            fields:
+              - {label: "Icon", name: "icon", widget: "string"}
+              - {label: "Judul", name: "title", widget: "string"}
+          - 
+            label: "Spesifikasi"
+            name: "specs"
+            widget: "list"
+            fields:
+              - {label: "Judul", name: "title", widget: "string"}
+              - {label: "Deskripsi", name: "description", widget: "text"}
+          - 
+            label: "Media Sosial"
+            name: "social"
+            widget: "list"
+            fields:
+              - {label: "Icon", name: "icon", widget: "string"}
+              - {label: "URL", name: "url", widget: "string"}
 
-  # ========= ABOUT =========
-  - name: "about"
-    label: "About"
-    files:
       - file: "content/about.json"
         label: "About Page"
         name: "about"
         fields:
-          - { label: "Judul", name: "title", widget: "string" }
-          - { label: "Deskripsi", name: "description", widget: "markdown" }
-          - { label: "Foto", name: "image", widget: "image" }
-          - { label: "Alamat", name: "address", widget: "string" }
-          - { label: "Telepon", name: "phone", widget: "string" }
-          - { label: "Email", name: "email", widget: "string" }
+          - {label: "Judul", name: "title", widget: "string"}
+          - {label: "Deskripsi", name: "description", widget: "markdown"}
+          - {label: "Gambar", name: "image", widget: "image"}
+          - {label: "Alamat", name: "address", widget: "string"}
+          - {label: "Telepon", name: "phone", widget: "string"}
+          - {label: "Email", name: "email", widget: "string"}
 
-  # ========= PRODUCTS =========
   - name: "products"
-    label: "Products"
-    files:
-      - file: "content/product/index.json"
-        label: "Products"
-        name: "products"
-        format: "json"
-        fields:
-          - label: "Daftar Produk"
-            name: "products"
-            widget: "list"
-            fields:
-              - { label: "Nama Produk", name: "title", widget: "string" }
-              - { label: "Deskripsi", name: "description", widget: "text" }
-              - { label: "Gambar", name: "image", widget: "image" }
-              - { label: "Badge", name: "badge", widget: "string", required: false }
-              - { label: "Kategori", name: "category", widget: "string" }
+    label: "Produk"
+    folder: "content/product"
+    create: true
+    slug: "{{slug}}"
+    summary: "{{title}} - {{category}}"
+    fields:
+      - {label: "Judul", name: "title", widget: "string"}
+      - {label: "Deskripsi", name: "description", widget: "text"}
+      - {label: "Gambar", name: "image", widget: "image"}
+      - {label: "Badge", name: "badge", widget: "string", required: false}
+      - {label: "Kategori", name: "category", widget: "string"}
 
   - name: "articles"
-    label: "Articles"
-    files:
-      - file: "content/articles/index.json"
-        label: "Articles"
-        name: "articles"
-        format: "json"
-        fields:
-          - label: "Artikel"
-            name: "articles"
-            widget: "list"
-            fields:
-              - { label: "Judul", name: "title", widget: "string" }
-              - { label: "Tanggal", name: "date", widget: "datetime", format: "YYYY-MM-DD" }
-              - { label: "Penulis", name: "author", widget: "string" }
-              - { label: "Kategori", name: "category", widget: "string" }
-              - { label: "Gambar", name: "image", widget: "image" }
-              - { label: "Excerpt", name: "excerpt", widget: "text" }
-              - { label: "URL", name: "url", widget: "string" }
+    label: "Artikel"
+    folder: "content/articles"
+    create: true
+    slug: "{{slug}}"
+    summary: "{{title}} - {{category}}"
+    fields:
+      - {label: "Judul", name: "title", widget: "string"}
+      - {label: "Tanggal", name: "date", widget: "datetime"}
+      - {label: "Penulis", name: "author", widget: "string"}
+      - {label: "Kategori", name: "category", widget: "string"}
+      - {label: "Gambar", name: "image", widget: "image"}
+      - {label: "Kutipan", name: "excerpt", widget: "text"}
+      - {label: "URL", name: "url", widget: "string"}
 
   - name: "downloads"
-    label: "Downloads"
-    files:
-      - file: "content/downloads/index.json"
-        label: "Downloads"
-        name: "downloads"
-        format: "json"
-        fields:
-          - label: "Daftar File"
-            name: "downloads"
-            widget: "list"
-            fields:
-              - { label: "Judul", name: "title", widget: "string" }
-              - { label: "Deskripsi", name: "description", widget: "text" }
-              - { label: "File", name: "file", widget: "file" }
-              - { label: "Ukuran", name: "size", widget: "string" }
-              - { label: "Tanggal", name: "date", widget: "datetime", format: "YYYY-MM-DD" }
-              - { label: "Kategori", name: "category", widget: "string" }
+    label: "Download"
+    folder: "content/downloads"
+    create: true
+    slug: "{{slug}}"
+    summary: "{{title}} - {{category}}"
+    fields:
+      - {label: "Judul", name: "title", widget: "string"}
+      - {label: "Deskripsi", name: "description", widget: "text"}
+      - {label: "File", name: "file", widget: "file"}
+      - {label: "Ukuran", name: "size", widget: "string"}
+      - {label: "Tanggal", name: "date", widget: "datetime"}
+      - {label: "Kategori", name: "category", widget: "string"}

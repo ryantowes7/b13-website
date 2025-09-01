@@ -387,29 +387,6 @@
         .card, .content-section {
             animation: fadeIn 0.5s ease-out;
         }
-        
-        /* CMS Status Message */
-        .cms-status {
-            padding: 15px;
-            border-radius: 5px;
-            margin: 10px 0;
-            text-align: center;
-        }
-        
-        .cms-status.loading {
-            background: #e3f2fd;
-            color: #1565c0;
-        }
-        
-        .cms-status.error {
-            background: #ffebee;
-            color: #c62828;
-        }
-        
-        .cms-status.success {
-            background: #e8f5e9;
-            color: #2e7d32;
-        }
     </style>
 </head>
 <body>
@@ -428,12 +405,12 @@
                 <li><a href="#"><i class="fas fa-newspaper"></i> Artikel</a></li>
                 <li><a href="#"><i class="fas fa-download"></i> Download</a></li>
                 <li><a href="#"><i class="fas fa-cog"></i> Pengaturan</a></li>
-                <li><a href="#" id="logout-btn"><i class="fas fa-sign-out-alt"></i> Keluar</a></li>
+                <li><a href="#"><i class="fas fa-sign-out-alt"></i> Keluar</a></li>
             </ul>
             
             <div style="padding: 20px; margin-top: 20px; border-top: 1px solid rgba(255,255,255,0.1);">
                 <p style="font-size: 12px; color: #ccc; text-align: center;">
-                    <i class="fas fa-info-circle"></i> CMS Version 1.1<br>
+                    <i class="fas fa-info-circle"></i> CMS Version 1.0<br>
                     B13 Factory &copy; 2023
                 </p>
             </div>
@@ -446,7 +423,7 @@
                 <div class="user-info">
                     <img src="https://ui-avatars.com/api/?name=Admin+B13&background=ff6b35&color=fff" alt="User">
                     <div>
-                        <div id="user-name">Admin B13</div>
+                        <div>Admin B13</div>
                         <small>Administrator</small>
                     </div>
                 </div>
@@ -518,10 +495,10 @@
                 </div>
                 
                 <div style="display: flex; gap: 15px; flex-wrap: wrap;">
-                    <button class="btn" onclick="CMS.registerPostType('products')"><i class="fas fa-plus"></i> Tambah Produk</button>
-                    <button class="btn" onclick="CMS.registerPostType('articles')"><i class="fas fa-plus"></i> Tambah Artikel</button>
-                    <button class="btn" onclick="CMS.registerPostType('downloads')"><i class="fas fa-plus"></i> Tambah File</button>
-                    <button class="btn" onclick="CMS.registerPostType('pages')"><i class="fas fa-edit"></i> Edit Halaman</button>
+                    <button class="btn"><i class="fas fa-plus"></i> Tambah Produk</button>
+                    <button class="btn"><i class="fas fa-plus"></i> Tambah Artikel</button>
+                    <button class="btn"><i class="fas fa-plus"></i> Tambah File</button>
+                    <button class="btn"><i class="fas fa-edit"></i> Edit Halaman</button>
                     <button class="btn btn-secondary"><i class="fas fa-cog"></i> Pengaturan</button>
                 </div>
             </div>
@@ -577,11 +554,6 @@
                     <small>Gunakan editor di bawah untuk mengelola konten website</small>
                 </div>
                 
-                <!-- CMS Status Messages -->
-                <div id="cms-status-message" class="cms-status loading">
-                    <i class="fas fa-spinner fa-spin"></i> Memuat Netlify CMS...
-                </div>
-                
                 <!-- Container for Netlify CMS -->
                 <div id="nc-root"></div>
             </div>
@@ -589,36 +561,17 @@
     </div>
     
     <script>
-        // Inisialisasi Netlify CMS dengan error handling
+        // Inisialisasi Netlify CMS
         document.addEventListener('DOMContentLoaded', function() {
-            const cmsStatus = document.getElementById('cms-status-message');
-            
             // Check if CMS is available
             if (typeof CMS !== 'undefined') {
                 console.log('Netlify CMS loaded successfully');
-                cmsStatus.className = 'cms-status success';
-                cmsStatus.innerHTML = '<i class="fas fa-check-circle"></i> Netlify CMS berhasil dimuat!';
                 
-                // Initialize CMS
-                try {
-                    CMS.init();
-                    console.log('CMS initialized successfully');
-                    
-                    // Set timeout to hide status message
-                    setTimeout(() => {
-                        cmsStatus.style.display = 'none';
-                    }, 3000);
-                    
-                } catch (error) {
-                    console.error('Error initializing CMS:', error);
-                    cmsStatus.className = 'cms-status error';
-                    cmsStatus.innerHTML = '<i class="fas fa-exclamation-circle"></i> Error menginisialisasi CMS: ' + error.message;
-                }
+                // Initialize CMS - Config akan diambil dari file config.yml terpisah
+                CMS.init();
                 
             } else {
                 console.error('Netlify CMS not loaded');
-                cmsStatus.className = 'cms-status error';
-                cmsStatus.innerHTML = '<i class="fas fa-exclamation-circle"></i> Netlify CMS gagal dimuat.';
                 
                 // Fallback: try to load CMS again
                 const script = document.createElement('script');
@@ -627,16 +580,7 @@
                     if (typeof CMS !== 'undefined') {
                         CMS.init();
                         console.log('Netlify CMS loaded on second attempt');
-                        cmsStatus.className = 'cms-status success';
-                        cmsStatus.innerHTML = '<i class="fas fa-check-circle"></i> Netlify CMS berhasil dimuat!';
-                        
-                        setTimeout(() => {
-                            cmsStatus.style.display = 'none';
-                        }, 3000);
                     }
-                };
-                script.onerror = function() {
-                    cmsStatus.innerHTML = '<i class="fas fa-exclamation-triangle"></i> Gagal memuat Netlify CMS. Silakan refresh halaman.';
                 };
                 document.head.appendChild(script);
             }
@@ -645,30 +589,12 @@
         // Handle Netlify Identity
         if (typeof netlifyIdentity !== 'undefined') {
             netlifyIdentity.on('init', user => {
-                if (user) {
-                    document.getElementById('user-name').textContent = user.user_metadata.full_name || user.email;
-                }
-                
                 if (!user) {
                     netlifyIdentity.on('login', () => {
                         document.location.href = '/admin/';
                     });
                 }
             });
-            
-            // Handle logout
-            document.getElementById('logout-btn').addEventListener('click', function(e) {
-                e.preventDefault();
-                netlifyIdentity.logout();
-            });
-        }
-        
-        // Function to switch CMS collection (for quick actions)
-        if (typeof CMS !== 'undefined') {
-            CMS.registerPostType = function(collection) {
-                const event = new CustomEvent('postTypeSelected', { detail: { collection } });
-                document.dispatchEvent(event);
-            };
         }
     </script>
 </body>
