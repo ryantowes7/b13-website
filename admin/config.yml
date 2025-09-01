@@ -95,6 +95,8 @@ collections:
     create: true
     slug: "{{slug}}"
     summary: "{{title}} - {{category}}"
+    path: "{{slug}}/index"
+    extension: "json"
     fields:
       - {label: "Judul", name: "title", widget: "string"}
       - {label: "Tanggal", name: "date", widget: "datetime"}

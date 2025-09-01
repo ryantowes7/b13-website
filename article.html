@@ -66,9 +66,6 @@
   <script>
     async function loadArticles() {
       try {
-        const res = await fetch("/content/articles/index.json");
-        const articles = await res.json();
-
         // === Variabel ===
         let currentPage = 1;
         const perPage = 5;
@@ -77,6 +74,25 @@
         const pagination = document.getElementById("pagination");
         const categoryList = document.getElementById("category-list");
         const searchInput = document.getElementById("search-article");
+
+        // === Ambil daftar folder artikel ===
+        const articlesRes = await fetch("/content/articles/index.json");
+        const articleFolders = await articlesRes.json();
+        
+        // === Ambil semua artikel dari masing-masing folder ===
+        const articles = [];
+        for (const folder of articleFolders) {
+          try {
+            const articleRes = await fetch(`/content/articles/${folder.slug}/index.json`);
+            const articleData = await articleRes.json();
+            articles.push(articleData);
+          } catch (err) {
+            console.warn(`Gagal load artikel dari folder ${folder.slug}:`, err);
+          }
+        }
+
+        // === Urutkan artikel berdasarkan tanggal (terbaru pertama) ===
+        articles.sort((a, b) => new Date(b.date) - new Date(a.date));
 
         // === Ambil semua kategori unik ===
         const categories = [...new Set(articles.map(a => a.category))];
@@ -92,7 +108,10 @@
             filtered = filtered.filter(a => a.category === cat);
           }
           if (search) {
-            filtered = filtered.filter(a => a.title.toLowerCase().includes(search.toLowerCase()));
+            filtered = filtered.filter(a => 
+              a.title.toLowerCase().includes(search.toLowerCase()) ||
+              a.excerpt.toLowerCase().includes(search.toLowerCase())
+            );
           }
 
           const start = (page-1)*perPage;
@@ -158,9 +177,14 @@
 
       } catch (err) {
         console.error("Gagal load articles:", err);
+        // Fallback: tampilkan pesan error
+        document.getElementById("articles-list").innerHTML = `
+          <div class="error-message">
+            <p>Gagal memuat artikel. Silakan refresh halaman atau coba lagi nanti.</p>
+          </div>
+        `;
       }
     }
-    loadArticles();
   </script>
 </body>
 </html>
