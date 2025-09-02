@@ -8,9 +8,6 @@
     <!-- Netlify Identity -->
     <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
     
-    <!-- Netlify CMS -->
-    <script src="https://unpkg.com/netlify-cms@^2.0.0/dist/netlify-cms.js"></script>
-    
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
@@ -387,6 +384,52 @@
         .card, .content-section {
             animation: fadeIn 0.5s ease-out;
         }
+        
+        /* Loading Indicator */
+        .cms-loading {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 40px;
+            flex-direction: column;
+            background: #f8f9fa;
+            border-radius: 10px;
+            margin-top: 20px;
+        }
+        
+        .cms-loading .spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #ff6b35;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 1s linear infinite;
+            margin-bottom: 20px;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .cms-loading p {
+            color: #7f8c8d;
+            font-size: 16px;
+        }
+        
+        /* Error Message */
+        .error-message {
+            background: #ffe6e6;
+            border: 1px solid #ff4757;
+            color: #ff4757;
+            padding: 15px;
+            border-radius: 5px;
+            margin-top: 20px;
+        }
+        
+        .error-message p {
+            margin: 0;
+        }
     </style>
 </head>
 <body>
@@ -400,12 +443,12 @@
             
             <ul class="menu">
                 <li><a href="#" class="active"><i class="fas fa-home"></i> Dashboard</a></li>
-                <li><a href="#"><i class="fas fa-file-alt"></i> Halaman</a></li>
-                <li><a href="#"><i class="fas fa-tshirt"></i> Produk</a></li>
-                <li><a href="#"><i class="fas fa-newspaper"></i> Artikel</a></li>
-                <li><a href="#"><i class="fas fa-download"></i> Download</a></li>
-                <li><a href="#"><i class="fas fa-cog"></i> Pengaturan</a></li>
-                <li><a href="#"><i class="fas fa-sign-out-alt"></i> Keluar</a></li>
+                <li><a href="#" data-action="pages"><i class="fas fa-file-alt"></i> Halaman</a></li>
+                <li><a href="#" data-action="products"><i class="fas fa-tshirt"></i> Produk</a></li>
+                <li><a href="#" data-action="articles"><i class="fas fa-newspaper"></i> Artikel</a></li>
+                <li><a href="#" data-action="downloads"><i class="fas fa-download"></i> Download</a></li>
+                <li><a href="#" data-action="settings"><i class="fas fa-cog"></i> Pengaturan</a></li>
+                <li><a href="#" data-action="logout"><i class="fas fa-sign-out-alt"></i> Keluar</a></li>
             </ul>
             
             <div style="padding: 20px; margin-top: 20px; border-top: 1px solid rgba(255,255,255,0.1);">
@@ -423,7 +466,7 @@
                 <div class="user-info">
                     <img src="https://ui-avatars.com/api/?name=Admin+B13&background=ff6b35&color=fff" alt="User">
                     <div>
-                        <div>Admin B13</div>
+                        <div id="user-name">Admin B13</div>
                         <small>Administrator</small>
                     </div>
                 </div>
@@ -441,7 +484,7 @@
                     <div class="card-content">12</div>
                     <div class="card-footer">
                         <span>produk terdaftar</span>
-                        <a href="#">Lihat semua <i class="fas fa-arrow-right"></i></a>
+                        <a href="#" data-action="products">Lihat semua <i class="fas fa-arrow-right"></i></a>
                     </div>
                 </div>
                 
@@ -455,7 +498,7 @@
                     <div class="card-content">8</div>
                     <div class="card-footer">
                         <span>artikel diterbitkan</span>
-                        <a href="#">Lihat semua <i class="fas fa-arrow-right"></i></a>
+                        <a href="#" data-action="articles">Lihat semua <i class="fas fa-arrow-right"></i></a>
                     </div>
                 </div>
                 
@@ -469,7 +512,7 @@
                     <div class="card-content">5</div>
                     <div class="card-footer">
                         <span>file tersedia</span>
-                        <a href="#">Lihat semua <i class="fas fa-arrow-right"></i></a>
+                        <a href="#" data-action="downloads">Lihat semua <i class="fas fa-arrow-right"></i></a>
                     </div>
                 </div>
                 
@@ -483,7 +526,7 @@
                     <div class="card-content">24</div>
                     <div class="card-footer">
                         <span>gambar diunggah</span>
-                        <a href="#">Kelola <i class="fas fa-arrow-right"></i></a>
+                        <a href="#" data-action="media">Kelola <i class="fas fa-arrow-right"></i></a>
                     </div>
                 </div>
             </div>
@@ -495,11 +538,11 @@
                 </div>
                 
                 <div style="display: flex; gap: 15px; flex-wrap: wrap;">
-                    <button class="btn"><i class="fas fa-plus"></i> Tambah Produk</button>
-                    <button class="btn"><i class="fas fa-plus"></i> Tambah Artikel</button>
-                    <button class="btn"><i class="fas fa-plus"></i> Tambah File</button>
-                    <button class="btn"><i class="fas fa-edit"></i> Edit Halaman</button>
-                    <button class="btn btn-secondary"><i class="fas fa-cog"></i> Pengaturan</button>
+                    <button class="btn" data-action="add-product"><i class="fas fa-plus"></i> Tambah Produk</button>
+                    <button class="btn" data-action="add-article"><i class="fas fa-plus"></i> Tambah Artikel</button>
+                    <button class="btn" data-action="add-download"><i class="fas fa-plus"></i> Tambah File</button>
+                    <button class="btn" data-action="pages"><i class="fas fa-edit"></i> Edit Halaman</button>
+                    <button class="btn btn-secondary" data-action="settings"><i class="fas fa-cog"></i> Pengaturan</button>
                 </div>
             </div>
             
@@ -523,25 +566,25 @@
                             <td>Produk</td>
                             <td>12</td>
                             <td><span class="badge badge-ready">Aktif</span></td>
-                            <td><a href="#" style="color: #ff6b35;">Kelola</a></td>
+                            <td><a href="#" data-action="products" style="color: #ff6b35;">Kelola</a></td>
                         </tr>
                         <tr>
                             <td>Artikel</td>
                             <td>8</td>
                             <td><span class="badge badge-ready">Diterbitkan</span></td>
-                            <td><a href="#" style="color: #ff6b35;">Kelola</a></td>
+                            <td><a href="#" data-action="articles" style="color: #ff6b35;">Kelola</a></td>
                         </tr>
                         <tr>
                             <td>File Download</td>
                             <td>5</td>
                             <td><span class="badge badge-ready">Tersedia</span></td>
-                            <td><a href="#" style="color: #ff6b35;">Kelola</a></td>
+                            <td><a href="#" data-action="downloads" style="color: #ff6b35;">Kelola</a></td>
                         </tr>
                         <tr>
                             <td>Halaman</td>
                             <td>3</td>
                             <td><span class="badge badge-ready">Aktif</span></td>
-                            <td><a href="#" style="color: #ff6b35;">Kelola</a></td>
+                            <td><a href="#" data-action="pages" style="color: #ff6b35;">Kelola</a></td>
                         </tr>
                     </tbody>
                 </table>
@@ -554,18 +597,35 @@
                     <small>Gunakan editor di bawah untuk mengelola konten website</small>
                 </div>
                 
+                <!-- Loading Indicator -->
+                <div id="cms-loading" class="cms-loading">
+                    <div class="spinner"></div>
+                    <p>Memuat Editor CMS...</p>
+                </div>
+                
+                <!-- Error Message -->
+                <div id="cms-error" class="error-message" style="display: none;">
+                    <p>Gagal memuat editor CMS. Silakan refresh halaman atau coba lagi nanti.</p>
+                </div>
+                
                 <!-- Container for Netlify CMS -->
                 <div id="nc-root"></div>
             </div>
         </div>
     </div>
     
+    <!-- Netlify CMS Script - Load di akhir body -->
+    <script src="https://unpkg.com/netlify-cms@^2.0.0/dist/netlify-cms.js"></script>
+    
     <script>
-        // ===== SCRIPT LENGKAP UNTUK DASHBOARD =====
+        // ===== SCRIPT UTAMA =====
         document.addEventListener('DOMContentLoaded', function() {
             console.log('DOM loaded, initializing...');
             
-            // 1. Handle Netlify Identity
+            // Setup event listeners
+            setupEventListeners();
+            
+            // Handle Netlify Identity
             if (window.netlifyIdentity) {
                 window.netlifyIdentity.on("init", function(user) {
                     console.log('Netlify Identity initialized');
@@ -578,94 +638,20 @@
                     }
                 });
             }
-
-            // 2. Setup menu listeners tanpa bergantung pada CMS
-            setupMenuListeners();
             
-            // 3. Initialize CMS dengan timeout yang lebih panjang
-            setTimeout(initCMS, 2000);
+            // Initialize CMS dengan delay untuk memastikan semuanya sudah loaded
+            setTimeout(initializeCMS, 1000);
         });
 
-        // Function untuk inisialisasi CMS
-        function initCMS() {
-            console.log('Initializing CMS...');
-            
-            if (typeof CMS !== 'undefined') {
-                console.log('Netlify CMS loaded successfully');
-                
-                try {
-                    CMS.init();
-                    console.log('CMS initialized successfully');
-                    
-                    // Setup custom functions setelah CMS ready
-                    setTimeout(setupCustomFunctions, 1000);
-                    
-                } catch (error) {
-                    console.error('Error initializing CMS:', error);
-                    showErrorMessage('Gagal menginisialisasi editor CMS');
-                }
-            } else {
-                console.error('Netlify CMS not available');
-                showErrorMessage('Netlify CMS gagal dimuat. Silakan refresh halaman.');
-                
-                // Coba load ulang CMS
-                const script = document.createElement('script');
-                script.src = 'https://unpkg.com/netlify-cms@^2.0.0/dist/netlify-cms.js';
-                script.onload = function() {
-                    console.log('Netlify CMS loaded on second attempt');
-                    if (typeof CMS !== 'undefined') {
-                        CMS.init();
-                    }
-                };
-                document.body.appendChild(script);
-            }
-        }
-
-        // Function untuk setup custom functions
-        function setupCustomFunctions() {
-            if (typeof CMS === 'undefined') {
-                console.warn('CMS not available for custom functions');
-                return;
-            }
-            
-            console.log('Setting up custom functions...');
-            
-            window.CMS.showCollection = function(collectionName) {
-                try {
-                    const collections = document.querySelectorAll('.nc-collectionMenuItem');
-                    for (let collection of collections) {
-                        if (collection.textContent.toLowerCase().includes(collectionName.toLowerCase())) {
-                            collection.click();
-                            setTimeout(() => {
-                                const editor = document.getElementById('nc-root');
-                                if (editor) editor.scrollIntoView({ behavior: 'smooth' });
-                            }, 800);
-                            break;
-                        }
-                    }
-                } catch (error) {
-                    console.error('Error showing collection:', error);
-                }
-            };
-        }
-
-        // Function untuk setup menu listeners
-        function setupMenuListeners() {
-            console.log('Setting up menu listeners...');
-            
-            // Menu navigation - hanya tampilkan pesan untuk sekarang
+        // Setup event listeners
+        function setupEventListeners() {
+            // Menu navigation
             const menuLinks = document.querySelectorAll('.menu a');
             menuLinks.forEach(link => {
                 link.addEventListener('click', function(e) {
                     e.preventDefault();
-                    const text = this.textContent.toLowerCase();
-                    
-                    if (text.includes('keluar') && window.netlifyIdentity) {
-                        netlifyIdentity.logout();
-                        return;
-                    }
-                    
-                    showMessage('Fitur ini memerlukan CMS yang berjalan dengan baik');
+                    const action = this.getAttribute('data-action');
+                    handleMenuAction(action);
                 });
             });
             
@@ -674,12 +660,133 @@
             quickButtons.forEach(btn => {
                 btn.addEventListener('click', function(e) {
                     e.preventDefault();
-                    showMessage('Silakan tunggu hingga CMS selesai dimuat');
+                    const action = this.getAttribute('data-action');
+                    handleMenuAction(action);
+                });
+            });
+            
+            // Card footer links
+            const cardLinks = document.querySelectorAll('.card-footer a');
+            cardLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const action = this.getAttribute('data-action');
+                    handleMenuAction(action);
+                });
+            });
+            
+            // Table action links
+            const tableLinks = document.querySelectorAll('.status-table a');
+            tableLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const action = this.getAttribute('data-action');
+                    handleMenuAction(action);
                 });
             });
         }
 
-        // Function untuk update user info
+        // Handle menu actions
+        function handleMenuAction(action) {
+            switch(action) {
+                case 'logout':
+                    if (window.netlifyIdentity) {
+                        netlifyIdentity.logout();
+                    }
+                    break;
+                case 'pages':
+                case 'products':
+                case 'articles':
+                case 'downloads':
+                case 'settings':
+                    showCollection(action);
+                    break;
+                case 'add-product':
+                    showCollection('products');
+                    setTimeout(createNewEntry, 1000);
+                    break;
+                case 'add-article':
+                    showCollection('articles');
+                    setTimeout(createNewEntry, 1000);
+                    break;
+                case 'add-download':
+                    showCollection('downloads');
+                    setTimeout(createNewEntry, 1000);
+                    break;
+                default:
+                    console.log('Action not handled:', action);
+            }
+        }
+
+        // Initialize CMS
+        function initializeCMS() {
+            console.log('Initializing CMS...');
+            
+            if (typeof CMS === 'undefined') {
+                console.error('CMS is not defined');
+                showError('Netlify CMS gagal dimuat. Silakan refresh halaman.');
+                return;
+            }
+            
+            try {
+                // Initialize CMS
+                CMS.init();
+                console.log('CMS initialized successfully');
+                
+                // Sembunyikan loading indicator
+                hideLoading();
+                
+            } catch (error) {
+                console.error('Error initializing CMS:', error);
+                showError('Terjadi kesalahan saat menginisialisasi CMS.');
+            }
+        }
+
+        // Show collection in CMS
+        function showCollection(collectionName) {
+            if (typeof CMS === 'undefined') {
+                showError('CMS belum siap. Silakan tunggu sebentar.');
+                return;
+            }
+            
+            try {
+                // Cari dan klik collection menu item
+                const collectionItems = document.querySelectorAll('.nc-collectionMenuItem');
+                for (let item of collectionItems) {
+                    if (item.textContent.toLowerCase().includes(collectionName.toLowerCase())) {
+                        item.click();
+                        
+                        // Scroll ke editor
+                        setTimeout(() => {
+                            const editor = document.getElementById('nc-root');
+                            if (editor) {
+                                editor.scrollIntoView({ behavior: 'smooth' });
+                            }
+                        }, 500);
+                        
+                        break;
+                    }
+                }
+            } catch (error) {
+                console.error('Error showing collection:', error);
+            }
+        }
+
+        // Create new entry
+        function createNewEntry() {
+            if (typeof CMS === 'undefined') return;
+            
+            try {
+                const newEntryBtn = document.querySelector('.nc-collectionPage-newEntryButton');
+                if (newEntryBtn) {
+                    newEntryBtn.click();
+                }
+            } catch (error) {
+                console.error('Error creating new entry:', error);
+            }
+        }
+
+        // Update user info
         function updateUserInfo(user) {
             const userNameElement = document.getElementById('user-name');
             if (userNameElement && user.user_metadata) {
@@ -687,53 +794,34 @@
             }
         }
 
-        // Function untuk show error message
-        function showErrorMessage(message) {
-            const errorDiv = document.createElement('div');
-            errorDiv.style.cssText = `
-                position: fixed;
-                top: 20px;
-                right: 20px;
-                background: #ff4757;
-                color: white;
-                padding: 15px;
-                border-radius: 5px;
-                z-index: 10000;
-                max-width: 300px;
-            `;
-            errorDiv.textContent = message;
-            document.body.appendChild(errorDiv);
-            
-            setTimeout(() => {
-                document.body.removeChild(errorDiv);
-            }, 5000);
+        // Show loading indicator
+        function showLoading() {
+            const loadingEl = document.getElementById('cms-loading');
+            const errorEl = document.getElementById('cms-error');
+            if (loadingEl) loadingEl.style.display = 'flex';
+            if (errorEl) errorEl.style.display = 'none';
         }
 
-        // Function untuk show info message
-        function showMessage(message) {
-            const messageDiv = document.createElement('div');
-            messageDiv.style.cssText = `
-                position: fixed;
-                top: 20px;
-                right: 20px;
-                background: #2ed573;
-                color: white;
-                padding: 15px;
-                border-radius: 5px;
-                z-index: 10000;
-                max-width: 300px;
-            `;
-            messageDiv.textContent = message;
-            document.body.appendChild(messageDiv);
-            
-            setTimeout(() => {
-                document.body.removeChild(messageDiv);
-            }, 3000);
+        // Hide loading indicator
+        function hideLoading() {
+            const loadingEl = document.getElementById('cms-loading');
+            if (loadingEl) loadingEl.style.display = 'none';
         }
 
-        // Handle errors globally
+        // Show error message
+        function showError(message) {
+            const errorEl = document.getElementById('cms-error');
+            if (errorEl) {
+                errorEl.querySelector('p').textContent = message;
+                errorEl.style.display = 'block';
+            }
+            hideLoading();
+        }
+
+        // Global error handler
         window.addEventListener('error', function(e) {
             console.error('Global error:', e.error);
+            // Ignore CMS internal errors
         });
     </script>
 </body>
