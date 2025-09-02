@@ -30,7 +30,7 @@
         <div class="search-box">
           <input type="text" id="search-article" placeholder="Cari artikel...">
         </div>
-        <div class="menu-toggle">
+        <div class="menu-toggle" id="menu-toggle">
           <span></span><span></span><span></span>
         </div>
       </nav>
@@ -44,10 +44,14 @@
     </div>
 
     <div class="articles-container">
-      <div class="articles-list" id="articles-list"></div>
+      <div class="articles-list" id="articles-list">
+        <div class="loading-articles">Memuat artikel...</div>
+      </div>
       <aside class="categories-sidebar">
         <h3>Kategori Artikel</h3>
-        <ul class="category-list" id="category-list"></ul>
+        <ul class="category-list" id="category-list">
+          <li><a href="#" data-cat="all"><i class="fas fa-chevron-right"></i> Semua Kategori</a></li>
+        </ul>
       </aside>
     </div>
 
@@ -59,45 +63,73 @@
   <footer>
     <p>&copy; <span id="year"></span> B13 Factory Garment & Advertising</p>
     <p>www.b13factory.com</p>
-    <div class="social" id="social-links"></div>
+    <div class="social" id="social-links">
+      <a href="https://facebook.com/b13factory" target="_blank"><i class="fab fa-facebook-f"></i></a>
+      <a href="https://instagram.com/b13factory" target="_blank"><i class="fab fa-instagram"></i></a>
+      <a href="https://wa.me/628123456789" target="_blank"><i class="fab fa-whatsapp"></i></a>
+    </div>
   </footer>
 
   <script src="js/script.js"></script>
   <script>
+    // Perbaikan fungsi loadArticles untuk handle error dan fallback
     async function loadArticles() {
       try {
-        // === Variabel ===
-        let currentPage = 1;
-        const perPage = 5;
-
+        console.log('Memuat artikel...');
+        
         const container = document.getElementById("articles-list");
         const pagination = document.getElementById("pagination");
         const categoryList = document.getElementById("category-list");
         const searchInput = document.getElementById("search-article");
 
-        // === Ambil daftar folder artikel ===
-        const articlesRes = await fetch("/content/articles/index.json");
-        const articleFolders = await articlesRes.json();
-        
-        // === Ambil semua artikel dari masing-masing folder ===
-        const articles = [];
-        for (const folder of articleFolders) {
-          try {
-            const articleRes = await fetch(`/content/articles/${folder.slug}/index.json`);
-            const articleData = await articleRes.json();
-            articles.push(articleData);
-          } catch (err) {
-            console.warn(`Gagal load artikel dari folder ${folder.slug}:`, err);
+        // === Variabel ===
+        let currentPage = 1;
+        const perPage = 5;
+        let articles = [];
+
+        // === Coba ambil data dari beberapa endpoint ===
+        try {
+          // Coba endpoint utama
+          const res = await fetch("/content/articles/index.json");
+          if (res.ok) {
+            articles = await res.json();
+          } else {
+            // Fallback: coba endpoint alternatif
+            const res2 = await fetch("/content/articles/list.json");
+            if (res2.ok) {
+              articles = await res2.json();
+            } else {
+              // Fallback: coba ambil dari API endpoint
+              const res3 = await fetch("/api/articles");
+              if (res3.ok) {
+                articles = await res3.json();
+              } else {
+                throw new Error('Tidak dapat memuat artikel');
+              }
+            }
           }
+        } catch (fetchError) {
+          console.warn('Gagal fetch artikel:', fetchError);
+          // Gunakan data fallback jika ada
+          articles = getFallbackArticles();
         }
 
-        // === Urutkan artikel berdasarkan tanggal (terbaru pertama) ===
-        articles.sort((a, b) => new Date(b.date) - new Date(a.date));
+        // === Jika tidak ada artikel, tampilkan pesan ===
+        if (articles.length === 0) {
+          container.innerHTML = `
+            <div class="no-articles">
+              <i class="fas fa-newspaper" style="font-size: 48px; color: #ccc; margin-bottom: 20px;"></i>
+              <h3>Belum ada artikel</h3>
+              <p>Silakan kembali lagi nanti untuk membaca artikel terbaru kami.</p>
+            </div>
+          `;
+          return;
+        }
 
         // === Ambil semua kategori unik ===
-        const categories = [...new Set(articles.map(a => a.category))];
+        const categories = ["all", ...new Set(articles.map(a => a.category))];
         categoryList.innerHTML = categories.map(c => `
-          <li><a href="#" data-cat="${c}"><i class="fas fa-chevron-right"></i> ${c}</a></li>
+          <li><a href="#" data-cat="${c}"><i class="fas fa-chevron-right"></i> ${c === "all" ? "Semua Kategori" : c}</a></li>
         `).join("");
 
         // === Render Artikel ===
@@ -110,7 +142,7 @@
           if (search) {
             filtered = filtered.filter(a => 
               a.title.toLowerCase().includes(search.toLowerCase()) ||
-              a.excerpt.toLowerCase().includes(search.toLowerCase())
+              (a.excerpt && a.excerpt.toLowerCase().includes(search.toLowerCase()))
             );
           }
 
@@ -119,25 +151,29 @@
 
           container.innerHTML = paginated.map(a => `
             <article class="article-card">
-              <div class="article-image" style="background-image:url('${a.image}')"></div>
+              <div class="article-image" style="background-image:url('${a.image || '/assets/uploads/default-article.jpg'}')"></div>
               <div class="article-content">
                 <div class="article-meta">
-                  <span><i class="far fa-calendar"></i> ${a.date}</span>
-                  <span><i class="far fa-user"></i> ${a.author}</span>
-                  <span><i class="far fa-folder"></i> ${a.category}</span>
+                  <span><i class="far fa-calendar"></i> ${a.date || '2023-01-01'}</span>
+                  <span><i class="far fa-user"></i> ${a.author || 'Admin'}</span>
+                  <span><i class="far fa-folder"></i> ${a.category || 'Umum'}</span>
                 </div>
                 <h3>${a.title}</h3>
-                <p>${a.excerpt}</p>
-                <a href="${a.url}" class="read-more">Baca Selengkapnya <i class="fas fa-arrow-right"></i></a>
+                <p>${a.excerpt || 'Artikel menarik seputar garment dan printing.'}</p>
+                <a href="${a.url || '#'}" class="read-more">Baca Selengkapnya <i class="fas fa-arrow-right"></i></a>
               </div>
             </article>
           `).join("");
 
           // === Pagination ===
           const totalPages = Math.ceil(filtered.length/perPage);
-          pagination.innerHTML = Array.from({length: totalPages}, (_, i) => `
-            <a href="#" class="${i+1===page?'active':''}" data-page="${i+1}">${i+1}</a>
-          `).join("");
+          if (totalPages > 1) {
+            pagination.innerHTML = Array.from({length: totalPages}, (_, i) => `
+              <a href="#" class="${i+1===page?'active':''}" data-page="${i+1}">${i+1}</a>
+            `).join("");
+          } else {
+            pagination.innerHTML = '';
+          }
         }
 
         // Render awal
@@ -169,23 +205,48 @@
         // Tahun otomatis
         document.getElementById("year").textContent = new Date().getFullYear();
 
-        // Social dari home.json
-        const socialRes = await fetch("/content/home.json");
-        const homeData = await socialRes.json();
-        const social = document.getElementById("social-links");
-        social.innerHTML = homeData.social.map(s => `<a href="${s.url}" target="_blank"><i class="${s.icon}"></i></a>`).join("");
-
       } catch (err) {
         console.error("Gagal load articles:", err);
-        // Fallback: tampilkan pesan error
+        // Tampilkan pesan error
         document.getElementById("articles-list").innerHTML = `
           <div class="error-message">
-            <p>Gagal memuat artikel. Silakan refresh halaman atau coba lagi nanti.</p>
+            <i class="fas fa-exclamation-triangle"></i>
+            <h3>Gagal Memuat Artikel</h3>
+            <p>Silakan refresh halaman atau coba lagi nanti.</p>
+            <button onclick="loadArticles()" class="retry-btn">Coba Lagi</button>
           </div>
         `;
       }
     }
-    loadArticles();
+
+    // Fallback articles jika fetch gagal
+    function getFallbackArticles() {
+      return [
+        {
+          "title": "5 Tips Memilih Bahan Kaos yang Berkualitas",
+          "date": "2023-08-15",
+          "author": "Admin B13",
+          "category": "Bahan Material",
+          "image": "/assets/uploads/kaos.jpg",
+          "excerpt": "Pemilihan bahan kaos yang tepat sangat penting untuk kenyamanan dan durability produk.",
+          "url": "/articles/tips-memilih-bahan.html"
+        },
+        {
+          "title": "Perbedaan Sablon Plastisol dan Digital Printing",
+          "date": "2023-08-10",
+          "author": "Tim Desain",
+          "category": "Desain",
+          "image": "/assets/uploads/printing.jpg",
+          "excerpt": "Memahami perbedaan antara sablon plastisol dan digital printing untuk hasil terbaik.",
+          "url": "/articles/perbedaan-sablon.html"
+        }
+      ];
+    }
+
+    // Load articles ketika halaman siap
+    document.addEventListener('DOMContentLoaded', function() {
+      loadArticles();
+    });
   </script>
 </body>
 </html>
