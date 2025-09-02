@@ -561,40 +561,172 @@
     </div>
     
     <script>
-        // Inisialisasi Netlify CMS
+        // ===== SCRIPT LENGKAP UNTUK DASHBOARD =====
         document.addEventListener('DOMContentLoaded', function() {
-            // Check if CMS is available
-            if (typeof CMS !== 'undefined') {
-                console.log('Netlify CMS loaded successfully');
-                
-                // Initialize CMS - Config akan diambil dari file config.yml terpisah
-                CMS.init();
-                
-            } else {
-                console.error('Netlify CMS not loaded');
-                
-                // Fallback: try to load CMS again
-                const script = document.createElement('script');
-                script.src = 'https://unpkg.com/netlify-cms@^2.0.0/dist/netlify-cms.js';
-                script.onload = function() {
-                    if (typeof CMS !== 'undefined') {
-                        CMS.init();
-                        console.log('Netlify CMS loaded on second attempt');
+            // 1. Handle Netlify Identity
+            if (window.netlifyIdentity) {
+                window.netlifyIdentity.on("init", function(user) {
+                    if (!user) {
+                        window.netlifyIdentity.on("login", function() {
+                            document.location.href = "/admin/";
+                        });
+                    } else {
+                        // Update user info di dashboard
+                        updateUserInfo(user);
+                    }
+                });
+            }
+
+            // 2. Inisialisasi CMS
+            function initCMS() {
+                if (typeof CMS !== 'undefined') {
+                    console.log('Netlify CMS loaded successfully');
+                    CMS.init();
+                    
+                    // Tambahkan custom functions setelah CMS ready
+                    setupCustomFunctions();
+                    
+                } else {
+                    console.log('Waiting for CMS to load...');
+                    setTimeout(initCMS, 100);
+                }
+            }
+            
+            // 3. Setup Custom Functions untuk Navigasi
+            function setupCustomFunctions() {
+                // Function untuk show collection
+                window.CMS.showCollection = function(collectionName) {
+                    const collections = document.querySelectorAll('.nc-collectionMenuItem');
+                    for (let collection of collections) {
+                        if (collection.textContent.toLowerCase().includes(collectionName.toLowerCase())) {
+                            collection.click();
+                            // Scroll ke editor setelah delay
+                            setTimeout(() => {
+                                document.getElementById('nc-root').scrollIntoView({ behavior: 'smooth' });
+                            }, 500);
+                            break;
+                        }
                     }
                 };
-                document.head.appendChild(script);
+                
+                // Function untuk create new entry
+                window.CMS.createEntry = function(collectionName) {
+                    CMS.showCollection(collectionName);
+                    setTimeout(() => {
+                        const newBtn = document.querySelector('.nc-collectionPage-newEntryButton');
+                        if (newBtn) newBtn.click();
+                    }, 800);
+                };
+                
+                // Function untuk show settings
+                window.CMS.showSettings = function() {
+                    const settingsBtn = document.querySelector('.nc-appHeader-settingsButton');
+                    if (settingsBtn) settingsBtn.click();
+                };
+                
+                // Function untuk show pages
+                window.CMS.showPage = function(pageName) {
+                    const pages = document.querySelectorAll('.nc-collectionMenuItem');
+                    for (let page of pages) {
+                        if (page.textContent.toLowerCase().includes(pageName.toLowerCase())) {
+                            page.click();
+                            setTimeout(() => {
+                                document.getElementById('nc-root').scrollIntoView({ behavior: 'smooth' });
+                            }, 500);
+                            break;
+                        }
+                    }
+                };
             }
+            
+            // 4. Update User Info di Dashboard
+            function updateUserInfo(user) {
+                const userNameElement = document.getElementById('user-name');
+                if (userNameElement && user.user_metadata) {
+                    userNameElement.textContent = user.user_metadata.full_name || user.email;
+                }
+            }
+            
+            // 5. Setup Event Listeners untuk Menu
+            function setupMenuListeners() {
+                // Menu navigation
+                const menuLinks = document.querySelectorAll('.menu a');
+                menuLinks.forEach(link => {
+                    link.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        const text = this.textContent.toLowerCase();
+                        
+                        if (text.includes('produk')) {
+                            CMS.showCollection('products');
+                        } else if (text.includes('artikel')) {
+                            CMS.showCollection('articles');
+                        } else if (text.includes('download')) {
+                            CMS.showCollection('downloads');
+                        } else if (text.includes('halaman')) {
+                            CMS.showPage('pages');
+                        } else if (text.includes('pengaturan')) {
+                            CMS.showSettings();
+                        } else if (text.includes('keluar')) {
+                            netlifyIdentity.logout();
+                        }
+                    });
+                });
+                
+                // Quick action buttons
+                const quickButtons = document.querySelectorAll('.btn');
+                quickButtons.forEach(btn => {
+                    btn.addEventListener('click', function() {
+                        const text = this.textContent.toLowerCase();
+                        
+                        if (text.includes('tambah produk')) {
+                            CMS.createEntry('products');
+                        } else if (text.includes('tambah artikel')) {
+                            CMS.createEntry('articles');
+                        } else if (text.includes('tambah file')) {
+                            CMS.createEntry('downloads');
+                        } else if (text.includes('edit halaman')) {
+                            CMS.showPage('pages');
+                        } else if (text.includes('pengaturan')) {
+                            CMS.showSettings();
+                        }
+                    });
+                });
+            }
+            
+            // 6. Handle Errors Gracefully
+            window.addEventListener('error', function(e) {
+                console.error('Error occurred:', e.error);
+                // Tampilkan pesan error user-friendly jika needed
+            });
+            
+            // 7. Initialize semua fungsi
+            initCMS();
+            setupMenuListeners();
+            
+            // 8. Load data statistik (jika needed)
+            loadDashboardStats();
         });
         
-        // Handle Netlify Identity
-        if (typeof netlifyIdentity !== 'undefined') {
-            netlifyIdentity.on('init', user => {
-                if (!user) {
-                    netlifyIdentity.on('login', () => {
-                        document.location.href = '/admin/';
-                    });
-                }
-            });
+        // 9. Function untuk load dashboard statistics
+        async function loadDashboardStats() {
+            try {
+                // Contoh: Load data dari API atau local
+                // Anda bisa menambahkan fetch ke endpoint khusus untuk stats
+                console.log('Loading dashboard statistics...');
+                
+            } catch (error) {
+                console.error('Error loading stats:', error);
+            }
+        }
+        
+        // 10. Handle logout
+        function handleLogout() {
+            if (window.netlifyIdentity) {
+                netlifyIdentity.logout();
+                netlifyIdentity.on('logout', () => {
+                    window.location.href = '/';
+                });
+            }
         }
     </script>
 </body>
