@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <title>B13 Factory Garment Adv</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- Favicon dinamis dari JS -->
+  <link rel="stylesheet" href="../styles/style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;400&family=Nunito:wght@500;800&display=swap" rel="stylesheet">
+</head>
+<body>
+  <header>
+    <div class="nav-container">
+      <div class="logo-area">
+        <img src="../static/assets/images/logo.png" alt="Logo B13" class="logo-img">
+        <span class="logo-text">B13 Factory</span>
+      </div>
+      <nav>
+        <a href="index.html" class="active">Home</a>
+        <a href="products.html">Produk</a>
+        <a href="articles.html">Artikel</a>
+        <a href="about.html">Tentang Kami</a>
+        <a href="download.html">Download</a>
+        <a href="#contact" class="cta-nav">Kontak</a>
+      </nav>
+    </div>
+  </header>
+  <main>
+    <!-- HERO SECTION (konten diisi dari home.json) -->
+    <section class="hero" id="hero">
+      <div class="hero-content">
+        <h1>Judul Hero</h1>
+        <p>Deskripsi hero dari home.json</p>
+        <a href="#contact" class="cta-btn">Pesan Sekarang</a>
+      </div>
+      <div class="hero-img">
+        <img src="../static/assets/images/hero-garment.jpg" alt="Garment Bandung">
+      </div>
+    </section>
+    <!-- SERVICE SECTION (diisi dari home.json) -->
+    <section class="section services" id="services">
+      <h2>Layanan Kami</h2>
+      <div class="service-list"></div>
+    </section>
+    <!-- SHOWCASE SECTION (produk dari products.json) -->
+    <section class="section showcase" id="showcase">
+      <h2>Portofolio Produk</h2>
+      <div id="products-list" class="showcase-list"></div>
+      <div class="showcase-btn-area">
+        <a href="products.html" class="cta-btn">Lihat Semua Produk</a>
+      </div>
+    </section>
+    <!-- ARTICLES SECTION (artikel dari articles.json) -->
+    <section class="section articles" id="articles">
+      <h2>Artikel & Tips Garment</h2>
+      <div id="articles-list" class="article-list"></div>
+      <div class="showcase-btn-area">
+        <a href="articles.html" class="cta-btn">Baca Semua Artikel</a>
+      </div>
+    </section>
+    <!-- CONTACT SECTION (judul dari home.json, info dari site.json) -->
+    <section class="section contact" id="contact">
+      <h2>Hubungi Kami</h2>
+      <div class="contact-area">
+        <div class="contact-info">
+          <div><strong>Alamat:</strong> <span class="site-address">Jl. Garment No.5, Bandung</span></div>
+          <div><strong>Email:</strong> <span class="site-email">info@b13factory.com</span></div>
+          <div><strong>WhatsApp:</strong> <a class="site-wa" href="https://wa.me/628123456789" target="_blank">+62 812-3456-789</a></div>
+        </div>
+        <form class="contact-form" id="contactForm">
+          <input type="text" name="nama" placeholder="Nama Anda" required>
+          <input type="email" name="email" placeholder="Email" required>
+          <textarea name="pesan" placeholder="Pesan / Order" required></textarea>
+          <button type="submit">Kirim Pesan</button>
+        </form>
+      </div>
+    </section>
+  </main>
+  <footer>
+    <div class="footer-content">
+      <div class="footer-logo">
+        <img src="../static/assets/images/logo.png" alt="Logo B13" class="logo-img" style="height:34px;">
+        <span class="logo-text">B13 Factory Garment Adv</span>
+      </div>
+      <div class="footer-menu">
+        <a href="index.html">Home</a>
+        <a href="products.html">Produk</a>
+        <a href="articles.html">Artikel</a>
+        <a href="about.html">Tentang Kami</a>
+        <a href="download.html">Download</a>
+      </div>
+      <div class="footer-socmed">
+        <a class="site-instagram" href="https://instagram.com/b13factory" target="_blank"><img src="../static/icons/instagram.svg" alt="Instagram"></a>
+        <a class="site-facebook" href="https://facebook.com/b13factory" target="_blank"><img src="../static/icons/facebook.svg" alt="Facebook"></a>
+        <a class="site-wa" href="https://wa.me/628123456789" target="_blank"><img src="../static/icons/whatsapp.svg" alt="WhatsApp"></a>
+      </div>
+      <div class="footer-address"></div>
+    </div>
+    <div class="footer-copy">
+      &copy; 2025 B13 Factory Garment Adv. Powered by Netlify CMS.
+    </div>
+  </footer>
+  <script src="../scripts/script.js"></script>
+</body>
+</html>

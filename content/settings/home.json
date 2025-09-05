@@ -1,0 +1,33 @@
+{
+  "hero_title": "Konveksi & Garment Bandung Terpercaya",
+  "hero_text": "B13 Factory Garment Adv melayani pembuatan & sablon kaos, seragam, jaket, dan apparel custom dengan kualitas terbaik dan harga bersaing.",
+  "hero_image": "hero-garment.jpg",
+  "cta_text": "Pesan Sekarang",
+  "cta_link": "#contact",
+  "service_section_title": "Layanan Kami",
+  "services": [
+    {
+      "title": "Kaos Custom / Distro",
+      "description": "Kaos polos, sablon, bordir, dan jahit kaos distro dengan bahan premium dan desain bebas.",
+      "image": "service-kaos.jpg"
+    },
+    {
+      "title": "Seragam Kerja",
+      "description": "Seragam kantor, pabrik, event, dan sekolah. Bahan kuat, nyaman, dan tampilan profesional.",
+      "image": "service-seragam.jpg"
+    },
+    {
+      "title": "Jaket & Hoodie",
+      "description": "Jaket bomber, varsity, hoodie sablon/bordir custom untuk komunitas dan perusahaan.",
+      "image": "service-jaket.jpg"
+    },
+    {
+      "title": "Sablon & Bordir",
+      "description": "Sablon plastisol, rubber, DTG, serta bordir komputer untuk hasil awet & detail tajam.",
+      "image": "service-sablon.jpg"
+    }
+  ],
+  "showcase_section_title": "Portofolio Produk",
+  "articles_section_title": "Artikel & Tips Garment",
+  "contact_section_title": "Hubungi Kami"
+}

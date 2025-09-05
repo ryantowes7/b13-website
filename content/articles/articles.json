@@ -1,0 +1,24 @@
+{
+  "articles": [
+    {
+      "title": "Kelebihan Kain Cotton Combed",
+      "excerpt": "Cotton combed adalah bahan kaos favorit karena teksturnya halus, lembut, dan nyaman dipakai.",
+      "image": "combed.jpg"
+    },
+    {
+      "title": "Tips Memilih Bahan Kaos",
+      "excerpt": "Pilih bahan kaos yang tepat agar nyaman dipakai dan awet.",
+      "image": "kaos-tips.jpg"
+    },
+    {
+      "title": "Perbedaan Sablon Plastisol dan Digital Printing",
+      "excerpt": "Kenali dua teknik sablon populer untuk kaos custom.",
+      "image": "sablon.jpg"
+    },
+    {
+      "title": "Cara Order Kaos Custom di B13 Factory",
+      "excerpt": "Langkah mudah order kaos custom, seragam, atau jaket di B13 Factory.",
+      "image": "order.jpg"
+    }
+  ]
+}

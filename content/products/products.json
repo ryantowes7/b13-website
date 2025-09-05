@@ -1,0 +1,28 @@
+{
+  "products": [
+    {
+      "name": "Kaos Polos Cotton Combed 30s",
+      "description": "Kaos premium cotton combed 30s, nyaman dan adem dipakai.",
+      "price": 45000,
+      "image": "kaos-combed.jpg"
+    },
+    {
+      "name": "Seragam Kerja Kantor",
+      "description": "Seragam kerja bahan Oxford/Lacoste, jahitan rapi dan kuat.",
+      "price": 90000,
+      "image": "seragam.jpg"
+    },
+    {
+      "name": "Jaket Bomber Custom",
+      "description": "Jaket bomber sablon/bordir custom, cocok untuk komunitas.",
+      "price": 125000,
+      "image": "jaket.jpg"
+    },
+    {
+      "name": "Sablon Plastisol Premium",
+      "description": "Jasa sablon kaos dengan tinta plastisol, awet dan detail tajam.",
+      "price": 15000,
+      "image": "plastisol.jpg"
+    }
+  ]
+}
