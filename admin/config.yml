@@ -8,14 +8,10 @@ backend:
     uploadMedia: "Upload \"{{path}}\""
     deleteMedia: "Hapus \"{{path}}\""
 
-# Media folder settings
 media_folder: "assets/uploads"
 public_folder: "/assets/uploads"
-
-# Enable editorial workflow for draft/publish system
 publish_mode: editorial_workflow
 
-# Collections configuration
 collections:
   - name: "pages"
     label: "Halaman"
@@ -36,8 +32,7 @@ collections:
           - label: "Info Rotator"
             name: "info"
             widget: "list"
-            fields:
-              - {label: "Info", name: "text", widget: "string"}
+            field: {label: "Info", name: "text", widget: "string"}
           - label: "Layanan"
             name: "services"
             widget: "list"
@@ -86,9 +81,7 @@ collections:
       - {label: "Deskripsi", name: "description", widget: "text"}
       - {label: "Gambar", name: "image", widget: "image"}
       - {label: "Badge", name: "badge", widget: "string", required: false}
-      - {label: "Kategori", name: "category", widget: "select", options: ["Kaos", "Jaket", "Topi", "Tas", "Aksesoris"]}
-      - {label: "Harga", name: "price", widget: "number", value_type: "float"}
-      - {label: "Stok", name: "stock", widget: "number", value_type: "int"}
+      - {label: "Kategori", name: "category", widget: "string"}
 
   - name: "articles"
     label: "Artikel"
@@ -98,13 +91,12 @@ collections:
     summary: "{{title}} - {{category}}"
     fields:
       - {label: "Judul", name: "title", widget: "string"}
-      - {label: "Tanggal", name: "date", widget: "datetime", format: "YYYY-MM-DD", date_format: "YYYY-MM-DD", time_format: false}
-      - {label: "Penulis", name: "author", widget: "string", default: "Admin B13"}
-      - {label: "Kategori", name: "category", widget: "select", options: ["Bahan Material", "Desain", "Produksi", "Pemasaran", "Tips"]}
+      - {label: "Tanggal", name: "date", widget: "datetime"}
+      - {label: "Penulis", name: "author", widget: "string"}
+      - {label: "Kategori", name: "category", widget: "string"}
       - {label: "Gambar", name: "image", widget: "image"}
       - {label: "Kutipan", name: "excerpt", widget: "text"}
-      - {label: "Konten", name: "content", widget: "markdown"}
-      - {label: "URL", name: "url", widget: "string", default: "/articles/{{slug}}.html"}
+      - {label: "URL", name: "url", widget: "string"}
 
   - name: "downloads"
     label: "Download"
@@ -117,5 +109,5 @@ collections:
       - {label: "Deskripsi", name: "description", widget: "text"}
       - {label: "File", name: "file", widget: "file"}
       - {label: "Ukuran", name: "size", widget: "string"}
-      - {label: "Tanggal", name: "date", widget: "datetime", format: "YYYY-MM-DD", date_format: "YYYY-MM-DD", time_format: false}
-      - {label: "Kategori", name: "category", widget: "select", options: ["Katalog", "Price List", "Template", "Brosur"]}
+      - {label: "Tanggal", name: "date", widget: "datetime"}
+      - {label: "Kategori", name: "category", widget: "string"}

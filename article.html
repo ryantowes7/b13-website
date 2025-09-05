@@ -10,6 +10,39 @@
   <meta property="og:image" content="/assets/uploads/og-article.jpg">
   <link rel="stylesheet" href="css/style.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    .loading-articles {
+      text-align: center;
+      padding: 40px;
+      color: #666;
+    }
+    .error-message {
+      background: #ffe6e6;
+      border: 1px solid #ff4757;
+      color: #ff4757;
+      padding: 20px;
+      border-radius: 5px;
+      text-align: center;
+    }
+    .error-message i {
+      font-size: 24px;
+      margin-bottom: 10px;
+    }
+    .retry-btn {
+      background: #ff6b35;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 5px;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+    .no-articles {
+      text-align: center;
+      padding: 40px;
+      color: #666;
+    }
+  </style>
 </head>
 <body>
   <!-- Header -->
@@ -45,12 +78,15 @@
 
     <div class="articles-container">
       <div class="articles-list" id="articles-list">
-        <div class="loading-articles">Memuat artikel...</div>
+        <div class="loading-articles">
+          <i class="fas fa-spinner fa-spin"></i>
+          <p>Memuat artikel...</p>
+        </div>
       </div>
       <aside class="categories-sidebar">
         <h3>Kategori Artikel</h3>
         <ul class="category-list" id="category-list">
-          <li><a href="#" data-cat="all"><i class="fas fa-chevron-right"></i> Semua Kategori</a></li>
+          <li><a href="#" data-cat="all" class="active"><i class="fas fa-chevron-right"></i> Semua Kategori</a></li>
         </ul>
       </aside>
     </div>
@@ -72,7 +108,7 @@
 
   <script src="js/script.js"></script>
   <script>
-    // Perbaikan fungsi loadArticles untuk handle error dan fallback
+    // Fungsi untuk memuat artikel
     async function loadArticles() {
       try {
         console.log('Memuat artikel...');
@@ -84,52 +120,55 @@
 
         // === Variabel ===
         let currentPage = 1;
-        const perPage = 5;
+        const perPage = 6;
         let articles = [];
 
-        // === Coba ambil data dari beberapa endpoint ===
+        // === CARA BARU: Ambil semua artikel dari folder ===
         try {
-          // Coba endpoint utama
-          const res = await fetch("/content/articles/index.json");
-          if (res.ok) {
-            articles = await res.json();
-          } else {
-            // Fallback: coba endpoint alternatif
-            const res2 = await fetch("/content/articles/list.json");
-            if (res2.ok) {
-              articles = await res2.json();
-            } else {
-              // Fallback: coba ambil dari API endpoint
-              const res3 = await fetch("/api/articles");
-              if (res3.ok) {
-                articles = await res3.json();
+          // Daftar folder artikel yang ada (harus disesuaikan dengan yang dibuat CMS)
+          const articleFolders = [
+            "cara-mudah-membedakan-kain-carded-dan-cotton-combed",
+            "kelebihan-kain-cotton-combed",
+            "tips-memilih-bahan-kaos",
+            "perbedaan-sablon-plastisol-dan-digital-printing"
+          ];
+          
+          // Untuk setiap folder, ambil data artikelnya
+          for (const folder of articleFolders) {
+            try {
+              const articleResponse = await fetch(`/content/articles/${folder}/index.json`);
+              if (articleResponse.ok) {
+                const articleData = await articleResponse.json();
+                articles.push(articleData);
+                console.log('Berhasil load artikel:', folder);
               } else {
-                throw new Error('Tidak dapat memuat artikel');
+                console.warn('Gagal load artikel dari folder:', folder);
               }
+            } catch (e) {
+              console.warn(`Error loading artikel dari ${folder}:`, e);
             }
           }
-        } catch (fetchError) {
-          console.warn('Gagal fetch artikel:', fetchError);
-          // Gunakan data fallback jika ada
+          
+          // Jika tidak ada artikel yang berhasil di-load, gunakan fallback
+          if (articles.length === 0) {
+            throw new Error('Tidak ada artikel yang bisa dimuat');
+          }
+          
+        } catch (error) {
+          console.error('Error mengambil artikel:', error);
+          // Fallback: gunakan artikel manual
           articles = getFallbackArticles();
         }
 
-        // === Jika tidak ada artikel, tampilkan pesan ===
-        if (articles.length === 0) {
-          container.innerHTML = `
-            <div class="no-articles">
-              <i class="fas fa-newspaper" style="font-size: 48px; color: #ccc; margin-bottom: 20px;"></i>
-              <h3>Belum ada artikel</h3>
-              <p>Silakan kembali lagi nanti untuk membaca artikel terbaru kami.</p>
-            </div>
-          `;
-          return;
-        }
+        // Urutkan artikel berdasarkan tanggal (terbaru pertama)
+        articles.sort((a, b) => new Date(b.date) - new Date(a.date));
 
         // === Ambil semua kategori unik ===
         const categories = ["all", ...new Set(articles.map(a => a.category))];
         categoryList.innerHTML = categories.map(c => `
-          <li><a href="#" data-cat="${c}"><i class="fas fa-chevron-right"></i> ${c === "all" ? "Semua Kategori" : c}</a></li>
+          <li><a href="#" data-cat="${c}" class="${c === "all" ? 'active' : ''}">
+            <i class="fas fa-chevron-right"></i> ${c === "all" ? "Semua Kategori" : c}
+          </a></li>
         `).join("");
 
         // === Render Artikel ===
@@ -148,6 +187,18 @@
 
           const start = (page-1)*perPage;
           const paginated = filtered.slice(start, start+perPage);
+
+          if (paginated.length === 0) {
+            container.innerHTML = `
+              <div class="no-articles">
+                <i class="fas fa-search" style="font-size: 48px; color: #ccc; margin-bottom: 20px;"></i>
+                <h3>Tidak ada artikel yang ditemukan</h3>
+                <p>Coba gunakan kata kunci lain atau pilih kategori berbeda.</p>
+              </div>
+            `;
+            pagination.innerHTML = '';
+            return;
+          }
 
           container.innerHTML = paginated.map(a => `
             <article class="article-card">
@@ -168,9 +219,17 @@
           // === Pagination ===
           const totalPages = Math.ceil(filtered.length/perPage);
           if (totalPages > 1) {
-            pagination.innerHTML = Array.from({length: totalPages}, (_, i) => `
-              <a href="#" class="${i+1===page?'active':''}" data-page="${i+1}">${i+1}</a>
-            `).join("");
+            pagination.innerHTML = `
+              <div class="pagination-container">
+                ${currentPage > 1 ? `<a href="#" class="pagination-btn" data-page="${currentPage - 1}"><i class="fas fa-chevron-left"></i> Sebelumnya</a>` : ''}
+                <div class="pagination-numbers">
+                  ${Array.from({length: totalPages}, (_, i) => `
+                    <a href="#" class="${i+1===currentPage?'active':''}" data-page="${i+1}">${i+1}</a>
+                  `).join("")}
+                </div>
+                ${currentPage < totalPages ? `<a href="#" class="pagination-btn" data-page="${currentPage + 1}">Selanjutnya <i class="fas fa-chevron-right"></i></a>` : ''}
+              </div>
+            `;
           } else {
             pagination.innerHTML = '';
           }
@@ -185,6 +244,7 @@
             e.preventDefault();
             currentPage = parseInt(e.target.dataset.page);
             renderArticles(currentPage);
+            window.scrollTo({ top: 0, behavior: 'smooth' });
           }
         });
 
@@ -193,13 +253,20 @@
           if (e.target.tagName === "A") {
             e.preventDefault();
             const cat = e.target.dataset.cat;
-            renderArticles(1, cat, searchInput.value);
+            currentPage = 1;
+            
+            // Update active class
+            document.querySelectorAll('.category-list a').forEach(a => a.classList.remove('active'));
+            e.target.classList.add('active');
+            
+            renderArticles(currentPage, cat, searchInput.value);
           }
         });
 
         // Event Search
         searchInput.addEventListener("input", () => {
-          renderArticles(1, "all", searchInput.value);
+          currentPage = 1;
+          renderArticles(currentPage, "all", searchInput.value);
         });
 
         // Tahun otomatis
@@ -223,13 +290,31 @@
     function getFallbackArticles() {
       return [
         {
+          "title": "Cara Mudah Membedakan Kain Carded dan Cotton Combed",
+          "date": "2023-11-15",
+          "author": "Admin B13",
+          "category": "Bahan Material",
+          "image": "/assets/uploads/combed.jpg",
+          "excerpt": "Pelajari perbedaan antara kain carded dan cotton combed untuk pemilihan bahan yang tepat.",
+          "url": "/articles/cara-mudah-membedakan-kain-carded-dan-cotton-combed.html"
+        },
+        {
+          "title": "Kelebihan Kain Cotton Combed",
+          "date": "2023-11-10", 
+          "author": "Tim B13",
+          "category": "Bahan Material",
+          "image": "/assets/uploads/combed.jpg",
+          "excerpt": "Temukan keunggulan kain cotton combed untuk produk garment berkualitas tinggi.",
+          "url": "/articles/kelebihan-kain-cotton-combed.html"
+        },
+        {
           "title": "5 Tips Memilih Bahan Kaos yang Berkualitas",
           "date": "2023-08-15",
           "author": "Admin B13",
           "category": "Bahan Material",
           "image": "/assets/uploads/kaos.jpg",
           "excerpt": "Pemilihan bahan kaos yang tepat sangat penting untuk kenyamanan dan durability produk.",
-          "url": "/articles/tips-memilih-bahan.html"
+          "url": "/articles/tips-memilih-bahan-kaos.html"
         },
         {
           "title": "Perbedaan Sablon Plastisol dan Digital Printing",
@@ -238,7 +323,7 @@
           "category": "Desain",
           "image": "/assets/uploads/printing.jpg",
           "excerpt": "Memahami perbedaan antara sablon plastisol dan digital printing untuk hasil terbaik.",
-          "url": "/articles/perbedaan-sablon.html"
+          "url": "/articles/perbedaan-sablon-plastisol-dan-digital-printing.html"
         }
       ];
     }
