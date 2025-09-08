@@ -13,13 +13,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // ===== LOAD GLOBAL SITE SETTINGS =====
   function loadSiteSettings() {
-    fetch('../content/settings/site.json')
+    fetch('content/settings/site.json')
       .then(res => res.json())
       .then(data => {
         // Logo
         const logoElem = document.querySelector('.logo-img');
         if (logoElem && data.logo) {
-          logoElem.src = `../static/assets/images/${data.logo}`;
+          logoElem.src = `static/assets/images/${data.logo}`;
           logoElem.alt = data.site_name || 'Logo';
         }
         // Site name di logo-text
@@ -35,7 +35,7 @@ document.addEventListener('DOMContentLoaded', () => {
             faviconElem.rel = 'icon';
             document.head.appendChild(faviconElem);
           }
-          faviconElem.href = `../static/assets/images/${data.favicon}`;
+          faviconElem.href = `static/assets/images/${data.favicon}`;
         }
         // Title
         if (data.site_name) document.title = data.site_name;
@@ -73,7 +73,7 @@ document.addEventListener('DOMContentLoaded', () => {
     window.location.pathname === '/' ||
     window.location.pathname === '/index.html'
   ) {
-    fetch('../content/settings/home.json')
+    fetch('content/settings/home.json')
       .then(res => res.json())
       .then(home => {
         // Hero
@@ -82,7 +82,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const heroImg = document.querySelector('.hero-img img');
         if (heroTitle && home.hero_title) heroTitle.textContent = home.hero_title;
         if (heroText && home.hero_text) heroText.textContent = home.hero_text;
-        if (heroImg && home.hero_image) heroImg.src = `../static/assets/images/${home.hero_image}`;
+        if (heroImg && home.hero_image) heroImg.src = `static/assets/images/${home.hero_image}`;
         // CTA
         const ctaBtn = document.querySelector('.cta-btn');
         if (ctaBtn && home.cta_text) ctaBtn.textContent = home.cta_text;
@@ -98,7 +98,7 @@ document.addEventListener('DOMContentLoaded', () => {
             home.services.forEach(service => {
               serviceList.innerHTML += `
                 <div class="service-card">
-                  <img src="../static/assets/images/${service.image}" alt="${service.title}">
+                  <img src="static/assets/images/${service.image}" alt="${service.title}">
                   <h3>${service.title}</h3>
                   <p>${service.description}</p>
                 </div>
@@ -121,7 +121,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // ===== LOAD ABOUT PAGE CONTENT =====
   if (window.location.pathname.endsWith('about.html')) {
-    fetch('../content/settings/about.json')
+    fetch('content/settings/about.json')
       .then(res => res.json())
       .then(about => {
         const aboutSection = document.querySelector('.about-section');
@@ -132,7 +132,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const aboutContent = aboutSection.querySelector('.about-content');
         if (aboutContent) {
           aboutContent.innerHTML = `
-            <img src="../static/assets/images/${about.team_image || 'team.jpg'}" alt="Tim B13 Factory">
+            <img src="static/assets/images/${about.team_image || 'team.jpg'}" alt="Tim">
             <div>
               <p>${about.description}</p>
               <ul>
@@ -149,20 +149,20 @@ document.addEventListener('DOMContentLoaded', () => {
       });
   }
 
-  // ===== SHOWCASE PRODUCTS (homepage & products.html) =====
-  if (document.getElementById('products-list')) {
-    fetch('../content/products/products.json')
+  // ===== LOAD PRODUCTS (homepage & products.html) =====
+  function loadProducts() {
+    const productsList = document.getElementById('products-list');
+    if (!productsList) return;
+    fetch('content/products/index-products.json')
       .then(res => res.json())
       .then(products => {
-        const productsList = document.getElementById('products-list');
         productsList.innerHTML = '';
-        // Show all if on products.html, show 4 if homepage
         let showCount = (window.location.pathname.includes('products.html')) ? products.length : 4;
         products.slice(0, showCount).forEach(product => {
-          const imgSrc = product.image ? `../static/assets/uploads/${product.image}` : '../static/assets/images/product-default.jpg';
+          const imgSrc = product.image ? `static/assets/uploads/${product.image}` : 'static/assets/images/product-default.jpg';
           productsList.innerHTML += `
             <div class="product-card">
-              <img src="${imgSrc}" alt="${product.name}" onerror="this.src='../static/assets/images/product-default.jpg'">
+              <img src="${imgSrc}" alt="${product.name}" onerror="this.src='static/assets/images/product-default.jpg'">
               <h3>${product.name}</h3>
               <p>${product.description}</p>
               <span>Rp${Number(product.price).toLocaleString()}</span>
@@ -171,26 +171,27 @@ document.addEventListener('DOMContentLoaded', () => {
         });
       })
       .catch(() => {
-        document.getElementById('products-list').innerHTML = "<p>Gagal memuat produk.</p>";
+        productsList.innerHTML = "<p>Gagal memuat produk.</p>";
       });
   }
+  if(document.getElementById('products-list')) loadProducts();
 
-  // ===== ARTICLES (homepage & articles.html) =====
-  if (document.getElementById('articles-list')) {
-    fetch('../content/articles/articles.json')
+  // ===== LOAD ARTICLES (homepage & articles.html) =====
+  function loadArticles() {
+    const articlesList = document.getElementById('articles-list');
+    if (!articlesList) return;
+    fetch('content/articles/index-articles.json')
       .then(res => res.json())
       .then(articles => {
-        const articlesList = document.getElementById('articles-list');
         articlesList.innerHTML = '';
-        // Show all if on articles.html, show 4 if homepage
         let showCount = (window.location.pathname.includes('articles.html')) ? articles.length : 4;
         articles.slice(0, showCount).forEach(article => {
-          const imgSrc = article.image ? `../static/assets/uploads/${article.image}` : '../static/assets/images/article-default.jpg';
+          const imgSrc = article.image ? `static/assets/uploads/${article.image}` : 'static/assets/images/article-default.jpg';
           articlesList.innerHTML += `
             <div class="article-card">
-              <img src="${imgSrc}" alt="${article.title}" onerror="this.src='../static/assets/images/article-default.jpg'">
+              <img src="${imgSrc}" alt="${article.title}" onerror="this.src='static/assets/images/article-default.jpg'">
               <h3>${article.title}</h3>
-              <p>${article.excerpt}</p>
+              <p>${article.excerpt || ''}</p>
             </div>
           `;
         });
@@ -203,18 +204,19 @@ document.addEventListener('DOMContentLoaded', () => {
             articlesList.innerHTML = '';
             const filtered = articles.filter(a =>
               a.title.toLowerCase().includes(keyword) ||
-              (a.excerpt && a.excerpt.toLowerCase().includes(keyword))
+              (a.excerpt && a.excerpt.toLowerCase().includes(keyword)) ||
+              (a.description && a.description.toLowerCase().includes(keyword))
             );
             if (filtered.length === 0) {
               articlesList.innerHTML = "<p>Tidak ditemukan artikel dengan kata tersebut.</p>";
             } else {
               filtered.forEach(article => {
-                const imgSrc = article.image ? `../static/assets/uploads/${article.image}` : '../static/assets/images/article-default.jpg';
+                const imgSrc = article.image ? `static/assets/uploads/${article.image}` : 'static/assets/images/article-default.jpg';
                 articlesList.innerHTML += `
                   <div class="article-card">
-                    <img src="${imgSrc}" alt="${article.title}" onerror="this.src='../static/assets/images/article-default.jpg'">
+                    <img src="${imgSrc}" alt="${article.title}" onerror="this.src='static/assets/images/article-default.jpg'">
                     <h3>${article.title}</h3>
-                    <p>${article.excerpt}</p>
+                    <p>${article.excerpt || ''}</p>
                   </div>
                 `;
               });
@@ -223,16 +225,18 @@ document.addEventListener('DOMContentLoaded', () => {
         }
       })
       .catch(() => {
-        document.getElementById('articles-list').innerHTML = "<p>Gagal memuat artikel.</p>";
+        articlesList.innerHTML = "<p>Gagal memuat artikel.</p>";
       });
   }
+  if(document.getElementById('articles-list')) loadArticles();
 
-  // ===== DOWNLOAD LIST (download.html only) =====
-  if (document.getElementById('downloads-list')) {
-    fetch('../content/downloads/downloads.json')
+  // ===== LOAD DOWNLOADS (download.html only) =====
+  function loadDownloads() {
+    const dlList = document.getElementById('downloads-list');
+    if (!dlList) return;
+    fetch('content/downloads/index-downloads.json')
       .then(res => res.json())
       .then(downloads => {
-        const dlList = document.getElementById('downloads-list');
         if (!downloads || downloads.length === 0) {
           dlList.innerHTML = "<p>Belum ada file download tersedia.</p>";
           return;
@@ -241,8 +245,8 @@ document.addEventListener('DOMContentLoaded', () => {
         downloads.forEach(file => {
           dlList.innerHTML += `
             <li>
-              <a href="../static/downloads/${file.file}" download>
-                <strong>${file.title}</strong> (${file.type})
+              <a href="static/assets/uploads/${file.file}" download>
+                <strong>${file.title}</strong>${file.category ? ' (' + file.category + ')' : ''}
               </a><br>
               <span>${file.description}</span>
             </li>
@@ -251,9 +255,10 @@ document.addEventListener('DOMContentLoaded', () => {
         dlList.innerHTML += '</ul>';
       })
       .catch(() => {
-        document.getElementById('downloads-list').innerHTML = "<p>Gagal memuat file download.</p>";
+        dlList.innerHTML = "<p>Gagal memuat file download.</p>";
       });
   }
+  if(document.getElementById('downloads-list')) loadDownloads();
 
   // ===== CONTACT FORM HANDLER (all pages) =====
   const contactForm = document.getElementById('contactForm');

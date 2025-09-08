@@ -90,50 +90,35 @@ collections:
 
   - name: "products"
     label: "Produk"
-    files:
-      - file: "content/products/products.json"
-        label: "Daftar Produk"
-        name: "products"
-        fields:
-          - label: "Produk"
-            name: "products"
-            widget: "list"
-            fields:
-              - {label: "Nama", name: "name", widget: "string"}
-              - {label: "Deskripsi", name: "description", widget: "text"}
-              - {label: "Harga", name: "price", widget: "number"}
-              - {label: "Gambar", name: "image", widget: "image"}
+    folder: "content/products"
+    create: true
+    slug: "{{slug}}"
+    fields:
+      - {label: "Nama", name: "name", widget: "string"}
+      - {label: "Deskripsi", name: "description", widget: "text"}
+      - {label: "Harga", name: "price", widget: "number"}
+      - {label: "Gambar", name: "image", widget: "image"}
 
   - name: "articles"
     label: "Artikel"
-    files:
-      - file: "content/articles/articles.json"
-        label: "Daftar Artikel"
-        name: "articles"
-        fields:
-          - label: "Artikel"
-            name: "articles"
-            widget: "list"
-            fields:
-              - {label: "Judul", name: "title", widget: "string"}
-              - {label: "Kutipan", name: "excerpt", widget: "text"}
-              - {label: "Deskripsi", name: "description", widget: "markdown"}
-              - {label: "Gambar", name: "image", widget: "image"}
+    folder: "content/articles"
+    create: true
+    slug: "{{slug}}"
+    fields:
+      - {label: "Judul", name: "title", widget: "string"}
+      - {label: "Kutipan", name: "excerpt", widget: "text"}
+      - {label: "Deskripsi", name: "description", widget: "markdown"}
+      - {label: "Gambar", name: "image", widget: "image"}
 
   - name: "downloads"
     label: "Download"
-    files:
-      - file: "content/downloads/downloads.json"
-        label: "Daftar Download"
-        name: "downloads"
-        fields:
-          - label: "Download"
-            name: "downloads"
-            widget: "list"
-            fields:
-              - {label: "Judul", name: "title", widget: "string"}
-              - {label: "Deskripsi", name: "description", widget: "text"}
-              - {label: "File", name: "file", widget: "file"}
-              - {label: "Ukuran", name: "size", widget: "string"}
-              - {label: "Tanggal", name: "date", widget: "datetime"}
-              - {label: "Kategori", name: "category", widget: "string"}
+    folder: "content/downloads"
+    create: true
+    slug: "{{slug}}"
+    fields:
+      - {label: "Judul", name: "title", widget: "string"}
+      - {label: "Deskripsi", name: "description", widget: "text"}
+      - {label: "File", name: "file", widget: "file"}
+      - {label: "Ukuran", name: "size", widget: "string"}
+      - {label: "Tanggal", name: "date", widget: "datetime"}
+      - {label: "Kategori", name: "category", widget: "string"}
