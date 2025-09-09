@@ -71,7 +71,7 @@
   </footer>
   <script>
     document.addEventListener('DOMContentLoaded', function() {
-      fetch('content/downloads/downloads.json')
+      fetch('content/downloads/index-downloads.json')
         .then(res => res.json())
         .then(data => {
           const dlList = document.getElementById('downloads-list');
