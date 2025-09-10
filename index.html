@@ -25,48 +25,42 @@
     </div>
   </header>
   <main>
-    <section class="hero" id="hero">
-      <div class="hero-content">
-        <h1>Judul Hero</h1>
-        <p>Deskripsi hero dari home.json</p>
-        <a href="#contact" class="cta-btn">Pesan Sekarang</a>
-      </div>
-      <div class="hero-img">
-        <img src="static/assets/images/hero-garment.jpg" alt="Garment Jember">
-      </div>
+    <!-- SLIDER -->
+    <section class="slider-section">
+      <div class="slider" id="hero-slider"></div>
+      <div class="slider-controls" id="slider-controls"></div>
     </section>
-    <section class="section services" id="services">
-      <h2>Layanan Kami</h2>
-      <div class="service-list"></div>
+
+    <!-- PRODUK PILIHAN -->
+    <section class="section our-products" id="our-products">
+      <h2>Produk Pilihan</h2>
+      <div class="product-grid" id="product-featured-list"></div>
+      <a href="products.html" class="btn-all-products"><i class="fas fa-store"></i> Lihat Semua Produk</a>
     </section>
-    <section class="section showcase" id="showcase">
-      <h2>Portofolio Produk</h2>
-      <div id="products-list" class="showcase-list"></div>
-      <div class="showcase-btn-area">
-        <a href="products.html" class="cta-btn">Lihat Semua Produk</a>
-      </div>
+
+    <!-- PORTOFOLIO -->
+    <section class="section portfolio" id="portfolio">
+      <h2>Portofolio</h2>
+      <div class="portfolio-grid" id="portfolio-list"></div>
+      <a href="portfolio.html" class="btn-all-portfolio"><i class="fas fa-briefcase"></i> Lihat Semua Portofolio</a>
     </section>
-    <section class="section articles" id="articles">
-      <h2>Artikel & Tips Garment</h2>
-      <div id="articles-list" class="article-list"></div>
-      <div class="showcase-btn-area">
-        <a href="articles.html" class="cta-btn">Baca Semua Artikel</a>
-      </div>
-    </section>
+
+    <!-- KONTAK -->
     <section class="section contact" id="contact">
       <h2>Hubungi Kami</h2>
       <div class="contact-area">
         <div class="contact-info">
-          <div><strong>Alamat:</strong> <span class="site-address">Jl. Arowana, Perum Kebonagung indah Blok 13, No.16</span></div>
-          <div><strong>Email:</strong> <span class="site-email">info@b13factory.com</span></div>
-          <div><strong>WhatsApp:</strong> <a class="site-wa" href="https://wa.me/628123456789" target="_blank">+62 812-3456-789</a></div>
+          <div><strong>Alamat:</strong> <span class="site-address" id="contact-address"></span></div>
+          <div><strong>Email:</strong> <span class="site-email" id="contact-email"></span></div>
+          <div><strong>WhatsApp:</strong> <a class="site-wa" id="contact-wa" href="#" target="_blank"></a></div>
         </div>
-        <form class="contact-form" id="contactForm">
-          <input type="text" name="nama" placeholder="Nama Anda" required>
-          <input type="email" name="email" placeholder="Email" required>
-          <textarea name="pesan" placeholder="Pesan / Order" required></textarea>
-          <button type="submit">Kirim Pesan</button>
-        </form>
+        <div class="contact-map">
+          <iframe id="gmap-frame"
+            src="https://www.google.com/maps/embed?pb=YOUR_GOOGLE_MAPS_EMBED_URL"
+            allowfullscreen=""
+            loading="lazy"
+            referrerpolicy="no-referrer-when-downgrade"></iframe>
+        </div>
       </div>
     </section>
   </main>
@@ -94,6 +88,6 @@
       &copy; 2025 B13 Factory Garment Adv. Powered by Netlify CMS.
     </div>
   </footer>
-  <script src="scripts/script.js"></script>
+  <script src="scripts/home.js"></script>
 </body>
 </html>
