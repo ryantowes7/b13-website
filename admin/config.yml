@@ -1,124 +1,125 @@
 backend:
   name: git-gateway
   branch: main
-  commit_messages:
-    create: "Buat {{collection}} \"{{slug}}\""
-    update: "Update {{collection}} \"{{slug}}\""
-    delete: "Hapus {{collection}} \"{{slug}}\""
-    uploadMedia: "Upload \"{{path}}\""
-    deleteMedia: "Hapus \"{{path}}\""
 
 media_folder: "static/assets/uploads"
-public_folder: "/assets/uploads"
-publish_mode: editorial_workflow
+public_folder: "/static/assets/uploads"
+
+site_url: "https://b13factory.com"
+display_url: "https://b13factory.com"
+
+locale: 'id'
 
 collections:
-  - name: "pages"
-    label: "Halaman"
+  # SITE SETTINGS
+  - name: "settings"
+    label: "Pengaturan Situs"
     files:
-      - file: "content/settings/home.json"
-        label: "Home Page"
-        name: "home"
-        fields:
-          - {label: "Judul Website", name: "title", widget: "string"}
-          - {label: "Deskripsi", name: "description", widget: "text"}
-          - label: "Hero Slider"
-            name: "hero"
-            widget: "list"
-            fields:
-              - {label: "Judul", name: "title", widget: "string"}
-              - {label: "Subjudul", name: "subtitle", widget: "string"}
-              - {label: "Gambar", name: "image", widget: "image"}
-          - label: "Info Rotator"
-            name: "info"
-            widget: "list"
-            field: {label: "Info", name: "text", widget: "string"}
-          - label: "Layanan"
-            name: "services"
-            widget: "list"
-            fields:
-              - {label: "Icon", name: "icon", widget: "string"}
-              - {label: "Judul", name: "title", widget: "string"}
-              - {label: "Deskripsi", name: "description", widget: "text"}
-          - label: "Target Pasar"
-            name: "market"
-            widget: "list"
-            fields:
-              - {label: "Icon", name: "icon", widget: "string"}
-              - {label: "Judul", name: "title", widget: "string"}
-          - label: "Spesifikasi"
-            name: "specs"
-            widget: "list"
-            fields:
-              - {label: "Judul", name: "title", widget: "string"}
-              - {label: "Deskripsi", name: "description", widget: "text"}
-          - label: "Media Sosial"
-            name: "social"
-            widget: "list"
-            fields:
-              - {label: "Icon", name: "icon", widget: "string"}
-              - {label: "URL", name: "url", widget: "string"}
-
-      - file: "content/settings/about.json"
-        label: "About Page"
-        name: "about"
-        fields:
-          - {label: "Judul", name: "title", widget: "string"}
-          - {label: "Deskripsi", name: "description", widget: "markdown"}
-          - {label: "Gambar", name: "team_image", widget: "image"}
-          - {label: "Alamat", name: "address", widget: "string"}
-          - {label: "Telepon", name: "phone", widget: "string"}
-          - {label: "Email", name: "email", widget: "string"}
-          - {label: "WhatsApp", name: "whatsapp", widget: "string"}
-          - label: "Layanan"
-            name: "services"
-            widget: "list"
-            field: {label: "Layanan", name: "service", widget: "string"}
-
-      - file: "content/settings/site.json"
-        label: "Site Settings"
+      - label: "Info Website"
         name: "site"
+        file: "content/settings/site.json"
         fields:
-          - {label: "Nama Website", name: "site_name", widget: "string"}
-          - {label: "Logo", name: "logo", widget: "image"}
-          - {label: "Favicon", name: "favicon", widget: "image"}
-          - {label: "Email Kontak", name: "contact_email", widget: "string"}
-          - {label: "WhatsApp", name: "whatsapp", widget: "string"}
-          - {label: "Instagram", name: "instagram", widget: "string"}
-          - {label: "Facebook", name: "facebook", widget: "string"}
-          - {label: "Alamat", name: "address", widget: "string"}
+          - { label: "Nama Situs", name: "site_name", widget: "string" }
+          - { label: "Deskripsi", name: "description", widget: "text", required: false }
+          - { label: "Logo", name: "logo", widget: "image", required: false }
+          - { label: "Alamat", name: "address", widget: "string" }
+          - { label: "Email Kontak", name: "contact_email", widget: "string" }
+          - { label: "Telepon", name: "phone", widget: "string", required: false }
+          - { label: "WhatsApp", name: "whatsapp", widget: "string" }
+          - { label: "Instagram", name: "instagram", widget: "string", required: false }
+          - { label: "Facebook", name: "facebook", widget: "string", required: false }
 
+      - label: "Home Slider"
+        name: "home"
+        file: "content/settings/home.json"
+        fields:
+          - label: "Slider Beranda"
+            name: "hero_slider"
+            widget: "list"
+            summary: "{{fields.caption}}"
+            fields:
+              - { label: "Gambar", name: "image", widget: "image" }
+              - { label: "Caption/Teks", name: "caption", widget: "string", required: false }
+
+  # PRODUK
   - name: "products"
     label: "Produk"
+    label_singular: "Produk"
     folder: "content/products"
     create: true
     slug: "{{slug}}"
+    summary: "{{name}}"
+    sortable_fields: ['order','date','name']
     fields:
-      - {label: "Nama", name: "name", widget: "string"}
-      - {label: "Deskripsi", name: "description", widget: "text"}
-      - {label: "Harga", name: "price", widget: "number"}
-      - {label: "Gambar", name: "image", widget: "image"}
+      - { label: "Nama Produk", name: "name", widget: "string" }
+      - { label: "Gambar", name: "image", widget: "image" }
+      - { label: "Deskripsi", name: "description", widget: "text" }
+      - { label: "Harga", name: "price", widget: "string", required: false }
+      - { label: "Tampilkan di Home (Produk Pilihan)", name: "featured", widget: "boolean", default: false }
+      - { label: "Urutan", name: "order", widget: "number", required: false }
+      - { label: "Aktif?", name: "active", widget: "boolean", default: true }
 
+  # PORTOFOLIO
+  - name: "portfolio"
+    label: "Portofolio"
+    label_singular: "Portofolio"
+    folder: "content/portfolio"
+    create: true
+    slug: "{{slug}}"
+    summary: "{{title}}"
+    fields:
+      - { label: "Judul", name: "title", widget: "string" }
+      - { label: "Gambar", name: "image", widget: "image" }
+      - { label: "Deskripsi", name: "description", widget: "text", required: false }
+      - { label: "Tanggal", name: "date", widget: "datetime", required: false }
+      - { label: "Urutan", name: "order", widget: "number", required: false }
+
+  # ARTIKEL
   - name: "articles"
     label: "Artikel"
+    label_singular: "Artikel"
     folder: "content/articles"
     create: true
     slug: "{{slug}}"
+    summary: "{{title}}"
+    sortable_fields: ['date','title']
     fields:
-      - {label: "Judul", name: "title", widget: "string"}
-      - {label: "Kutipan", name: "excerpt", widget: "text"}
-      - {label: "Deskripsi", name: "description", widget: "markdown"}
-      - {label: "Gambar", name: "image", widget: "image"}
+      - { label: "Judul", name: "title", widget: "string" }
+      - { label: "Gambar", name: "image", widget: "image", required: false }
+      - { label: "Isi", name: "body", widget: "markdown" }
+      - { label: "Tanggal", name: "date", widget: "datetime" }
+      - { label: "Penulis", name: "author", widget: "string", required: false }
+      - { label: "Kategori", name: "category", widget: "string", required: false }
 
+  # TENTANG KAMI
+  - name: "about"
+    label: "Tentang Kami"
+    files:
+      - label: "Tentang Kami"
+        name: "about"
+        file: "content/settings/about.md"
+        fields:
+          - { label: "Judul", name: "title", widget: "string" }
+          - { label: "Isi", name: "body", widget: "markdown" }
+
+  # DOWNLOADS / FILES
   - name: "downloads"
     label: "Download"
     folder: "content/downloads"
     create: true
     slug: "{{slug}}"
     fields:
-      - {label: "Judul", name: "title", widget: "string"}
-      - {label: "Deskripsi", name: "description", widget: "text"}
-      - {label: "File", name: "file", widget: "file"}
-      - {label: "Ukuran", name: "size", widget: "string"}
-      - {label: "Tanggal", name: "date", widget: "datetime"}
-      - {label: "Kategori", name: "category", widget: "string"}
+      - { label: "Nama File", name: "title", widget: "string" }
+      - { label: "Deskripsi", name: "description", widget: "text", required: false }
+      - { label: "File", name: "file", widget: "file" }
+      - { label: "Tanggal", name: "date", widget: "datetime", required: false }
+
+# Media Library (optional)
+media_library:
+  name: "uploadcare"
+  config:
+    publicKey: "demopublickey"
+
+# Customization (optional)
+logo_url: /static/assets/images/logo.png
+show_preview_links: false
