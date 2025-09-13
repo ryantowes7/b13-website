@@ -5,13 +5,7 @@ backend:
 media_folder: "static/assets/uploads"
 public_folder: "/static/assets/uploads"
 
-site_url: "https://b13factory.com"
-display_url: "https://b13factory.com"
-
-locale: 'id'
-
 collections:
-  # SITE SETTINGS
   - name: "settings"
     label: "Pengaturan Situs"
     files:
@@ -28,7 +22,7 @@ collections:
           - { label: "WhatsApp", name: "whatsapp", widget: "string" }
           - { label: "Instagram", name: "instagram", widget: "string", required: false }
           - { label: "Facebook", name: "facebook", widget: "string", required: false }
-
+          - { label: "Google Maps Embed", name: "maps_embed", widget: "string", required: false }
       - label: "Home Slider"
         name: "home"
         file: "content/settings/home.json"
@@ -41,7 +35,6 @@ collections:
               - { label: "Gambar", name: "image", widget: "image" }
               - { label: "Caption/Teks", name: "caption", widget: "string", required: false }
 
-  # PRODUK
   - name: "products"
     label: "Produk"
     label_singular: "Produk"
@@ -52,6 +45,7 @@ collections:
     sortable_fields: ['order','date','name']
     fields:
       - { label: "Nama Produk", name: "name", widget: "string" }
+      - { label: "Slug", name: "slug", widget: "string", required: false }
       - { label: "Gambar", name: "image", widget: "image" }
       - { label: "Deskripsi", name: "description", widget: "text" }
       - { label: "Harga", name: "price", widget: "string", required: false }
@@ -59,7 +53,6 @@ collections:
       - { label: "Urutan", name: "order", widget: "number", required: false }
       - { label: "Aktif?", name: "active", widget: "boolean", default: true }
 
-  # PORTOFOLIO
   - name: "portfolio"
     label: "Portofolio"
     label_singular: "Portofolio"
@@ -69,12 +62,12 @@ collections:
     summary: "{{title}}"
     fields:
       - { label: "Judul", name: "title", widget: "string" }
+      - { label: "Slug", name: "slug", widget: "string", required: false }
       - { label: "Gambar", name: "image", widget: "image" }
       - { label: "Deskripsi", name: "description", widget: "text", required: false }
       - { label: "Tanggal", name: "date", widget: "datetime", required: false }
       - { label: "Urutan", name: "order", widget: "number", required: false }
 
-  # ARTIKEL
   - name: "articles"
     label: "Artikel"
     label_singular: "Artikel"
@@ -85,13 +78,13 @@ collections:
     sortable_fields: ['date','title']
     fields:
       - { label: "Judul", name: "title", widget: "string" }
+      - { label: "Slug", name: "slug", widget: "string", required: false }
       - { label: "Gambar", name: "image", widget: "image", required: false }
       - { label: "Isi", name: "body", widget: "markdown" }
       - { label: "Tanggal", name: "date", widget: "datetime" }
       - { label: "Penulis", name: "author", widget: "string", required: false }
       - { label: "Kategori", name: "category", widget: "string", required: false }
 
-  # TENTANG KAMI
   - name: "about"
     label: "Tentang Kami"
     files:
@@ -102,7 +95,6 @@ collections:
           - { label: "Judul", name: "title", widget: "string" }
           - { label: "Isi", name: "body", widget: "markdown" }
 
-  # DOWNLOADS / FILES
   - name: "downloads"
     label: "Download"
     folder: "content/downloads"
@@ -113,13 +105,3 @@ collections:
       - { label: "Deskripsi", name: "description", widget: "text", required: false }
       - { label: "File", name: "file", widget: "file" }
       - { label: "Tanggal", name: "date", widget: "datetime", required: false }
-
-# Media Library (optional)
-media_library:
-  name: "uploadcare"
-  config:
-    publicKey: "demopublickey"
-
-# Customization (optional)
-logo_url: /static/assets/images/logo.png
-show_preview_links: false
