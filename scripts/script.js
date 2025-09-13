@@ -19,7 +19,12 @@ document.addEventListener('DOMContentLoaded', () => {
         // Logo utama
         const logoElem = document.querySelector('.logo-img');
         if (logoElem && data.logo) {
-          logoElem.src = `static/assets/uploads/${data.logo}`;
+          // Jika sudah mengandung 'static/', pakai apa adanya (hilangkan leading slash jika ada)
+          if (data.logo.startsWith('/static/') || data.logo.startsWith('static/')) {
+            logoElem.src = data.logo.replace(/^\/+/, '');
+          } else {
+            logoElem.src = 'static/assets/uploads/' + data.logo;
+          }
           logoElem.alt = data.site_name || 'Logo';
         }
 
