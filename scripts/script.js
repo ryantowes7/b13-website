@@ -16,16 +16,17 @@ document.addEventListener('DOMContentLoaded', () => {
     fetch('content/settings/site.json')
       .then(res => res.json())
       .then(data => {
-        // Logo
+        // Logo utama
         const logoElem = document.querySelector('.logo-img');
         if (logoElem && data.logo) {
-          logoElem.src = `static/assets/images/${data.logo}`;
+          logoElem.src = `static/assets/uploads/${data.logo}`;
           logoElem.alt = data.site_name || 'Logo';
         }
-        // Site name di logo-text
-        const logoTextElem = document.querySelector('.logo-text');
-        if (logoTextElem && data.site_name) {
-          logoTextElem.textContent = data.site_name;
+
+        // Nama situs di teks logo
+        const logoText = document.querySelector('.logo-text');
+        if (logoText && data.site_name) {
+          logoText.textContent = data.site_name;
         }
         // Favicon
         if (data.favicon) {
