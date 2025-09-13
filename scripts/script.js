@@ -23,7 +23,7 @@ document.addEventListener('DOMContentLoaded', () => {
           if (data.logo.startsWith('/static/') || data.logo.startsWith('static/')) {
             logoElem.src = data.logo.replace(/^\/+/, '');
           } else {
-            logoElem.src = 'static/assets/uploads/' + data.logo;
+            logoElem.src = `static/assets/uploads/${data.logo}`;
           }
           logoElem.alt = data.site_name || 'Logo';
         }
