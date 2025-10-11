@@ -1,0 +1,24 @@
+{
+  "title": "Our Services",
+  "description": "Layanan lengkap garment dan advertising untuk mendukung kesuksesan bisnis Anda",
+  "services": [
+    {
+      "title": "Kaos Sablon",
+      "description": "Jasa sablon kaos berkualitas dengan berbagai teknik printing modern untuk kebutuhan bisnis dan personal.",
+      "color": "blue",
+      "features": ["Sablon Digital", "Sablon Rubber", "Sablon Plastisol"]
+    },
+    {
+      "title": "Bordir",
+      "description": "Layanan bordir komputer presisi tinggi untuk seragam perusahaan, jaket, dan berbagai kebutuhan fashion.",
+      "color": "green",
+      "features": ["Bordir Komputer", "Logo Perusahaan", "Custom Design"]
+    },
+    {
+      "title": "Advertising",
+      "description": "Produk advertising lengkap mulai dari banner, spanduk, neon box, hingga merchandise promosi.",
+      "color": "orange",
+      "features": ["Banner & Spanduk", "Neon Box", "Merchandise"]
+    }
+  ]
+}

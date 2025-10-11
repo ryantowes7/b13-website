@@ -1,0 +1,10 @@
+body {
+  font-family: 'Inter', sans-serif;
+  background: white;
+  margin: 0;
+  padding: 20px;
+}
+
+.nc-previewPane-frame {
+  font-family: 'Inter', sans-serif !important;
+}

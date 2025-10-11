@@ -1,0 +1,24 @@
+# website/netlify.toml
+[build]
+  publish = ".next"
+  command = "npm run build"
+
+[build.environment]
+  NODE_VERSION = "18"
+
+[[plugins]]
+  package = "@netlify/plugin-nextjs"
+
+# Netlify CMS Identity
+[build.processing]
+  skip_processing = true
+
+[[redirects]]
+  from = "/admin/*"
+  to = "/admin.html"
+  status = 200
+
+# Enable Git Gateway
+[backend]
+  name = "git-gateway"
+  branch = "main"
