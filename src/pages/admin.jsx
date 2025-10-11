@@ -3,7 +3,7 @@ import Head from 'next/head';
 
 export default function Admin() {
   useEffect(() => {
-    // Load Netlify CMS from CDN
+    // Load Netlify CMS
     const script = document.createElement('script');
     script.src = 'https://unpkg.com/netlify-cms@^2.10.0/dist/netlify-cms.js';
     script.async = true;
