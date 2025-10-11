@@ -1,46 +1,88 @@
-// website/src/pages/produk/index.jsx
 import Head from 'next/head';
-import { useState } from 'react';
-import { Filter, Grid, List, Download } from 'lucide-react';
+import { Filter, Grid, List, Download, Search } from 'lucide-react';
 import Button from '@/components/ui/Button';
+import ProductCard from '@/components/products/ProductCard';
+import Pagination from '@/components/ui/Pagination';
+import { useProducts } from '@/hooks/useProducts';
+import { categories, sortOptions } from '@/data/products';
 
 export default function Produk() {
-  const [viewMode, setViewMode] = useState('grid');
-  const [selectedCategory, setSelectedCategory] = useState('all');
+  const {
+    products,
+    allProducts,
+    loading,
+    error,
+    selectedCategory,
+    setSelectedCategory,
+    searchTerm,
+    setSearchTerm,
+    sortBy,
+    setSortBy,
+    currentPage,
+    setCurrentPage,
+    totalPages,
+    viewMode,
+    setViewMode,
+    totalProducts,
+    showingProducts
+  } = useProducts();
 
-  const categories = [
-    { id: 'all', name: 'Semua Produk', count: 24 },
-    { id: 'kaos', name: 'Kaos Sablon', count: 8 },
-    { id: 'bordir', name: 'Bordir', count: 6 },
-    { id: 'banner', name: 'Banner & Spanduk', count: 5 },
-    { id: 'merchandise', name: 'Merchandise', count: 5 },
-  ];
+  // Handle loading state
+  if (loading) {
+    return (
+      <>
+        <Head>
+          <title>Produk - B13 Factory</title>
+        </Head>
+        <section className="bg-gradient-to-r from-primary-600 to-primary-700 text-white py-20">
+          <div className="container-custom text-center">
+            <h1 className="text-4xl md:text-5xl font-bold mb-4">Our Products</h1>
+          </div>
+        </section>
+        <section className="section-padding bg-white">
+          <div className="container-custom">
+            <div className="flex justify-center items-center py-20">
+              <div className="text-center">
+                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600 mx-auto mb-4"></div>
+                <p className="text-neutral-600">Memuat produk...</p>
+              </div>
+            </div>
+          </div>
+        </section>
+      </>
+    );
+  }
 
-  const products = [
-    {
-      id: 1,
-      name: 'Kaos Polo Sablon',
-      category: 'kaos',
-      price: 'Rp 85.000',
-      image: '/uploads/product-1.jpg',
-      description: 'Kaos polo bahan cotton pique dengan sablon rubber berkualitas',
-      katalog: '/katalog/kaos-polo.pdf'
-    },
-    {
-      id: 2,
-      name: 'Jaket Bordir Logo',
-      category: 'bordir', 
-      price: 'Rp 250.000',
-      image: '/uploads/product-2.jpg',
-      description: 'Jaket parasut dengan bordir logo komputer presisi tinggi',
-      katalog: '/katalog/jaket-bordir.pdf'
-    },
-    // Tambahkan 22 produk lainnya...
-  ];
-
-  const filteredProducts = selectedCategory === 'all' 
-    ? products 
-    : products.filter(product => product.category === selectedCategory);
+  // Handle error state
+  if (error) {
+    return (
+      <>
+        <Head>
+          <title>Produk - B13 Factory</title>
+        </Head>
+        <section className="bg-gradient-to-r from-primary-600 to-primary-700 text-white py-20">
+          <div className="container-custom text-center">
+            <h1 className="text-4xl md:text-5xl font-bold mb-4">Our Products</h1>
+          </div>
+        </section>
+        <section className="section-padding bg-white">
+          <div className="container-custom">
+            <div className="flex justify-center items-center py-20">
+              <div className="text-center">
+                <p className="text-red-600 text-lg mb-4">{error}</p>
+                <Button 
+                  onClick={() => window.location.reload()}
+                  variant="primary"
+                >
+                  Coba Lagi
+                </Button>
+              </div>
+            </div>
+          </div>
+        </section>
+      </>
+    );
+  }
 
   return (
     <>
@@ -65,6 +107,22 @@ export default function Produk() {
             {/* Sidebar Filter */}
             <div className="lg:w-1/4">
               <div className="bg-neutral-50 rounded-xl p-6 sticky top-24">
+                {/* Search Box */}
+                <div className="mb-6">
+                  <label htmlFor="search" className="sr-only">Cari produk</label>
+                  <div className="relative">
+                    <Search size={20} className="absolute left-3 top-1/2 transform -translate-y-1/2 text-neutral-400" />
+                    <input
+                      id="search"
+                      type="text"
+                      placeholder="Cari produk..."
+                      value={searchTerm}
+                      onChange={(e) => setSearchTerm(e.target.value)}
+                      className="w-full pl-10 pr-4 py-3 border border-neutral-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                    />
+                  </div>
+                </div>
+
                 {/* Category Filter */}
                 <div className="mb-8">
                   <h3 className="text-lg font-semibold mb-4 flex items-center">
@@ -81,6 +139,7 @@ export default function Produk() {
                             ? 'bg-primary-500 text-white shadow-md'
                             : 'bg-white text-neutral-700 hover:bg-neutral-100'
                         }`}
+                        aria-pressed={selectedCategory === category.id}
                       >
                         <div className="flex justify-between items-center">
                           <span>{category.name}</span>
@@ -115,17 +174,45 @@ export default function Produk() {
             {/* Product Grid */}
             <div className="lg:w-3/4">
               {/* Toolbar */}
-              <div className="flex justify-between items-center mb-8">
-                <p className="text-neutral-600">
-                  Menampilkan {filteredProducts.length} produk
-                </p>
-                <div className="flex items-center space-x-4">
+              <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-8">
+                <div className="flex-1">
+                  <p className="text-neutral-600">
+                    Menampilkan {showingProducts} dari {totalProducts} produk
+                    {searchTerm && (
+                      <span> untuk "<strong>{searchTerm}</strong>"</span>
+                    )}
+                  </p>
+                </div>
+                
+                <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 w-full sm:w-auto">
+                  {/* Sort Options */}
+                  <div className="flex items-center gap-2">
+                    <label htmlFor="sort" className="text-sm text-neutral-600 whitespace-nowrap">
+                      Urutkan:
+                    </label>
+                    <select
+                      id="sort"
+                      value={sortBy}
+                      onChange={(e) => setSortBy(e.target.value)}
+                      className="border border-neutral-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary-500"
+                    >
+                      {sortOptions.map(option => (
+                        <option key={option.value} value={option.value}>
+                          {option.label}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+
+                  {/* View Toggle */}
                   <div className="flex bg-neutral-100 rounded-lg p-1">
                     <button
                       onClick={() => setViewMode('grid')}
                       className={`p-2 rounded-md transition-all ${
                         viewMode === 'grid' ? 'bg-white shadow-sm' : 'text-neutral-500'
                       }`}
+                      aria-label="Tampilan grid"
+                      aria-pressed={viewMode === 'grid'}
                     >
                       <Grid size={20} />
                     </button>
@@ -134,6 +221,8 @@ export default function Produk() {
                       className={`p-2 rounded-md transition-all ${
                         viewMode === 'list' ? 'bg-white shadow-sm' : 'text-neutral-500'
                       }`}
+                      aria-label="Tampilan list"
+                      aria-pressed={viewMode === 'list'}
                     >
                       <List size={20} />
                     </button>
@@ -141,99 +230,53 @@ export default function Produk() {
                 </div>
               </div>
 
-              {/* Product Grid */}
+              {/* Empty State */}
+              {products.length === 0 && (
+                <div className="text-center py-12">
+                  <p className="text-neutral-600 text-lg mb-4">Tidak ada produk yang ditemukan</p>
+                  <Button 
+                    onClick={() => {
+                      setSelectedCategory('all');
+                      setSearchTerm('');
+                      setSortBy('name');
+                    }}
+                    variant="primary"
+                  >
+                    Reset Filter
+                  </Button>
+                </div>
+              )}
+
+              {/* Product Grid/List */}
               {viewMode === 'grid' ? (
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                  {filteredProducts.map(product => (
-                    <div key={product.id} className="bg-white rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 card-hover">
-                      <div className="aspect-square bg-gradient-to-br from-primary-100 to-secondary-100 rounded-t-xl flex items-center justify-center">
-                        <div className="text-center text-neutral-600">
-                          <p>Product Image</p>
-                          <p className="text-sm">{product.name}</p>
-                        </div>
-                      </div>
-                      <div className="p-6">
-                        <h3 className="text-xl font-semibold mb-2 text-neutral-900">
-                          {product.name}
-                        </h3>
-                        <p className="text-neutral-600 mb-4 line-clamp-2">
-                          {product.description}
-                        </p>
-                        <div className="flex justify-between items-center mb-4">
-                          <span className="text-2xl font-bold text-primary-600">
-                            {product.price}
-                          </span>
-                          <span className="bg-primary-100 text-primary-600 px-3 py-1 rounded-full text-sm">
-                            {product.category}
-                          </span>
-                        </div>
-                        <div className="flex space-x-2">
-                          <Button href={`/produk/${product.id}`} variant="primary" className="flex-1">
-                            Detail
-                          </Button>
-                          {product.katalog && (
-                            <Button 
-                              href={product.katalog}
-                              variant="outline"
-                              className="px-3"
-                            >
-                              <Download size={18} />
-                            </Button>
-                          )}
-                        </div>
-                      </div>
-                    </div>
+                  {products.map(product => (
+                    <ProductCard 
+                      key={product.id} 
+                      product={product} 
+                      viewMode="grid" 
+                    />
                   ))}
                 </div>
               ) : (
-                /* List View */
                 <div className="space-y-4">
-                  {filteredProducts.map(product => (
-                    <div key={product.id} className="bg-white rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 p-6">
-                      <div className="flex flex-col md:flex-row gap-6">
-                        <div className="md:w-48 h-48 bg-gradient-to-br from-primary-100 to-secondary-100 rounded-lg flex items-center justify-center">
-                          <div className="text-center text-neutral-600">
-                            <p>Product Image</p>
-                          </div>
-                        </div>
-                        <div className="flex-1">
-                          <h3 className="text-2xl font-semibold mb-2 text-neutral-900">
-                            {product.name}
-                          </h3>
-                          <p className="text-neutral-600 mb-4">
-                            {product.description}
-                          </p>
-                          <div className="flex flex-wrap gap-4 items-center">
-                            <span className="text-2xl font-bold text-primary-600">
-                              {product.price}
-                            </span>
-                            <span className="bg-primary-100 text-primary-600 px-3 py-1 rounded-full">
-                              {product.category}
-                            </span>
-                            {product.katalog && (
-                              <Button 
-                                href={product.katalog}
-                                variant="outline"
-                                size="sm"
-                              >
-                                <Download size={16} className="mr-2" />
-                                Katalog
-                              </Button>
-                            )}
-                          </div>
-                        </div>
-                        <div className="flex flex-col space-y-2">
-                          <Button href={`/produk/${product.id}`} variant="primary">
-                            Detail
-                          </Button>
-                          <Button href="/contact-us" variant="outline">
-                            Konsultasi
-                          </Button>
-                        </div>
-                      </div>
-                    </div>
+                  {products.map(product => (
+                    <ProductCard 
+                      key={product.id} 
+                      product={product} 
+                      viewMode="list" 
+                    />
                   ))}
                 </div>
+              )}
+
+              {/* Pagination */}
+              {totalPages > 1 && (
+                <Pagination
+                  currentPage={currentPage}
+                  totalPages={totalPages}
+                  onPageChange={setCurrentPage}
+                />
               )}
             </div>
           </div>
