@@ -1,4 +1,3 @@
-// website/src/components/home/HeroBanner.jsx
 'use client';
 import { useState, useEffect } from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
@@ -10,36 +9,48 @@ export default function HeroBanner() {
   const [heroData, setHeroData] = useState(null);
   const [contactData, setContactData] = useState(null);
 
-  // Load hero data from CMS
-  useEffect(() => {
-    fetch('/content/home/hero.json')
-      .then(res => res.json())
-      .then(data => setHeroData(data))
-      .catch(err => {
-        console.log('Using default hero data');
-        setHeroData({
-          slides: [
-            {
-              title: "GARMENT AND ADVERTISING",
-              description: "Specialist dalam garment dan advertising dengan kualitas terbaik untuk kebutuhan bisnis Anda.",
-              image: "/uploads/hero-default.jpg",
-              button_text: "View Products",
-              button_link: "/produk"
-            }
-          ]
-        });
-      });
+  const defaultHeroData = {
+    slides: [
+      {
+        title: "GARMENT AND ADVERTISING",
+        description: "Specialist dalam garment dan advertising dengan kualitas terbaik untuk kebutuhan bisnis Anda.",
+        image: "",
+        button_text: "View Products",
+        button_link: "/produk"
+      }
+    ]
+  };
 
-    // Load contact data for running text
-    fetch('/content/settings/contact.json')
-      .then(res => res.json())
-      .then(data => setContactData(data))
-      .catch(err => {
-        console.log('Using default contact data');
-        setContactData({
-          business_hours: "Buka Setiap Hari Pukul 09.00 - 17.00 WIB"
-        });
-      });
+  const defaultContactData = {
+    business_hours: "Buka Setiap Hari Pukul 09.00 - 17.00 WIB"
+  };
+
+  useEffect(() => {
+    const loadData = async () => {
+      try {
+        const [heroRes, contactRes] = await Promise.allSettled([
+          fetch('/content/home/hero.json'),
+          fetch('/content/settings/contact.json')
+        ]);
+
+        const heroData = heroRes.status === 'fulfilled' && heroRes.value.ok 
+          ? await heroRes.value.json() 
+          : defaultHeroData;
+        
+        const contactData = contactRes.status === 'fulfilled' && contactRes.value.ok 
+          ? await contactRes.value.json() 
+          : defaultContactData;
+
+        setHeroData(heroData);
+        setContactData(contactData);
+      } catch (error) {
+        console.log('Using default data');
+        setHeroData(defaultHeroData);
+        setContactData(defaultContactData);
+      }
+    };
+
+    loadData();
   }, []);
 
   if (!heroData || !contactData) {
@@ -47,7 +58,7 @@ export default function HeroBanner() {
       <section className="relative h-screen bg-gradient-to-br from-primary-600 to-primary-800 flex items-center justify-center" style={{ marginTop: '-64px' }}>
         <div className="text-white text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-white mx-auto mb-4"></div>
-          <p>Loading Banner...</p>
+          <p>Loading...</p>
         </div>
       </section>
     );
@@ -78,7 +89,6 @@ export default function HeroBanner() {
       onMouseLeave={() => setIsHovering(false)}
       style={{ marginTop: '-64px' }}
     >
-      {/* Background Slides */}
       <div className="absolute inset-0">
         {slides.map((slide, index) => (
           <div
@@ -95,7 +105,7 @@ export default function HeroBanner() {
             ) : (
               <div className="w-full h-full bg-gradient-to-br from-primary-600 to-primary-800 flex items-center justify-center">
                 <div className="text-center text-white">
-                  <p className="text-2xl mb-4">Slide {index + 1}</p>
+                  <p className="text-2xl mb-4">B13 Factory</p>
                   <p className="text-lg">{slide.title}</p>
                 </div>
               </div>
@@ -104,10 +114,8 @@ export default function HeroBanner() {
         ))}
       </div>
 
-      {/* Shadow Gradation */}
       <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-transparent to-black/50" />
 
-      {/* Content Center */}
       <div className="relative z-30 h-full flex items-center justify-center text-center text-white pt-16">
         <div className="max-w-4xl mx-auto px-4">
           <h1 className="text-5xl md:text-7xl font-bold mb-6 animate-fade-in">
@@ -128,7 +136,6 @@ export default function HeroBanner() {
         </div>
       </div>
 
-      {/* Slider Controls */}
       {slides.length > 1 && (
         <div className="absolute bottom-20 right-8 z-40 flex space-x-4">
           <button
@@ -146,7 +153,6 @@ export default function HeroBanner() {
         </div>
       )}
 
-      {/* Running Text Footer */}
       <div className="absolute bottom-0 left-0 right-0 bg-primary-600/90 backdrop-blur-sm py-3 overflow-hidden z-30">
         <div className="animate-marquee whitespace-nowrap">
           <span className="text-white font-semibold text-lg mx-4">
@@ -158,7 +164,6 @@ export default function HeroBanner() {
         </div>
       </div>
 
-      {/* Slide Indicators */}
       {slides.length > 1 && (
         <div className="absolute bottom-16 left-1/2 transform -translate-x-1/2 z-40 flex space-x-2">
           {slides.map((_, index) => (

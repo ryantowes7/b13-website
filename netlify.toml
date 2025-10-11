@@ -1,4 +1,3 @@
-# website/netlify.toml
 [build]
   publish = ".next"
   command = "npm run build"

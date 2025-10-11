@@ -22,7 +22,7 @@ collections:
     files:
       - name: 'site'
         label: 'Site Settings'
-        file: 'content/settings/site.json'
+        file: 'public/content/settings/site.json'
         fields:
           - { label: 'Site Title', name: 'title', widget: 'string' }
           - { label: 'Site Description', name: 'description', widget: 'text' }
@@ -31,7 +31,7 @@ collections:
 
       - name: 'contact'
         label: 'Contact Settings'
-        file: 'content/settings/contact.json'
+        file: 'public/content/settings/contact.json'
         fields:
           - { label: 'Company Name', name: 'company_name', widget: 'string' }
           - { label: 'Address', name: 'address', widget: 'text' }
@@ -45,7 +45,7 @@ collections:
     files:
       - name: 'hero'
         label: 'Hero Banner'
-        file: 'content/home/hero.json'
+        file: 'public/content/home/hero.json'
         fields:
           - label: 'Slides'
             name: 'slides'
@@ -59,7 +59,7 @@ collections:
 
       - name: 'featured_products'
         label: 'Featured Products'
-        file: 'content/home/featured-products.json'
+        file: 'public/content/home/featured-products.json'
         fields:
           - { label: 'Section Title', name: 'title', widget: 'string' }
           - label: 'Featured Product'
@@ -80,7 +80,7 @@ collections:
 
       - name: 'services'
         label: 'Our Services'
-        file: 'content/home/services.json'
+        file: 'public/content/home/services.json'
         fields:
           - { label: 'Section Title', name: 'title', widget: 'string' }
           - { label: 'Section Description', name: 'description', widget: 'text' }
@@ -99,7 +99,7 @@ collections:
 
   - name: 'products'
     label: 'Products'
-    folder: 'content/products'
+    folder: 'public/content/products'
     create: true
     slug: '{{slug}}'
     fields:
@@ -113,7 +113,7 @@ collections:
 
   - name: 'articles'
     label: 'Articles'
-    folder: 'content/articles'
+    folder: 'public/content/articles'
     create: true
     slug: '{{slug}}'
     fields:
@@ -125,3 +125,19 @@ collections:
       - { label: 'Author', name: 'author', widget: 'string', default: 'Admin B13' }
       - { label: 'Publish Date', name: 'date', widget: 'datetime' }
       - { label: 'Featured Article', name: 'featured', widget: 'boolean', default: false }
+
+  - name: 'portfolio'
+    label: 'Portfolio'
+    folder: 'public/content/portfolio'
+    create: true
+    slug: '{{slug}}'
+    fields:
+      - { label: 'Project Title', name: 'title', widget: 'string' }
+      - { label: 'Category', name: 'category', widget: 'select', options: ['garment', 'bordir', 'advertising', 'merchandise'] }
+      - { label: 'Client Name', name: 'client', widget: 'string' }
+      - { label: 'Location', name: 'location', widget: 'string' }
+      - { label: 'Year', name: 'year', widget: 'string' }
+      - { label: 'Featured Image', name: 'image', widget: 'image' }
+      - { label: 'Project Description', name: 'description', widget: 'markdown' }
+      - { label: 'Deliverables', name: 'deliverables', widget: 'list', fields: [{label: 'Item', name: 'item', widget: 'string'}] }
+      - { label: 'Featured Project', name: 'featured', widget: 'boolean', default: false }

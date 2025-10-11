@@ -10,48 +10,37 @@ export default function FeaturedProducts() {
   
   // Load featured products from CMS
   useEffect(() => {
-    fetch('/content/home/featured-products.json')
-      .then(res => res.json())
-      .then(data => setFeaturedData(data))
-      .catch(err => {
+    const loadData = async () => {
+      try {
+        const response = await fetch('/content/home/featured-products.json');
+        if (response.ok) {
+          const data = await response.json();
+          setFeaturedData(data);
+        } else {
+          throw new Error('Failed to load featured products');
+        }
+      } catch (error) {
         console.log('Using default featured products data');
         setFeaturedData({
           title: "Product Updates",
           featured: {
             title: "Kaos Polo Sablon Premium",
-            description: "Kaos polo bahan cotton pique dengan sablon rubber berkualitas tinggi. Cocok untuk seragam perusahaan dan event.",
-            image: "/uploads/featured-product.jpg",
-            button_text: "Lihat Detail",
+            description: "Kaos polo bahan cotton pique dengan sablon rubber berkualitas tinggi.",
+            image: "",
+            button_text: "Lihat Detail", 
             button_link: "/produk/kaos-polo"
           },
           products: [
-            {
-              title: "Jaket Bordir Logo",
-              description: "Jaket parasut dengan bordir komputer presisi tinggi untuk logo perusahaan."
-            },
-            {
-              title: "Banner Vinyl",
-              description: "Banner material vinyl frontlit dengan ketahanan cuaca yang baik."
-            },
-            {
-              title: "Kaos Sablon Digital",
-              description: "Kaos dengan sablon digital full color untuk design yang kompleks."
-            },
-            {
-              title: "Topi Merchandise",
-              description: "Topi custom untuk merchandise perusahaan dengan berbagai pilihan model."
-            },
-            {
-              title: "Tote Bag Sablon",
-              description: "Tote bag bahan kanvas dengan sablon rubber yang tahan lama."
-            },
-            {
-              title: "ID Card Custom",
-              description: "ID card karyawan dengan design custom dan berbagai aksesoris."
-            }
+            { title: "Jaket Bordir Logo", description: "Jaket parasut dengan bordir komputer presisi tinggi." },
+            { title: "Banner Vinyl", description: "Banner material vinyl frontlit dengan ketahanan cuaca yang baik." },
+            { title: "Kaos Sablon Digital", description: "Kaos dengan sablon digital full color untuk design kompleks." },
+            { title: "Topi Merchandise", description: "Topi custom untuk merchandise perusahaan." }
           ]
         });
-      });
+      }
+    };
+
+    loadData();
   }, []);
 
   if (!featuredData) {
