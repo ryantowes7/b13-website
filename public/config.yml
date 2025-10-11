@@ -27,29 +27,13 @@ collections:
         label: "Global Site Config"
         name: "site-config"
         fields:
-          - label: "Site Title"
-            name: "title"
-            widget: "string"
-          - label: "Site Description"
-            name: "description"
-            widget: "text"
-          - label: "Site Logo"
-            name: "logo"
-            widget: "image"
-            required: false
-          - label: "Favicon"
-            name: "favicon"
-            widget: "image"
-            required: false
-          - label: "Contact Email"
-            name: "contact_email"
-            widget: "string"
-          - label: "Contact Phone"
-            name: "contact_phone"
-            widget: "string"
-          - label: "Address"
-            name: "address"
-            widget: "text"
+          - { label: "Site Title", name: "title", widget: "string" }
+          - { label: "Site Description", name: "description", widget: "text" }
+          - { label: "Site Logo", name: "logo", widget: "image", required: false }
+          - { label: "Favicon", name: "favicon", widget: "image", required: false }
+          - { label: "Contact Email", name: "contact_email", widget: "string" }
+          - { label: "Contact Phone", name: "contact_phone", widget: "string" }
+          - { label: "Address", name: "address", widget: "text" }
 
   - name: "home"
     label: "Home Page"

@@ -7,6 +7,7 @@ export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [siteData, setSiteData] = useState(null);
   const [isScrolled, setIsScrolled] = useState(false);
+  const [logoError, setLogoError] = useState(false);
 
   useEffect(() => {
     // Load site data dari CMS
@@ -24,7 +25,6 @@ export default function Header() {
           });
         }
       } catch (error) {
-        console.log('Using default site data');
         setSiteData({
           title: 'B13 Factory',
           logo: ''
@@ -60,29 +60,15 @@ export default function Header() {
         <div className="flex justify-between items-center py-4">
           {/* Logo - Dynamic dari CMS */}
           <Link href="/" className="flex items-center space-x-3 group">
-            {siteData?.logo ? (
-              // Jika ada logo di CMS, gunakan logo
-              <div className="flex items-center space-x-3">
-                <img 
-                  src={siteData.logo} 
-                  alt={siteData?.title || 'B13 Factory'}
-                  className="w-10 h-10 object-contain transition-transform group-hover:scale-105"
-                  onError={(e) => {
-                    // Fallback jika gambar error
-                    e.target.style.display = 'none';
-                    e.target.nextSibling.style.display = 'flex';
-                  }}
-                />
-                {/* Fallback logo jika gambar error */}
-                <div 
-                  className="w-10 h-10 bg-primary-500 rounded-lg flex items-center justify-center hidden"
-                  style={{ display: 'none' }}
-                >
-                  <span className="text-white font-bold text-lg">B13</span>
-                </div>
-              </div>
+            {siteData?.logo && !logoError ? (
+              <img 
+                src={siteData.logo} 
+                alt={siteData?.title || 'B13 Factory'}
+                className="w-10 h-10 object-contain transition-transform group-hover:scale-105"
+                onError={() => setLogoError(true)}
+                loading="lazy"
+              />
             ) : (
-              // Default logo jika tidak ada di CMS
               <div className="w-10 h-10 bg-primary-500 rounded-lg flex items-center justify-center group-hover:bg-primary-600 transition-colors">
                 <span className="text-white font-bold text-lg">B13</span>
               </div>
