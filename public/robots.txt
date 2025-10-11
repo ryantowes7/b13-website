@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://b13factory-garmentadv.netlify.app/sitemap.xml

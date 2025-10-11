@@ -1,16 +1,118 @@
-// src/pages/_document.jsx
 import { Html, Head, Main, NextScript } from 'next/document';
 
 export default function Document() {
   return (
     <Html lang="id">
       <Head>
-        <meta name="description" content="B13 Factory - Specialist Garment dan Advertising" />
+        {/* Favicon */}
         <link rel="icon" href="/favicon.ico" />
+        <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+        
+        {/* PWA Manifest */}
+        <link rel="manifest" href="/site.webmanifest" />
+        
+        {/* Theme Color */}
+        <meta name="theme-color" content="#0066B3" />
+        <meta name="msapplication-TileColor" content="#0066B3" />
+        
+        {/* Preload Critical Fonts */}
+        <link
+          rel="preload"
+          href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
+          as="style"
+        />
+        <link
+          href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
+          rel="stylesheet"
+        />
+        
+        {/* Preload Critical CSS */}
+        <style
+          dangerouslySetInnerHTML={{
+            __html: `
+              /* Critical CSS untuk above-the-fold content */
+              body {
+                margin: 0;
+                font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+              }
+              
+              /* Hide scrollbar during initial load */
+              html {
+                scrollbar-width: none;
+              }
+              body::-webkit-scrollbar {
+                display: none;
+              }
+            `,
+          }}
+        />
+        
+        {/* DNS Prefetch untuk external domains */}
+        <link rel="dns-prefetch" href="//fonts.googleapis.com" />
+        <link rel="dns-prefetch" href="//fonts.gstatic.com" />
+        
+        {/* Additional Meta Tags */}
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+        <meta name="apple-mobile-web-app-title" content="B13 Factory" />
+        
+        {/* Structured Data untuk Organization */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "Organization",
+              "name": "B13 Factory",
+              "alternateName": "B13 Factory Garment & Advertising",
+              "url": "https://b13factory-garmentadv.netlify.app",
+              "logo": "https://b13factory-garmentadv.netlify.app/logo.png",
+              "description": "Specialist dalam garment dan advertising. Jasa sablon, bordir, banner, dan berbagai kebutuhan promosi bisnis profesional.",
+              "address": {
+                "@type": "PostalAddress",
+                "streetAddress": "JL. Arowana, Perum Kebon Agung Indah",
+                "addressLocality": "Jember",
+                "addressRegion": "Jawa Timur",
+                "postalCode": "68161",
+                "addressCountry": "ID"
+              },
+              "contactPoint": {
+                "@type": "ContactPoint",
+                "telephone": "+62-812-3456-7890",
+                "contactType": "customer service",
+                "email": "b13factory@gmail.com",
+                "areaServed": "ID",
+                "availableLanguage": ["Indonesian", "English"]
+              },
+              "sameAs": []
+            })
+          }}
+        />
       </Head>
-      <body>
+      <body className="bg-white text-neutral-900 antialiased">
         <Main />
         <NextScript />
+        
+        {/* Noscript fallback */}
+        <noscript>
+          <div style={{
+            position: 'fixed',
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            backgroundColor: 'white',
+            color: 'black',
+            zIndex: 9999,
+            padding: '20px',
+            textAlign: 'center'
+          }}>
+            <h1>JavaScript Required</h1>
+            <p>This website requires JavaScript to function properly. Please enable JavaScript in your browser settings.</p>
+          </div>
+        </noscript>
       </body>
     </Html>
   );

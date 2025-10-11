@@ -4,9 +4,10 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build", 
-    "start": "next start",
-    "lint": "next lint"
+    "build": "next build && npm run sitemap",
+    "start": "next start", 
+    "lint": "next lint",
+    "sitemap": "node scripts/generate-sitemap.js"
   },
   "dependencies": {
     "next": "14.0.0",
