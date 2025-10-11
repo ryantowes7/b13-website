@@ -6,9 +6,7 @@ const nextConfig = {
     domains: ['images.unsplash.com', 'via.placeholder.com'],
     formats: ['image/avif', 'image/webp'],
   },
-  experimental: {
-    optimizeCss: true,
-  },
+  // HAPUS experimental.optimizeCss karena butuh critters package
   compiler: {
     removeConsole: process.env.NODE_ENV === 'production',
   },
