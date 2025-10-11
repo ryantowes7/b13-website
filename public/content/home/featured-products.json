@@ -3,7 +3,7 @@
   "featured": {
     "title": "Kaos Polo Sablon Premium",
     "description": "Kaos polo bahan cotton pique dengan sablon rubber berkualitas tinggi. Cocok untuk seragam perusahaan dan event.",
-    "image": "/uploads/featured-product.jpg",
+    "image": "",
     "button_text": "Lihat Detail",
     "button_link": "/produk/kaos-polo"
   },
@@ -23,14 +23,6 @@
     {
       "title": "Topi Merchandise",
       "description": "Topi custom untuk merchandise perusahaan dengan berbagai pilihan model."
-    },
-    {
-      "title": "Tote Bag Sablon",
-      "description": "Tote bag bahan kanvas dengan sablon rubber yang tahan lama."
-    },
-    {
-      "title": "ID Card Custom",
-      "description": "ID card karyawan dengan design custom dan berbagai aksesoris."
     }
   ]
 }

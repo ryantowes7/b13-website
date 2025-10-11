@@ -1,5 +1,5 @@
 'use client';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import Button from '@/components/ui/Button';
 
@@ -8,6 +8,7 @@ export default function HeroBanner() {
   const [isHovering, setIsHovering] = useState(false);
   const [heroData, setHeroData] = useState(null);
   const [contactData, setContactData] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
 
   const defaultHeroData = {
     slides: [
@@ -25,9 +26,27 @@ export default function HeroBanner() {
     business_hours: "Buka Setiap Hari Pukul 09.00 - 17.00 WIB"
   };
 
+  // Use useCallback untuk stable function references
+  const nextSlide = useCallback(() => {
+    setCurrentSlide((prev) => {
+      if (!heroData?.slides) return 0;
+      return (prev + 1) % heroData.slides.length;
+    });
+  }, [heroData]);
+
+  const prevSlide = useCallback(() => {
+    setCurrentSlide((prev) => {
+      if (!heroData?.slides) return 0;
+      return (prev - 1 + heroData.slides.length) % heroData.slides.length;
+    });
+  }, [heroData]);
+
+  // Load data
   useEffect(() => {
     const loadData = async () => {
       try {
+        setIsLoading(true);
+        
         const [heroRes, contactRes] = await Promise.allSettled([
           fetch('/content/home/hero.json'),
           fetch('/content/settings/contact.json')
@@ -47,15 +66,31 @@ export default function HeroBanner() {
         console.log('Using default data');
         setHeroData(defaultHeroData);
         setContactData(defaultContactData);
+      } finally {
+        setIsLoading(false);
       }
     };
 
     loadData();
-  }, []);
+  }, []); // Empty dependency array
 
-  if (!heroData || !contactData) {
+  // Auto slide effect - dipisah dari effect utama
+  useEffect(() => {
+    if (isLoading || !heroData?.slides || heroData.slides.length <= 1 || isHovering) {
+      return;
+    }
+
+    const interval = setInterval(nextSlide, 6000);
+    return () => clearInterval(interval);
+  }, [isLoading, heroData, isHovering, nextSlide]);
+
+  // Jangan render sampai data ready dan loading selesai
+  if (isLoading || !heroData || !contactData) {
     return (
-      <section className="relative h-screen bg-gradient-to-br from-primary-600 to-primary-800 flex items-center justify-center" style={{ marginTop: '-64px' }}>
+      <section 
+        className="relative h-screen bg-gradient-to-br from-primary-600 to-primary-800 flex items-center justify-center" 
+        style={{ marginTop: '-64px' }}
+      >
         <div className="text-white text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-white mx-auto mb-4"></div>
           <p>Loading...</p>
@@ -67,20 +102,9 @@ export default function HeroBanner() {
   const { slides } = heroData;
   const { business_hours } = contactData;
 
-  const nextSlide = () => {
-    setCurrentSlide((prev) => (prev + 1) % slides.length);
-  };
-
-  const prevSlide = () => {
-    setCurrentSlide((prev) => (prev - 1 + slides.length) % slides.length);
-  };
-
-  useEffect(() => {
-    if (!isHovering && slides.length > 1) {
-      const interval = setInterval(nextSlide, 6000);
-      return () => clearInterval(interval);
-    }
-  }, [isHovering, slides.length]);
+  // Pastikan currentSlide valid
+  const safeCurrentSlide = Math.min(currentSlide, slides.length - 1);
+  const currentSlideData = slides[safeCurrentSlide] || slides[0];
 
   return (
     <section 
@@ -89,12 +113,13 @@ export default function HeroBanner() {
       onMouseLeave={() => setIsHovering(false)}
       style={{ marginTop: '-64px' }}
     >
+      {/* Background Slides */}
       <div className="absolute inset-0">
         {slides.map((slide, index) => (
           <div
             key={index}
             className={`absolute inset-0 transition-opacity duration-1000 ${
-              index === currentSlide ? 'opacity-100' : 'opacity-0'
+              index === safeCurrentSlide ? 'opacity-100' : 'opacity-0'
             }`}
           >
             {slide.image ? (
@@ -118,19 +143,18 @@ export default function HeroBanner() {
 
       <div className="relative z-30 h-full flex items-center justify-center text-center text-white pt-16">
         <div className="max-w-4xl mx-auto px-4">
-          <h1 className="text-5xl md:text-7xl font-bold mb-6 animate-fade-in">
-            {slides[currentSlide].title}
+          <h1 className="text-5xl md:text-7xl font-bold mb-6">
+            {currentSlideData.title}
           </h1>
-          <p className="text-xl md:text-2xl mb-8 leading-relaxed animate-fade-in animation-delay-200">
-            {slides[currentSlide].description}
+          <p className="text-xl md:text-2xl mb-8 leading-relaxed">
+            {currentSlideData.description}
           </p>
-          {slides[currentSlide].button_text && (
+          {currentSlideData.button_text && (
             <Button 
-              href={slides[currentSlide].button_link}
+              href={currentSlideData.button_link}
               variant="primary"
-              className="animate-fade-in animation-delay-400"
             >
-              {slides[currentSlide].button_text}
+              {currentSlideData.button_text}
             </Button>
           )}
         </div>
@@ -171,7 +195,7 @@ export default function HeroBanner() {
               key={index}
               onClick={() => setCurrentSlide(index)}
               className={`w-3 h-3 rounded-full transition-all ${
-                index === currentSlide ? 'bg-white scale-125' : 'bg-white/50'
+                index === safeCurrentSlide ? 'bg-white scale-125' : 'bg-white/50'
               }`}
             />
           ))}
