@@ -1,23 +1,22 @@
 [build]
-  publish = ".next"
   command = "npm run build"
+  publish = ".next"
 
 [build.environment]
   NODE_VERSION = "18"
 
+# Include static files in build
 [[plugins]]
   package = "@netlify/plugin-nextjs"
 
-# Netlify CMS Identity
-[build.processing]
-  skip_processing = true
+# Explicitly include static folder
+[[redirects]]
+  from = "/static/*"
+  to = "/static/:splat"
+  status = 200
 
+# Admin routes
 [[redirects]]
   from = "/admin/*"
   to = "/admin.html"
   status = 200
-
-# Enable Git Gateway
-[backend]
-  name = "git-gateway"
-  branch = "main"
