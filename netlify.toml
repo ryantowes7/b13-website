@@ -1,29 +1,33 @@
-# netlify.toml - VERSI BENAR
+# netlify.toml
 [build]
-  publish = ".next"  # UNTUK NEXT.JS, BUKAN "out"
+  publish = ".next"
   command = "npm run build"
 
 [build.environment]
   NODE_VERSION = "18"
   NEXT_TELEMETRY_DISABLED = "1"
+  NEXT_PRIVATE_TARGET = "server"
 
-# Next.js plugin untuk optimasi
+[context.production.environment]
+  NEXT_PUBLIC_SITE_URL = "https://b13factory-garmentadv.netlify.app"
+
+# Next.js plugin
 [[plugins]]
   package = "@netlify/plugin-nextjs"
 
-# Redirects untuk CMS - INI PENTING!
+# Redirects untuk CMS
 [[redirects]]
   from = "/admin/*"
   to = "/admin/index.html"
   status = 200
 
-# Redirects untuk Next.js - INI PENTING!
+# Handle client-side routing
 [[redirects]]
   from = "/*"
   to = "/index.html"
   status = 200
 
-# Headers untuk security
+# Security headers
 [[headers]]
   for = "/*"
   [headers.values]
@@ -32,12 +36,8 @@
     X-Content-Type-Options = "nosniff"
     Referrer-Policy = "strict-origin-when-cross-origin"
 
-# Headers khusus untuk uploads folder
+# Cache untuk uploads
 [[headers]]
   for = "/uploads/*"
   [headers.values]
     Cache-Control = "public, max-age=31536000, immutable"
-
-# Environment variables (jika perlu)
-[context.production.environment]
-  NEXT_PUBLIC_SITE_URL = "https://b13factory-garmentadv.netlify.app"

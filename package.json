@@ -4,7 +4,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "npm run build:cms && next build",
-    "build:cms": "mkdir -p public/admin && copy static\\admin\\config.yml public\\admin\\config.yml",
+    "build:cms": "node build-cms.js",
     "start": "next start",
     "lint": "next lint"
   },
@@ -15,7 +15,7 @@
     "lucide-react": "0.292.0"
   },
   "devDependencies": {
-    "@netlify/plugin-nextjs": "4.36.0",
+    "@netlify/plugin-nextjs": "^5.13.5",
     "eslint": "8.56.0",
     "eslint-config-next": "14.0.0"
   }
