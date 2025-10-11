@@ -1,25 +1,22 @@
 {
   "name": "b13-website",
   "version": "1.0.0",
-  "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "build": "npm run build:cms && next build",
+    "build:cms": "mkdir -p public/admin && copy static\\admin\\config.yml public\\admin\\config.yml",
     "start": "next start",
     "lint": "next lint"
   },
   "dependencies": {
     "next": "14.0.0",
-    "react": "^18.0.0",
-    "react-dom": "^18.0.0",
-    "framer-motion": "^10.16.0",
-    "lucide-react": "^0.294.0"
+    "react": "18.2.0",
+    "react-dom": "18.2.0",
+    "lucide-react": "0.292.0"
   },
   "devDependencies": {
-    "tailwindcss": "^3.3.5",
-    "autoprefixer": "^10.4.16", 
-    "postcss": "^8.4.31",
-    "eslint": "^8.0.0",
+    "@netlify/plugin-nextjs": "4.36.0",
+    "eslint": "8.56.0",
     "eslint-config-next": "14.0.0"
   }
 }
