@@ -4,7 +4,7 @@ import matter from 'gray-matter';
 
 export default function handler(req, res) {
   try {
-    const productsDir = path.join(process.cwd(), 'public', 'content', 'products');
+    const productsDir = path.join(process.cwd(), 'content', 'products');
     
     // Cek apakah folder ada
     if (!fs.existsSync(productsDir)) {

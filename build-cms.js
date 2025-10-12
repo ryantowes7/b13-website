@@ -19,15 +19,15 @@ if (fs.existsSync(configYml)) {
   process.exit(1);
 }
 
-// Buat folder content jika belum ada
-const contentDir = path.join(__dirname, 'public', 'content');
+// Buat folder content jika belum ada (di root level)
+const contentDir = path.join(__dirname, 'content');
 if (!fs.existsSync(contentDir)) {
   fs.mkdirSync(contentDir, { recursive: true });
-  console.log('Created public/content directory');
+  console.log('Created content directory');
 }
 
 // Ensure content subdirectories exist
-const subdirs = ['home', 'products', 'portfolio', 'services', 'blog', 'pages', 'testimonials', 'team', 'categories', 'settings'];
+const subdirs = ['home', 'products', 'portfolio', 'services', 'blog', 'pages', 'testimonials', 'team', 'categories'];
 for (let i = 0; i < subdirs.length; i++) {
   const dirName = subdirs[i];
   const dirPath = path.join(contentDir, dirName);

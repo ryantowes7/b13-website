@@ -5,7 +5,7 @@ import matter from 'gray-matter';
 export default function handler(req, res) {
   try {
     // Path ke file home content
-    const filePath = path.join(process.cwd(), 'public', 'content', 'home', 'home.md');
+    const filePath = path.join(process.cwd(), 'content', 'home', 'home.md');
     
     // Cek apakah file ada
     if (!fs.existsSync(filePath)) {
