@@ -44,7 +44,7 @@ collections:
     editor:
       preview: false
     files:
-      - file: "public/content/home/home.md"
+      - file: "content/home/home.md"
         label: "Home Page Content"
         name: "home"
         fields:
@@ -67,7 +67,7 @@ collections:
   # ==================== PAGES ====================
   - name: "pages"
     label: "Pages"
-    folder: "public/content/pages"
+    folder: "content/pages"
     create: true
     slug: "{{slug}}"
     fields:
@@ -79,7 +79,7 @@ collections:
   # ==================== PRODUCTS ====================
   - name: "products"
     label: "Products"
-    folder: "public/content/products"
+    folder: "content/products"
     create: true
     slug: "{{slug}}"
     fields:
@@ -101,7 +101,7 @@ collections:
   # ==================== PORTFOLIO ====================
   - name: "portfolio"
     label: "Portfolio"
-    folder: "public/content/portfolio"
+    folder: "content/portfolio"
     create: true
     slug: "{{slug}}"
     fields:
@@ -119,7 +119,7 @@ collections:
   # ==================== SERVICES ====================
   - name: "services"
     label: "Services"
-    folder: "public/content/services"
+    folder: "content/services"
     create: true
     slug: "{{slug}}"
     fields:
@@ -134,7 +134,7 @@ collections:
   # ==================== CATEGORIES ====================
   - name: "categories"
     label: "Categories"
-    folder: "public/content/categories"
+    folder: "content/categories"
     create: true
     slug: "{{slug}}"
     fields:
@@ -145,7 +145,7 @@ collections:
   # ==================== TESTIMONIALS ====================
   - name: "testimonials"
     label: "Testimonials"
-    folder: "public/content/testimonials"
+    folder: "content/testimonials"
     create: true
     slug: "{{slug}}"
     fields:
@@ -160,7 +160,7 @@ collections:
   # ==================== BLOG ====================
   - name: "blog"
     label: "Blog Posts"
-    folder: "public/content/blog"
+    folder: "content/blog"
     create: true
     slug: "{{slug}}"
     fields:
@@ -176,7 +176,7 @@ collections:
   # ==================== TEAM ====================
   - name: "team"
     label: "Team Members"
-    folder: "public/content/team"
+    folder: "content/team"
     create: true
     slug: "{{slug}}"
     fields:

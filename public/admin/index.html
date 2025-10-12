@@ -1,23 +1,25 @@
 <!doctype html>
-<html>
+<html lang="id">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="robots" content="noindex" />
   <title>Content Manager - B13 Factory</title>
   
-  <!-- Netlify CMS Styles -->
-  <link href="https://unpkg.com/netlify-cms@^2.0.0/dist/cms.css" rel="stylesheet" />
+  <!-- Netlify Identity Widget -->
+  <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
   
-  <!-- Custom Admin Styles -->
+  <!-- Netlify CMS Styles -->
+  <link href="https://unpkg.com/netlify-cms@^2.10.0/dist/cms.css" rel="stylesheet" />
+  
   <style>
     body {
       margin: 0;
       padding: 0;
-      font-family: -apple-system, BlinkMacSystemFont, \"Segoe UI\", Roboto, \"Helvetica Neue\", Arial, sans-serif;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
     }
     
-    /* Custom CMS Styling */
+    /* Custom color theme */
     :root {
       --primary-color: #0066B3;
       --secondary-color: #FF6B35;
@@ -25,16 +27,31 @@
   </style>
 </head>
 <body>
-  <!-- Netlify CMS -->
-  <script src="https://unpkg.com/netlify-cms@^2.0.0/dist/netlify-cms.js"></script>
+  <!-- Root element for Netlify CMS -->
+  <div id="nc-root"></div>
   
-  <!-- Custom CMS Configuration -->
+  <!-- Netlify CMS Script -->
+  <script src="https://unpkg.com/netlify-cms@^2.10.0/dist/netlify-cms.js"></script>
+  
+  <!-- Custom preview styles registration -->
   <script>
-    // Custom preview styles
-    CMS.registerPreviewStyle("/admin-preview.css");
-    
-    // Register custom widgets if needed
-    console.log('Netlify CMS loaded successfully');
+    if (window.CMS) {
+      window.CMS.registerPreviewStyle("/admin-preview.css");
+      console.log('Netlify CMS loaded successfully');
+    }
+  </script>
+  
+  <!-- Netlify Identity Widget redirect handler -->
+  <script>
+    if (window.netlifyIdentity) {
+      window.netlifyIdentity.on("init", user => {
+        if (!user) {
+          window.netlifyIdentity.on("login", () => {
+            document.location.href = "/admin/";
+          });
+        }
+      });
+    }
   </script>
 </body>
 </html>
