@@ -4,12 +4,30 @@ import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { Menu, X } from 'lucide-react';
+import Image from 'next/image';
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
+  const [siteConfig, setSiteConfig] = useState(null);
   const router = useRouter();
   const isHomePage = router.pathname === '/';
+
+  // Load site config dari CMS
+  useEffect(() => {
+    const loadSiteConfig = async () => {
+      try {
+        const response = await fetch('/api/content/site-config');
+        if (response.ok) {
+          const data = await response.json();
+          setSiteConfig(data);
+        }
+      } catch (error) {
+        console.error('Error loading site config:', error);
+      }
+    };
+    loadSiteConfig();
+  }, []);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -63,13 +81,24 @@ export default function Header() {
         <div className="flex justify-between items-center py-4">
           {/* Logo */}
           <Link href="/" className="flex items-center space-x-2">
+            {siteConfig?.logo ? (
+              <div className="relative w-10 h-10">
+                <Image 
+                  src={siteConfig.logo} 
+                  alt={siteConfig.title || 'B13 Factory'}
+                  fill
+                  className="object-contain"
+                />
+              </div>
+            ) : (
             <div className={`w-10 h-10 rounded-lg flex items-center justify-center transition-colors ${
               isHomePage && !isScrolled ? 'bg-white/20' : 'bg-primary-500'
             }`}>
               <span className="text-white font-bold text-lg">B13</span>
             </div>
+            )}
             <span className="text-xl font-bold">
-              B13 Factory
+              {siteConfig?.title || 'B13 Factory'}
             </span>
           </Link>
 
