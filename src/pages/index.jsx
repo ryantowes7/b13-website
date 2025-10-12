@@ -13,7 +13,7 @@ export default function Home() {
     // Load site data for meta tags
     const loadSiteData = async () => {
       try {
-        const response = await fetch('/content/settings/site.json');
+        const response = await fetch('/api/content/site-config');
         if (response.ok) {
           const data = await response.json();
           setSiteData(data);

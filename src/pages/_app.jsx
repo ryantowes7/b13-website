@@ -7,9 +7,10 @@ export default function App({ Component, pageProps }) {
   const [favicon, setFavicon] = useState('');
 
   useEffect(() => {
-    fetch('/content/settings/site.json')
+    fetch('/api/content/site-config')
       .then(res => res.json())
-      .then(cfg => setFavicon(cfg.favicon));
+      .then(cfg => setFavicon(cfg.favicon))
+      .catch(err => console.log('Failed to load favicon:', err));
   }, []);
 
   const getLayout = Component.getLayout || ((page) => <Layout>{page}</Layout>);

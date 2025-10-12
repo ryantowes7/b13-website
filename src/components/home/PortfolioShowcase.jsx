@@ -1,79 +1,58 @@
 // website/src/components/home/PortfolioShowcase.jsx
 'use client';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Button from '@/components/ui/Button';
 import { ChevronRight, Play, Plus } from 'lucide-react';
 
 export default function PortfolioShowcase() {
   const [activeCategory, setActiveCategory] = useState('all');
+  const [portfolioItems, setPortfolioItems] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
   
   const categories = [
     { id: 'all', name: 'All Projects' },
     { id: 'garment', name: 'Garment' },
     { id: 'advertising', name: 'Advertising' },
     { id: 'bordir', name: 'Bordir' },
+  
+  { id: 'merchandise', name: 'Merchandise' },
   ];
 
-  const portfolioItems = [
-    {
-      id: 1,
-      title: 'Seragam Perusahaan PT. ABC',
-      category: 'garment',
-      description: 'Pembuatan seragam kantor untuk 500 karyawan dengan custom logo bordir',
-      image: '/uploads/portfolio-1.jpg',
-      client: 'PT. ABC Manufacturing',
-      year: '2024'
-    },
-    {
-      id: 2,
-      title: 'Banner Event Launching Produk',
-      category: 'advertising',
-      description: 'Banner ukuran besar untuk event launching produk baru',
-      image: '/uploads/portfolio-2.jpg',
-      client: 'XYZ Brand',
-      year: '2024'
-    },
-    {
-      id: 3,
-      title: 'Kaos Komunitas Runner',
-      category: 'garment',
-      description: 'Custom kaos untuk komunitas running dengan design eksklusif',
-      image: '/uploads/portfolio-3.jpg',
-      client: 'Jember Runner Club',
-      year: '2023'
-    },
-    {
-      id: 4,
-      title: 'Jaket Bordir Logo Perusahaan',
-      category: 'bordir',
-      description: 'Jaket custom dengan bordir logo perusahaan yang detail',
-      image: '/uploads/portfolio-4.jpg',
-      client: 'CV. Sukses Makmur',
-      year: '2023'
-    },
-    {
-      id: 5,
-      title: 'Spanduk Promosi Retail',
-      category: 'advertising',
-      description: 'Spanduk promosi untuk toko retail dengan design menarik',
-      image: '/uploads/portfolio-5.jpg',
-      client: 'Retail Store Chain',
-      year: '2024'
-    },
-    {
-      id: 6,
-      title: 'Merchandise Event Musik',
-      category: 'garment',
-      description: 'Merchandise kaos untuk festival musik tahunan',
-      image: '/uploads/portfolio-6.jpg',
-      client: 'Music Festival 2024',
-      year: '2024'
-    }
-  ];
+  // Load portfolio dari API
+  useEffect(() => {
+    const loadPortfolio = async () => {
+      try {
+        const res = await fetch('/api/content/portfolio');
+        if (res.ok) {
+          const data = await res.json();
+          if (data.success && data.portfolio) {
+            setPortfolioItems(data.portfolio);
+          }
+        }
+      } catch (error) {
+        console.error('Error loading portfolio:', error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    
+    loadPortfolio();
+  }, []);  
 
   const filteredItems = activeCategory === 'all' 
     ? portfolioItems 
     : portfolioItems.filter(item => item.category === activeCategory);
+
+  if (isLoading) {
+    return (
+      <section className="min-h-screen flex items-center justify-center bg-white">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600 mx-auto mb-4"></div>
+          <p className="text-neutral-600">Loading portfolio...</p>
+        </div>
+      </section>
+    );
+  }
 
   return (
     <section className="min-h-screen flex items-center bg-white relative overflow-hidden">
@@ -143,14 +122,26 @@ export default function PortfolioShowcase() {
         </div>
 
         {/* Portfolio Grid */}
+        {filteredItems.length === 0 ? (
+          <div className="text-center py-12">
+            <p className="text-neutral-500 text-lg">Belum ada portfolio yang tersedia</p>
+          </div>
+        ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
           {filteredItems.slice(0, 6).map((item, index) => (
             <div
-              key={item.id}
+              key={item.slug || index}
               className="group relative bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-500 hover:transform hover:-translate-y-2"
             >
               {/* Image Container */}
               <div className="aspect-[4/3] bg-gradient-to-br from-primary-100 to-secondary-100 relative overflow-hidden">
+                {item.image ? (
+                    <img 
+                      src={item.image} 
+                      alt={item.name}
+                      className="w-full h-full object-cover"
+                    />
+                  ) : (
                 <div className="w-full h-full flex items-center justify-center">
                   <div className="text-center">
                     <div className="w-16 h-16 bg-white/20 rounded-full flex items-center justify-center mb-4 mx-auto">
@@ -159,16 +150,17 @@ export default function PortfolioShowcase() {
                     <p className="text-white font-medium">Portfolio Image</p>
                   </div>
                 </div>
+                )}
                 
                 {/* Overlay */}
                 <div className="absolute inset-0 bg-primary-600/0 group-hover:bg-primary-600/90 transition-all duration-500 flex items-center justify-center">
                   <div className="transform translate-y-4 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-500 text-center text-white p-6">
                     <Play size={48} className="mx-auto mb-4" />
-                    <h4 className="text-xl font-bold mb-2">{item.title}</h4>
+                    <h4 className="text-xl font-bold mb-2">{item.name}</h4>
                     <p className="text-white/90 text-sm mb-4">{item.description}</p>
                     <div className="flex justify-between text-xs text-white/80">
                       <span>{item.client}</span>
-                      <span>{item.year}</span>
+                      <span>{item.date ? new Date(item.date).getFullYear() : '2024'}</span>
                     </div>
                   </div>
                 </div>
@@ -177,7 +169,7 @@ export default function PortfolioShowcase() {
               {/* Content */}
               <div className="p-6">
                 <h3 className="text-xl font-bold text-neutral-900 mb-2 group-hover:text-primary-600 transition-colors">
-                  {item.title}
+                  {item.name}
                 </h3>
                 <p className="text-neutral-600 text-sm mb-4 line-clamp-2">
                   {item.description}
@@ -186,12 +178,13 @@ export default function PortfolioShowcase() {
                   <span className="bg-primary-100 text-primary-600 px-3 py-1 rounded-full">
                     {item.category}
                   </span>
-                  <span>{item.year}</span>
+                  <span>{item.date ? new Date(item.date).getFullYear() : '2024'}</span>
                 </div>
               </div>
             </div>
           ))}
         </div>
+        )}
 
         {/* View All Button */}
         <div className="text-center">

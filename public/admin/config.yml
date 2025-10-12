@@ -9,7 +9,7 @@ backend:
     uploadMedia: 'Upload “{{path}}”'
     deleteMedia: 'Delete “{{path}}”'
 
-publish_mode: editorial_workflow
+# publish_mode: editorial_workflow  # Disabled untuk immediate publish
 site_url: https://b13factory-garmentadv.netlify.app
 display_url: https://b13factory-garmentadv.netlify.app
 logo_url: https://b13factory-garmentadv.netlify.app/logo.png
@@ -44,7 +44,7 @@ collections:
     editor:
       preview: false
     files:
-      - file: "public/content/home.md"
+      - file: "public/content/home/home.md"
         label: "Home Page Content"
         name: "home"
         fields:

@@ -57,24 +57,36 @@ export default function HeroBanner() {
     const loadData = async () => {
       try {
         setIsLoading(true);
-        
-        const [heroRes, contactRes] = await Promise.allSettled([
-          fetch('public/content/home/hero.json'),
-          fetch('public/content/settings/contact.json')
-        ]);
 
-        const heroData = heroRes.status === 'fulfilled' && heroRes.value.ok 
-          ? await heroRes.value.json() 
-          : defaultHeroData;
+        // Fetch home content dari API
+        const homeRes = await fetch('/api/content/home');
         
-        const contactData = contactRes.status === 'fulfilled' && contactRes.value.ok 
-          ? await contactRes.value.json() 
-          : defaultContactData;
-
-        setHeroData(heroData);
-        setContactData(contactData);
+        if (homeRes.ok) {
+          const homeData = await homeRes.json();
+          
+          if (homeData.success && homeData.data) {
+            // Transform data dari CMS format ke format slides
+            const slides = [
+              {
+                id: 1,
+                image: homeData.data.hero_image || '/uploads/hero-1.jpg',
+                title: homeData.data.hero_title || 'GARMENT AND ADVERTISING',
+                description: homeData.data.hero_subtitle || 'Professional garment and advertising solutions',
+                button_text: homeData.data.hero_button_text,
+                button_link: homeData.data.hero_button_link
+              }
+            ];
+            
+            setHeroData({ slides });
+            setContactData({ business_hours:"Buka Setiap Hari Pukul 09.00 - 17.00 WIB" });
+          } else {
+            throw new Error('Invalid data format');
+          }
+        } else {
+          throw new Error('Failed to fetch home content');
+        }
       } catch (error) {
-        console.log('Using default data');
+        console.log('Using default data:', error.message);
         setHeroData(defaultHeroData);
         setContactData(defaultContactData);
       } finally {

@@ -5,8 +5,7 @@
 [build.environment]
   NODE_VERSION = "18"
   NEXT_TELEMETRY_DISABLED = "1"
-  NEXT_PRIVATE_TARGET = "server"
-
+  
 [context.production.environment]
   NEXT_PUBLIC_SITE_URL = "https://b13factory-garmentadv.netlify.app"
 
