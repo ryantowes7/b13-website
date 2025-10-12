@@ -1,60 +1,27 @@
 // website/src/components/home/FeaturedProducts.jsx
 'use client';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
-import Button from '@/components/ui/Button';
 
 export default function FeaturedProducts() {
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [featuredData, setFeaturedData] = useState(null);
   
-  // Load featured products from CMS
-  useEffect(() => {
-    const loadData = async () => {
-      try {
-        const response = await fetch('/content/home/featured-products.json');
-        if (response.ok) {
-          const data = await response.json();
-          setFeaturedData(data);
-        } else {
-          throw new Error('Failed to load featured products');
-        }
-      } catch (error) {
-        console.log('Using default featured products data');
-        setFeaturedData({
-          title: "Product Updates",
-          featured: {
-            title: "Kaos Polo Sablon Premium",
-            description: "Kaos polo bahan cotton pique dengan sablon rubber berkualitas tinggi.",
-            image: "",
-            button_text: "Lihat Detail", 
-            button_link: "/produk/kaos-polo"
-          },
-          products: [
-            { title: "Jaket Bordir Logo", description: "Jaket parasut dengan bordir komputer presisi tinggi." },
-            { title: "Banner Vinyl", description: "Banner material vinyl frontlit dengan ketahanan cuaca yang baik." },
-            { title: "Kaos Sablon Digital", description: "Kaos dengan sablon digital full color untuk design kompleks." },
-            { title: "Topi Merchandise", description: "Topi custom untuk merchandise perusahaan." }
-          ]
-        });
-      }
-    };
+  const featuredProduct = {
+    id: 1,
+    title: 'Produk Unggulan',
+    description: 'Deskripsi produk unggulan yang lebih detail dan menarik...',
+    image: '/uploads/featured-product.jpg'
+  };
 
-    loadData();
-  }, []);
+  const products = [
+    { id: 1, title: 'Produk 1', description: 'Deskripsi singkat...' },
+    { id: 2, title: 'Produk 2', description: 'Deskripsi singkat...' },
+    { id: 3, title: 'Produk 3', description: 'Deskripsi singkat...' },
+    { id: 4, title: 'Produk 4', description: 'Deskripsi singkat...' },
+    { id: 5, title: 'Produk 5', description: 'Deskripsi singkat...' },
+    { id: 6, title: 'Produk 6', description: 'Deskripsi singkat...' },
+  ];
 
-  if (!featuredData) {
-    return (
-      <section className="min-h-screen flex items-center bg-white">
-        <div className="container-custom section-padding text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-500 mx-auto mb-4"></div>
-          <p>Loading Featured Products...</p>
-        </div>
-      </section>
-    );
-  }
-
-  const { title, featured, products } = featuredData;
   const visibleProducts = products.slice(currentIndex, currentIndex + 4);
 
   const nextSlide = () => {
@@ -69,7 +36,7 @@ export default function FeaturedProducts() {
     <section className="min-h-screen flex items-center bg-white">
       <div className="container-custom section-padding">
         <h2 className="text-4xl md:text-5xl font-bold text-center mb-16 text-neutral-900">
-          {title}
+          Product Updates
         </h2>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-12">
@@ -79,27 +46,19 @@ export default function FeaturedProducts() {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                 <div>
                   <h3 className="text-3xl font-bold mb-4 text-primary-600">
-                    {featured.title}
+                    {featuredProduct.title}
                   </h3>
                   <p className="text-neutral-700 text-lg leading-relaxed mb-6">
-                    {featured.description}
+                    {featuredProduct.description}
                   </p>
-                  <Button href={featured.button_link} variant="primary">
-                    {featured.button_text}
-                  </Button>
+                  <button className="btn-primary">
+                    Lihat Detail
+                  </button>
                 </div>
                 <div className="bg-white rounded-xl p-4 flex items-center justify-center">
-                  {featured.image ? (
-                    <img 
-                      src={featured.image} 
-                      alt={featured.title}
-                      className="w-full h-64 object-cover rounded-lg"
-                    />
-                  ) : (
-                    <div className="w-full h-64 bg-neutral-100 rounded-lg flex items-center justify-center">
-                      <p className="text-neutral-500">Featured Product Image</p>
-                    </div>
-                  )}
+                  <div className="w-full h-64 bg-neutral-100 rounded-lg flex items-center justify-center">
+                    <p className="text-neutral-500">Featured Product Image</p>
+                  </div>
                 </div>
               </div>
             </div>
@@ -107,8 +66,8 @@ export default function FeaturedProducts() {
 
           {/* Product List - Kecil */}
           <div className="space-y-6">
-            {visibleProducts.slice(0, 2).map((product, index) => (
-              <div key={index} className="bg-neutral-50 rounded-xl p-6 hover:shadow-lg transition-shadow">
+            {visibleProducts.slice(0, 2).map((product) => (
+              <div key={product.id} className="bg-neutral-50 rounded-xl p-6 hover:shadow-lg transition-shadow">
                 <h4 className="text-xl font-bold mb-2 text-primary-600">{product.title}</h4>
                 <p className="text-neutral-600">{product.description}</p>
               </div>
@@ -119,36 +78,32 @@ export default function FeaturedProducts() {
         {/* Product Slider */}
         <div className="relative">
           <div className="flex space-x-6 overflow-hidden">
-            {visibleProducts.map((product, index) => (
-              <div key={index} className="flex-shrink-0 w-80">
+            {visibleProducts.map((product) => (
+              <div key={product.id} className="flex-shrink-0 w-80">
                 <div className="bg-neutral-50 rounded-xl p-6 hover:shadow-lg transition-all duration-300">
                   <h4 className="text-xl font-bold mb-3 text-primary-600">{product.title}</h4>
                   <p className="text-neutral-600 mb-4">{product.description}</p>
-                  <Button href="/produk" variant="outline" className="text-primary-500 hover:text-primary-600">
+                  <button className="text-primary-500 hover:text-primary-600 font-medium">
                     Selengkapnya →
-                  </Button>
+                  </button>
                 </div>
               </div>
             ))}
           </div>
 
           {/* Slider Controls */}
-          {products.length > 4 && (
-            <>
-              <button
-                onClick={prevSlide}
-                className="absolute left-0 top-1/2 transform -translate-y-1/2 -translate-x-6 bg-white shadow-lg rounded-full p-3 hover:shadow-xl transition-all"
-              >
-                <ChevronLeft size={24} />
-              </button>
-              <button
-                onClick={nextSlide}
-                className="absolute right-0 top-1/2 transform -translate-y-1/2 translate-x-6 bg-white shadow-lg rounded-full p-3 hover:shadow-xl transition-all"
-              >
-                <ChevronRight size={24} />
-              </button>
-            </>
-          )}
+          <button
+            onClick={prevSlide}
+            className="absolute left-0 top-1/2 transform -translate-y-1/2 -translate-x-6 bg-white shadow-lg rounded-full p-3 hover:shadow-xl transition-all"
+          >
+            <ChevronLeft size={24} />
+          </button>
+          <button
+            onClick={nextSlide}
+            className="absolute right-0 top-1/2 transform -translate-y-1/2 translate-x-6 bg-white shadow-lg rounded-full p-3 hover:shadow-xl transition-all"
+          >
+            <ChevronRight size={24} />
+          </button>
         </div>
       </div>
     </section>

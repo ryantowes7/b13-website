@@ -1,48 +1,23 @@
+// website/src/components/layout/Header.jsx
 'use client';
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 import { Menu, X } from 'lucide-react';
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [siteData, setSiteData] = useState(null);
   const [isScrolled, setIsScrolled] = useState(false);
-  const [logoError, setLogoError] = useState(false);
+  const router = useRouter();
+  const isHomePage = router.pathname === '/';
 
   useEffect(() => {
-    // Load site data dari CMS
-    const loadSiteData = async () => {
-      try {
-        const response = await fetch('/content/settings/site.json');
-        if (response.ok) {
-          const data = await response.json();
-          setSiteData(data);
-        } else {
-          // Fallback data jika file tidak ditemukan
-          setSiteData({
-            title: 'B13 Factory',
-            logo: ''
-          });
-        }
-      } catch (error) {
-        setSiteData({
-          title: 'B13 Factory',
-          logo: ''
-        });
-      }
-    };
-
-    // Handle scroll untuk transparent header effect
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 10);
     };
 
-    loadSiteData();
     window.addEventListener('scroll', handleScroll);
-
-    return () => {
-      window.removeEventListener('scroll', handleScroll);
-    };
+    return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
   const navigation = [
@@ -54,27 +29,47 @@ export default function Header() {
     { name: 'Contact Us', href: '/contact-us' },
   ];
 
+  // Background style berdasarkan kondisi
+  const getHeaderBackground = () => {
+    if (isHomePage) {
+      return isScrolled 
+        ? 'bg-white/90 backdrop-blur-md shadow-sm' 
+        : 'bg-transparent';
+    } else {
+      return 'bg-white/90 backdrop-blur-md shadow-sm';
+    }
+  };
+
+  // Text color berdasarkan kondisi
+  const getTextColor = () => {
+    if (isHomePage && !isScrolled) {
+      return 'text-white';
+    } else {
+      return 'text-neutral-900';
+    }
+  };
+
+  const getLinkColor = () => {
+    if (isHomePage && !isScrolled) {
+      return 'text-white/90 hover:text-white';
+    } else {
+      return 'text-neutral-700 hover:text-primary-500';
+    }
+  };
+
   return (
-    <header className={`bg-white shadow-sm sticky top-0 z-50 transition-all duration-300 ${isScrolled ? 'bg-white/95 backdrop-blur-md' : ''}`}>
+    <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${getHeaderBackground()} ${getTextColor()}`}>
       <nav className="container-custom">
         <div className="flex justify-between items-center py-4">
-          {/* Logo - Dynamic dari CMS */}
-          <Link href="/" className="flex items-center space-x-3 group">
-            {siteData?.logo && !logoError ? (
-              <img 
-                src={siteData.logo} 
-                alt={siteData?.title || 'B13 Factory'}
-                className="w-10 h-10 object-contain transition-transform group-hover:scale-105"
-                onError={() => setLogoError(true)}
-                loading="lazy"
-              />
-            ) : (
-              <div className="w-10 h-10 bg-primary-500 rounded-lg flex items-center justify-center group-hover:bg-primary-600 transition-colors">
-                <span className="text-white font-bold text-lg">B13</span>
-              </div>
-            )}
-            <span className="text-xl font-bold text-neutral-900 group-hover:text-primary-600 transition-colors">
-              {siteData?.title || 'B13 Factory'}
+          {/* Logo */}
+          <Link href="/" className="flex items-center space-x-2">
+            <div className={`w-10 h-10 rounded-lg flex items-center justify-center transition-colors ${
+              isHomePage && !isScrolled ? 'bg-white/20' : 'bg-primary-500'
+            }`}>
+              <span className="text-white font-bold text-lg">B13</span>
+            </div>
+            <span className="text-xl font-bold">
+              B13 Factory
             </span>
           </Link>
 
@@ -84,7 +79,7 @@ export default function Header() {
               <Link
                 key={item.name}
                 href={item.href}
-                className="text-neutral-700 hover:text-primary-500 font-medium transition-all duration-200 hover:scale-105"
+                className={`font-medium transition-colors duration-200 ${getLinkColor()}`}
               >
                 {item.name}
               </Link>
@@ -93,9 +88,8 @@ export default function Header() {
 
           {/* Mobile menu button */}
           <button
-            className="md:hidden p-2 rounded-lg hover:bg-neutral-100 transition-colors"
+            className={`md:hidden p-2 transition-colors ${getTextColor()}`}
             onClick={() => setIsMenuOpen(!isMenuOpen)}
-            aria-label="Toggle menu"
           >
             {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
           </button>
@@ -103,13 +97,15 @@ export default function Header() {
 
         {/* Mobile Navigation */}
         {isMenuOpen && (
-          <div className="md:hidden py-4 border-t border-neutral-200 bg-white/95 backdrop-blur-md">
+          <div className={`md:hidden py-4 border-t transition-colors ${
+            isHomePage && !isScrolled ? 'border-white/20' : 'border-neutral-200'
+          }`}>
             <div className="flex flex-col space-y-4">
               {navigation.map((item) => (
                 <Link
                   key={item.name}
                   href={item.href}
-                  className="text-neutral-700 hover:text-primary-500 font-medium py-2 px-4 rounded-lg hover:bg-neutral-50 transition-all duration-200"
+                  className={`font-medium py-2 transition-colors ${getLinkColor()}`}
                   onClick={() => setIsMenuOpen(false)}
                 >
                   {item.name}

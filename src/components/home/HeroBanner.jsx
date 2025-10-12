@@ -13,11 +13,22 @@ export default function HeroBanner() {
   const defaultHeroData = {
     slides: [
       {
-        title: "GARMENT AND ADVERTISING",
-        description: "Specialist dalam garment dan advertising dengan kualitas terbaik untuk kebutuhan bisnis Anda.",
-        image: "",
-        button_text: "View Products",
-        button_link: "/produk"
+        id: 1,
+        image: '/uploads/hero-1.jpg',
+        title: 'GARMENT AND ADVERTISING',
+        description: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.'
+      },
+      {
+        id: 2, 
+        image: '/uploads/hero-2.jpg',
+        title: 'QUALITY & PROFESSIONAL',
+        description: 'Professional garment and advertising solutions for your business needs with the highest quality standards.'
+      },
+      {
+        id: 3,
+        image: '/uploads/hero-3.jpg', 
+        title: 'CREATIVE SOLUTIONS',
+        description: 'Innovative and creative solutions for all your garment and advertising requirements.'
       }
     ]
   };
@@ -48,8 +59,8 @@ export default function HeroBanner() {
         setIsLoading(true);
         
         const [heroRes, contactRes] = await Promise.allSettled([
-          fetch('/content/home/hero.json'),
-          fetch('/content/settings/contact.json')
+          fetch('public/content/home/hero.json'),
+          fetch('public/content/settings/contact.json')
         ]);
 
         const heroData = heroRes.status === 'fulfilled' && heroRes.value.ok 

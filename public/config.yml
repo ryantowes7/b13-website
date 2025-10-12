@@ -1,12 +1,13 @@
+# static/admin/config.yml
 backend:
   name: git-gateway
   branch: main
   commit_messages:
-    create: 'Create {{collection}} "{{slug}}"'
-    update: 'Update {{collection}} "{{slug}}"'
-    delete: 'Delete {{collection}} "{{slug}}"'
-    uploadMedia: 'Upload "{{path}}"'
-    deleteMedia: 'Delete "{{path}}"'
+    create: 'Create {{collection}} “{{slug}}”'
+    update: 'Update {{collection}} “{{slug}}”'
+    delete: 'Delete {{collection}} “{{slug}}”'
+    uploadMedia: 'Upload “{{path}}”'
+    deleteMedia: 'Delete “{{path}}”'
 
 publish_mode: editorial_workflow
 site_url: https://b13factory-garmentadv.netlify.app
@@ -17,13 +18,14 @@ media_folder: "public/uploads"
 public_folder: "/uploads"
 
 collections:
+  # ==================== CONFIGURATION ====================
   - name: "config"
     label: "Site Configuration"
     delete: false
     editor:
       preview: false
     files:
-      - file: "public/content/settings/site.json"
+      - file: "site-config.json"
         label: "Global Site Config"
         name: "site-config"
         fields:
@@ -35,6 +37,7 @@ collections:
           - { label: "Contact Phone", name: "contact_phone", widget: "string" }
           - { label: "Address", name: "address", widget: "text" }
 
+  # ==================== HOMEPAGE ====================
   - name: "home"
     label: "Home Page"
     delete: false
@@ -45,349 +48,146 @@ collections:
         label: "Home Page Content"
         name: "home"
         fields:
-          - label: "Hero Title"
-            name: "hero_title"
-            widget: "string"
-          - label: "Hero Subtitle"
-            name: "hero_subtitle"
-            widget: "text"
-          - label: "Hero Image"
-            name: "hero_image"
-            widget: "image"
-          - label: "Hero Button Text"
-            name: "hero_button_text"
-            widget: "string"
-          - label: "Hero Button Link"
-            name: "hero_button_link"
-            widget: "string"
-          - label: "About Title"
-            name: "about_title"
-            widget: "string"
-          - label: "About Content"
-            name: "about_content"
-            widget: "markdown"
-          - label: "About Image"
-            name: "about_image"
-            widget: "image"
-          - label: "Services Title"
-            name: "services_title"
-            widget: "string"
-          - label: "Services"
-            name: "services"
-            widget: "list"
-            fields:
-              - label: "Service Icon"
-                name: "icon"
-                widget: "string"
-              - label: "Service Title"
-                name: "title"
-                widget: "string"
-              - label: "Service Description"
-                name: "description"
-                widget: "text"
+          - { label: "Hero Title", name: "hero_title", widget: "string" }
+          - { label: "Hero Subtitle", name: "hero_subtitle", widget: "text" }
+          - { label: "Hero Image", name: "hero_image", widget: "image" }
+          - { label: "Hero Button Text", name: "hero_button_text", widget: "string" }
+          - { label: "Hero Button Link", name: "hero_button_link", widget: "string" }
+          - { label: "About Title", name: "about_title", widget: "string" }
+          - { label: "About Content", name: "about_content", widget: "markdown" }
+          - { label: "About Image", name: "about_image", widget: "image" }
+          - { label: "Services Title", name: "services_title", widget: "string" }
+          - { label: "Services", name: "services", widget: "list", fields: [
+              { label: "Service Icon", name: "icon", widget: "string" },
+              { label: "Service Title", name: "title", widget: "string" },
+              { label: "Service Description", name: "description", widget: "text" }
+            ] 
+          }
 
+  # ==================== PAGES ====================
   - name: "pages"
     label: "Pages"
     folder: "public/content/pages"
     create: true
     slug: "{{slug}}"
     fields:
-      - label: "Title"
-        name: "title"
-        widget: "string"
-      - label: "Meta Description"
-        name: "meta_description"
-        widget: "text"
-      - label: "Featured Image"
-        name: "featured_image"
-        widget: "image"
-        required: false
-      - label: "Body Content"
-        name: "body"
-        widget: "markdown"
+      - { label: "Title", name: "title", widget: "string" }
+      - { label: "Meta Description", name: "meta_description", widget: "text" }
+      - { label: "Featured Image", name: "featured_image", widget: "image", required: false }
+      - { label: "Body Content", name: "body", widget: "markdown" }
 
+  # ==================== PRODUCTS ====================
   - name: "products"
     label: "Products"
     folder: "public/content/products"
     create: true
     slug: "{{slug}}"
     fields:
-      - label: "Product Name"
-        name: "name"
-        widget: "string"
-      - label: "Category"
-        name: "category"
-        widget: "select"
-        options:
-          - "kaos"
-          - "bordir"
-          - "banner"
-          - "merchandise"
-      - label: "Price"
-        name: "price"
-        widget: "string"
-      - label: "Original Price"
-        name: "originalPrice"
-        widget: "string"
-        required: false
-      - label: "Featured Image"
-        name: "image"
-        widget: "image"
-      - label: "Gallery Images"
-        name: "images"
-        widget: "list"
-        fields:
-          - label: "Image"
-            name: "url"
-            widget: "image"
-      - label: "Description"
-        name: "description"
-        widget: "text"
-      - label: "Features"
-        name: "features"
-        widget: "list"
-        fields:
-          - label: "Feature"
-            name: "item"
-            widget: "string"
-      - label: "Katalog File"
-        name: "katalog"
-        widget: "file"
-        required: false
-      - label: "Tags"
-        name: "tags"
-        widget: "list"
-        fields:
-          - label: "Tag"
-            name: "item"
-            widget: "string"
-      - label: "In Stock"
-        name: "inStock"
-        widget: "boolean"
-        default: true
-      - label: "Minimum Order"
-        name: "minOrder"
-        widget: "number"
-        default: 1
-      - label: "Rating"
-        name: "rating"
-        widget: "number"
-        value_type: "float"
-        min: 0
-        max: 5
-        step: 0.1
-      - label: "Review Count"
-        name: "reviewCount"
-        widget: "number"
-        default: 0
+      - { label: "Product Name", name: "name", widget: "string" }
+      - { label: "Category", name: "category", widget: "select", options: ["kaos", "bordir", "banner", "merchandise"] }
+      - { label: "Price", name: "price", widget: "string" }
+      - { label: "Original Price", name: "originalPrice", widget: "string", required: false }
+      - { label: "Featured Image", name: "image", widget: "image" }
+      - { label: "Gallery Images", name: "images", widget: "list", fields: [{label: "Image", name: "url", widget: "image"}] }
+      - { label: "Description", name: "description", widget: "text" }
+      - { label: "Features", name: "features", widget: "list", fields: [{label: "Feature", name: "item", widget: "string"}] }
+      - { label: "Katalog File", name: "katalog", widget: "file", required: false }
+      - { label: "Tags", name: "tags", widget: "list", fields: [{label: "Tag", name: "item", widget: "string"}] }
+      - { label: "In Stock", name: "inStock", widget: "boolean", default: true }
+      - { label: "Minimum Order", name: "minOrder", widget: "number", default: 1 }
+      - { label: "Rating", name: "rating", widget: "number", value_type: "float", min: 0, max: 5, step: 0.1 }
+      - { label: "Review Count", name: "reviewCount", widget: "number", default: 0 }
 
+  # ==================== PORTFOLIO ====================
   - name: "portfolio"
     label: "Portfolio"
     folder: "public/content/portfolio"
     create: true
     slug: "{{slug}}"
     fields:
-      - label: "Project Name"
-        name: "name"
-        widget: "string"
-      - label: "Client"
-        name: "client"
-        widget: "string"
-      - label: "Category"
-        name: "category"
-        widget: "select"
-        options:
-          - "garment"
-          - "printing"
-          - "bordir"
-          - "merchandise"
-      - label: "Project Date"
-        name: "date"
-        widget: "datetime"
-      - label: "Featured Image"
-        name: "image"
-        widget: "image"
-      - label: "Project Gallery"
-        name: "gallery"
-        widget: "list"
-        fields:
-          - label: "Image"
-            name: "url"
-            widget: "image"
-      - label: "Description"
-        name: "description"
-        widget: "text"
-      - label: "Project Details"
-        name: "details"
-        widget: "markdown"
-      - label: "Testimonial"
-        name: "testimonial"
-        widget: "text"
-        required: false
-      - label: "Client Name"
-        name: "client_name"
-        widget: "string"
-        required: false
+      - { label: "Project Name", name: "name", widget: "string" }
+      - { label: "Client", name: "client", widget: "string" }
+      - { label: "Category", name: "category", widget: "select", options: ["garment", "printing", "bordir", "merchandise"] }
+      - { label: "Project Date", name: "date", widget: "datetime" }
+      - { label: "Featured Image", name: "image", widget: "image" }
+      - { label: "Project Gallery", name: "gallery", widget: "list", fields: [{label: "Image", name: "url", widget: "image"}] }
+      - { label: "Description", name: "description", widget: "text" }
+      - { label: "Project Details", name: "details", widget: "markdown" }
+      - { label: "Testimonial", name: "testimonial", widget: "text", required: false }
+      - { label: "Client Name", name: "client_name", widget: "string", required: false }
 
+  # ==================== SERVICES ====================
   - name: "services"
     label: "Services"
     folder: "public/content/services"
     create: true
     slug: "{{slug}}"
     fields:
-      - label: "Service Name"
-        name: "name"
-        widget: "string"
-      - label: "Short Description"
-        name: "short_description"
-        widget: "text"
-      - label: "Icon"
-        name: "icon"
-        widget: "string"
-      - label: "Featured Image"
-        name: "image"
-        widget: "image"
-      - label: "Full Description"
-        name: "description"
-        widget: "markdown"
-      - label: "Features"
-        name: "features"
-        widget: "list"
-        fields:
-          - label: "Feature"
-            name: "item"
-            widget: "string"
-      - label: "Price Starting From"
-        name: "price_start"
-        widget: "string"
-        required: false
+      - { label: "Service Name", name: "name", widget: "string" }
+      - { label: "Short Description", name: "short_description", widget: "text" }
+      - { label: "Icon", name: "icon", widget: "string" }
+      - { label: "Featured Image", name: "image", widget: "image" }
+      - { label: "Full Description", name: "description", widget: "markdown" }
+      - { label: "Features", name: "features", widget: "list", fields: [{label: "Feature", name: "item", widget: "string"}] }
+      - { label: "Price Starting From", name: "price_start", widget: "string", required: false }
 
+  # ==================== CATEGORIES ====================
   - name: "categories"
     label: "Categories"
     folder: "public/content/categories"
     create: true
     slug: "{{slug}}"
     fields:
-      - label: "Category Name"
-        name: "name"
-        widget: "string"
-      - label: "Description"
-        name: "description"
-        widget: "text"
-      - label: "Image"
-        name: "image"
-        widget: "image"
-        required: false
+      - { label: "Category Name", name: "name", widget: "string" }
+      - { label: "Description", name: "description", widget: "text" }
+      - { label: "Image", name: "image", widget: "image", required: false }
 
+  # ==================== TESTIMONIALS ====================
   - name: "testimonials"
     label: "Testimonials"
     folder: "public/content/testimonials"
     create: true
     slug: "{{slug}}"
     fields:
-      - label: "Client Name"
-        name: "client_name"
-        widget: "string"
-      - label: "Company"
-        name: "company"
-        widget: "string"
-        required: false
-      - label: "Position"
-        name: "position"
-        widget: "string"
-        required: false
-      - label: "Client Photo"
-        name: "photo"
-        widget: "image"
-        required: false
-      - label: "Testimonial Text"
-        name: "testimonial"
-        widget: "text"
-      - label: "Rating"
-        name: "rating"
-        widget: "number"
-        min: 1
-        max: 5
-      - label: "Project"
-        name: "project"
-        widget: "string"
-        required: false
+      - { label: "Client Name", name: "client_name", widget: "string" }
+      - { label: "Company", name: "company", widget: "string", required: false }
+      - { label: "Position", name: "position", widget: "string", required: false }
+      - { label: "Client Photo", name: "photo", widget: "image", required: false }
+      - { label: "Testimonial Text", name: "testimonial", widget: "text" }
+      - { label: "Rating", name: "rating", widget: "number", min: 1, max: 5 }
+      - { label: "Project", name: "project", widget: "string", required: false }
 
+  # ==================== BLOG ====================
   - name: "blog"
     label: "Blog Posts"
     folder: "public/content/blog"
     create: true
     slug: "{{slug}}"
     fields:
-      - label: "Title"
-        name: "title"
-        widget: "string"
-      - label: "Author"
-        name: "author"
-        widget: "string"
-      - label: "Publish Date"
-        name: "date"
-        widget: "datetime"
-      - label: "Featured Image"
-        name: "image"
-        widget: "image"
-      - label: "Excerpt"
-        name: "excerpt"
-        widget: "text"
-      - label: "Body Content"
-        name: "body"
-        widget: "markdown"
-      - label: "Tags"
-        name: "tags"
-        widget: "list"
-        fields:
-          - label: "Tag"
-            name: "item"
-            widget: "string"
-      - label: "Featured Post"
-        name: "featured"
-        widget: "boolean"
-        default: false
+      - { label: "Title", name: "title", widget: "string" }
+      - { label: "Author", name: "author", widget: "string" }
+      - { label: "Publish Date", name: "date", widget: "datetime" }
+      - { label: "Featured Image", name: "image", widget: "image" }
+      - { label: "Excerpt", name: "excerpt", widget: "text" }
+      - { label: "Body Content", name: "body", widget: "markdown" }
+      - { label: "Tags", name: "tags", widget: "list", fields: [{label: "Tag", name: "item", widget: "string"}] }
+      - { label: "Featured Post", name: "featured", widget: "boolean", default: false }
 
+  # ==================== TEAM ====================
   - name: "team"
     label: "Team Members"
     folder: "public/content/team"
     create: true
     slug: "{{slug}}"
     fields:
-      - label: "Name"
-        name: "name"
-        widget: "string"
-      - label: "Position"
-        name: "position"
-        widget: "string"
-      - label: "Photo"
-        name: "photo"
-        widget: "image"
-      - label: "Bio"
-        name: "bio"
-        widget: "text"
-      - label: "Email"
-        name: "email"
-        widget: "string"
-        required: false
-      - label: "Phone"
-        name: "phone"
-        widget: "string"
-        required: false
-      - label: "Social Media"
-        name: "social"
-        widget: "list"
-        fields:
-          - label: "Platform"
-            name: "platform"
-            widget: "select"
-            options:
-              - "facebook"
-              - "instagram"
-              - "twitter"
-              - "linkedin"
-          - label: "URL"
-            name: "url"
-            widget: "string"
-        required: false
+      - { label: "Name", name: "name", widget: "string" }
+      - { label: "Position", name: "position", widget: "string" }
+      - { label: "Photo", name: "photo", widget: "image" }
+      - { label: "Bio", name: "bio", widget: "text" }
+      - { label: "Email", name: "email", widget: "string", required: false }
+      - { label: "Phone", name: "phone", widget: "string", required: false }
+      - { label: "Social Media", name: "social", widget: "list", fields: [
+          { label: "Platform", name: "platform", widget: "select", options: ["facebook", "instagram", "twitter", "linkedin"] },
+          { label: "URL", name: "url", widget: "string" }
+        ], required: false 
+      }
