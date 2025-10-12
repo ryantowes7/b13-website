@@ -1,6 +1,8 @@
 const fs = require('fs');
 const path = require('path');
 
+console.log('🔧 Starting CMS build preparation...');
+
 // Buat folder public/admin jika belum ada
 const adminDir = path.join(__dirname, 'public', 'admin');
 if (!fs.existsSync(adminDir)) {
@@ -9,27 +11,23 @@ if (!fs.existsSync(adminDir)) {
 }
 
 // Verify admin files exist
-const indexHtml = path.join(adminDir, 'index.html');
 const configYml = path.join(adminDir, 'config.yml');
 
-if (fs.existsSync(indexHtml) && fs.existsSync(configYml)) {
-  console.log('✅ CMS files verified successfully');
-  console.log('   - index.html: OK');
-  console.log('   - config.yml: OK');
+if (fs.existsSync(configYml)) {
+  console.log('✅ CMS config.yml verified: OK');
 } else {
-if (!fs.existsSync(indexHtml)) {
-    console.log('⚠️  Warning: public/admin/index.html not found');
-  }
-  if (!fs.existsSync(configYml)) {
     console.log('⚠️  Warning: public/admin/config.yml not found');
+  process.exit(1);
+}
+
+// Ensure content subdirectories exist
+const contentDirs = ['home', 'products', 'portfolio', 'services', 'blog', 'pages', 'testimonials', 'team', 'categories', 'settings'];
+contentDirs.forEach(dir => {
+  const dirPath = path.join(contentDir, dir);
+  if (!fs.existsSync(dirPath)) {
+    fs.mkdirSync(dirPath, { recursive: true });
+    console.log(`✅ Created ${dir} directory`);
   }
-}
+});
 
-// Buat folder content jika belum ada
-const contentDir = path.join(__dirname, 'public', 'content');
-if (!fs.existsSync(contentDir)) {
-  fs.mkdirSync(contentDir, { recursive: true });
-  console.log('✅ Created public/content directory');
-}
-
-console.log('✅ CMS build preparation completed');
+console.log('✅ CMS build preparation completed successfully!');
