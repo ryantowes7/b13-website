@@ -1,12 +1,15 @@
 // website/src/pages/portofolio/index.jsx
 import Head from 'next/head';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Filter, Grid, ZoomIn, ExternalLink, Calendar, MapPin } from 'lucide-react';
 import Button from '@/components/ui/Button';
 
 export default function Portfolio() {
   const [activeFilter, setActiveFilter] = useState('all');
   const [selectedProject, setSelectedProject] = useState(null);
+  const [portfolioProjects, setPortfolioProjects] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   const filters = [
     { id: 'all', name: 'All Projects' },
@@ -16,81 +19,123 @@ export default function Portfolio() {
     { id: 'merchandise', name: 'Merchandise' },
   ];
 
-  const portfolioProjects = [
-    {
-      id: 1,
-      title: 'Seragam Perusahaan PT. ABC Manufacturing',
-      category: 'garment',
-      client: 'PT. ABC Manufacturing',
-      location: 'Jember, Jawa Timur',
-      year: '2024',
-      description: 'Pembuatan seragam kantor untuk 500 karyawan dengan bahan cotton pique premium dan custom logo bordir. Dilengkapi dengan variasi warna sesuai divisi perusahaan.',
-      image: '/uploads/portfolio-1.jpg',
-      images: ['/uploads/portfolio-1-1.jpg', '/uploads/portfolio-1-2.jpg'],
-      deliverables: ['500 Set Seragam Kantor', 'Custom Logo Bordir', 'Variasi Warna Divisi']
-    },
-    {
-      id: 2,
-      title: 'Banner Event Launching Produk XYZ',
-      category: 'advertising',
-      client: 'XYZ Brand',
-      location: 'Surabaya, Jawa Timur',
-      year: '2024',
-      description: 'Banner ukuran besar 3x6 meter untuk event launching produk baru. Menggunakan material vinyl frontlit dengan finishing ring besi dan eyelet.',
-      image: '/uploads/portfolio-2.jpg',
-      images: ['/uploads/portfolio-2-1.jpg'],
-      deliverables: ['Banner 3x6 Meter', 'Material Vinyl Frontlit', 'Finishing Ring Besi']
-    },
-    {
-      id: 3,
-      title: 'Kaos Komunitas Jember Runner Club',
-      category: 'garment',
-      client: 'Jember Runner Club',
-      location: 'Jember, Jawa Timur',
-      year: '2023',
-      description: 'Custom kaos running untuk komunitas dengan design eksklusif dan bahan dryfit yang nyaman untuk aktivitas lari.',
-      image: '/uploads/portfolio-3.jpg',
-      images: ['/uploads/portfolio-3-1.jpg', '/uploads/portfolio-3-2.jpg'],
-      deliverables: ['Kaos Bahan Dryfit', 'Design Eksklusif', 'Sablon Rubber']
-    },
-    {
-      id: 4,
-      title: 'Jaket Bordir Logo Perusahaan CV. Sukses Makmur',
-      category: 'bordir',
-      client: 'CV. Sukses Makmur',
-      location: 'Banyuwangi, Jawa Timur',
-      year: '2023',
-      description: 'Jaket custom dengan bordir logo perusahaan yang detail menggunakan teknik komputer bordir untuk hasil yang presisi.',
-      image: '/uploads/portfolio-4.jpg',
-      images: ['/uploads/portfolio-4-1.jpg'],
-      deliverables: ['Jaket Parasut', 'Bordir Komputer', 'Logo Perusahaan']
-    },
-    {
-      id: 5,
-      title: 'Spanduk Promosi Retail Store Chain',
-      category: 'advertising',
-      client: 'Retail Store Chain',
-      location: 'Malang, Jawa Timur',
-      year: '2024',
-      description: 'Spanduk promosi untuk toko retail dengan design menarik dan warna vibrant untuk menarik perhatian customer.',
-      image: '/uploads/portfolio-5.jpg',
-      images: ['/uploads/portfolio-5-1.jpg'],
-      deliverables: ['Spanduk 2x1 Meter', 'Design Menarik', 'Material Tebal']
-    },
-    {
-      id: 6,
-      title: 'Merchandise Event Music Festival 2024',
-      category: 'merchandise',
-      client: 'Music Festival 2024',
-      location: 'Bali',
-      year: '2024',
-      description: 'Merchandise kaos untuk festival musik tahunan dengan design artistik dan limited edition.',
-      image: '/uploads/portfolio-6.jpg',
-      images: ['/uploads/portfolio-6-1.jpg', '/uploads/portfolio-6-2.jpg'],
-      deliverables: ['Kaos Limited Edition', 'Design Artistik', 'Sablon Digital']
-    },
-    // Tambahkan 6+ project lainnya...
-  ];
+  // Fetch portfolio from CMS API
+  useEffect(() => {
+    const fetchPortfolio = async () => {
+      try {
+        setLoading(true);
+        const response = await fetch('/api/content/portfolio');
+        
+        if (!response.ok) {
+          throw new Error('Failed to fetch portfolio');
+        }
+        
+        const data = await response.json();
+        
+        if (data.success && data.portfolio) {
+          // Transform portfolio data
+          const transformedPortfolio = data.portfolio.map((item, index) => {
+            // Parse gallery images
+            const gallery = item.gallery ? 
+              (Array.isArray(item.gallery) ? 
+                item.gallery.map(img => typeof img === 'object' ? img.url : img) : 
+                []) : 
+              [];
+            
+            // Extract year from date
+            const year = item.date ? new Date(item.date).getFullYear().toString() : '2024';
+            
+            return {
+              id: index + 1,
+              slug: item.slug,
+              title: item.name || 'Untitled Project',
+              name: item.name || 'Untitled Project',
+              category: item.category || 'garment',
+              client: item.client || 'Client',
+              location: 'Jember, Jawa Timur', // Default location
+              year: year,
+              description: item.description || '',
+              image: item.image || '/uploads/placeholder.jpg',
+              images: gallery,
+              deliverables: [], // Will be extracted from details if needed
+              details: item.details || '',
+              testimonial: item.testimonial || '',
+              client_name: item.client_name || item.client || ''
+            };
+          });
+          
+          setPortfolioProjects(transformedPortfolio);
+        } else {
+          throw new Error('Invalid data format');
+        }
+      } catch (err) {
+        console.error('Error fetching portfolio:', err);
+        setError('Gagal memuat portfolio. Silakan coba lagi.');
+        setPortfolioProjects([]);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchPortfolio();
+  }, []);
+
+  // Show loading state
+  if (loading) {
+    return (
+      <>
+        <Head>
+          <title>Portfolio - B13 Factory</title>
+        </Head>
+        <section className="bg-gradient-to-r from-accent-500 to-accent-600 text-white py-20">
+          <div className="container-custom text-center">
+            <h1 className="text-4xl md:text-5xl font-bold mb-4">Our Portfolio</h1>
+          </div>
+        </section>
+        <section className="section-padding bg-white">
+          <div className="container-custom">
+            <div className="flex justify-center items-center py-20">
+              <div className="text-center">
+                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600 mx-auto mb-4"></div>
+                <p className="text-neutral-600">Memuat portfolio...</p>
+              </div>
+            </div>
+          </div>
+        </section>
+      </>
+    );
+  }
+
+  // Show error state
+  if (error) {
+    return (
+      <>
+        <Head>
+          <title>Portfolio - B13 Factory</title>
+        </Head>
+        <section className="bg-gradient-to-r from-accent-500 to-accent-600 text-white py-20">
+          <div className="container-custom text-center">
+            <h1 className="text-4xl md:text-5xl font-bold mb-4">Our Portfolio</h1>
+          </div>
+        </section>
+        <section className="section-padding bg-white">
+          <div className="container-custom">
+            <div className="flex justify-center items-center py-20">
+              <div className="text-center">
+                <p className="text-red-600 text-lg mb-4">{error}</p>
+                <Button 
+                  onClick={() => window.location.reload()}
+                  variant="primary"
+                >
+                  Coba Lagi
+                </Button>
+              </div>
+            </div>
+          </div>
+        </section>
+      </>
+    );
+  }
 
   const filteredProjects = activeFilter === 'all' 
     ? portfolioProjects 

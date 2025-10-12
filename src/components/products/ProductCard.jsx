@@ -53,7 +53,7 @@ const ProductCard = ({ product, viewMode = 'grid' }) => {
             </div>
           </div>
           <div className="flex flex-col space-y-2">
-            <Button href={`/produk/${product.id}`} variant="primary">
+            <Button href={`/produk/${product.slug}`} variant="primary">
               Detail
             </Button>
             <Button href="/contact-us" variant="outline">
@@ -128,7 +128,7 @@ const ProductCard = ({ product, viewMode = 'grid' }) => {
         </div>
         <div className="flex space-x-2">
           <Button 
-            href={`/produk/${product.id}`} 
+            href={`/produk/${product.slug}`} 
             variant="primary" 
             className="flex-1"
             disabled={!product.inStock}

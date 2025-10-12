@@ -4,7 +4,7 @@ import Button from '@/components/ui/Button';
 import ProductCard from '@/components/products/ProductCard';
 import Pagination from '@/components/ui/Pagination';
 import { useProducts } from '@/hooks/useProducts';
-import { categories, sortOptions } from '@/data/products';
+import { sortOptions } from '@/data/products';
 
 export default function Produk() {
   const {
@@ -12,6 +12,7 @@ export default function Produk() {
     allProducts,
     loading,
     error,
+    categories,
     selectedCategory,
     setSelectedCategory,
     searchTerm,

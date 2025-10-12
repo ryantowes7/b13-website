@@ -1,5 +1,40 @@
 import { useState, useMemo, useEffect } from 'react';
-import { products as initialProducts } from '@/data/products';
+import { calculateCategories } from '@/data/products';
+
+// Helper function to parse price from CMS format
+const parsePrice = (priceString) => {
+  if (typeof priceString === 'number') return priceString;
+  if (!priceString) return 0;
+  // Remove \"Rp\", \".\", and spaces, then convert to number
+  return parseInt(priceString.replace(/[Rp\s.]/g, ''), 10) || 0;
+};
+
+// Helper function to parse features/tags array
+const parseArray = (data) => {
+  if (!data) return [];
+  if (Array.isArray(data)) {
+    // Handle both [{item: \"value\"}] and [\"value\"] formats
+    return data.map(item => {
+      if (typeof item === 'object' && item.item) return item.item;
+      if (typeof item === 'string') return item;
+      return String(item);
+    });
+  }
+  return [];
+};
+
+// Helper function to parse images array
+const parseImages = (data) => {
+  if (!data) return [];
+  if (Array.isArray(data)) {
+    return data.map(item => {
+      if (typeof item === 'object' && item.url) return item.url;
+      if (typeof item === 'string') return item;
+      return String(item);
+    });
+  }
+  return [];
+};
 
 export const useProducts = () => {
   const [allProducts, setAllProducts] = useState([]);
@@ -16,16 +51,52 @@ export const useProducts = () => {
   // Products per page
   const productsPerPage = 9;
 
-  // Simulate data fetching
+  // Fetch products from CMS API
   useEffect(() => {
     const fetchProducts = async () => {
       try {
         setLoading(true);
-        // Simulate API call
-        await new Promise(resolve => setTimeout(resolve, 1000));
-        setAllProducts(initialProducts);
+        setError(null);
+        
+        // Fetch from CMS API
+        const response = await fetch('/api/content/products');
+        
+        if (!response.ok) {
+          throw new Error('Failed to fetch products');
+        }
+        
+        const data = await response.json();
+        
+        if (data.success && data.products) {
+          // Transform CMS data to match expected format
+          const transformedProducts = data.products.map((product, index) => ({
+            id: index + 1,
+            slug: product.slug,
+            name: product.name || 'Untitled Product',
+            category: product.category || 'kaos',
+            price: parsePrice(product.price),
+            originalPrice: parsePrice(product.originalPrice),
+            image: product.image || '/uploads/placeholder.jpg',
+            images: parseImages(product.images),
+            description: product.description || '',
+            features: parseArray(product.features),
+            katalog: product.katalog || '',
+            tags: parseArray(product.tags),
+            inStock: product.inStock !== false,
+            minOrder: product.minOrder || 1,
+            rating: parseFloat(product.rating) || 0,
+            reviewCount: parseInt(product.reviewCount) || 0,
+            body: product.body || ''
+          }));
+          
+          setAllProducts(transformedProducts);
+        } else {
+          throw new Error('Invalid data format');
+        }
       } catch (err) {
+        console.error('Error fetching products:', err);
         setError('Gagal memuat produk. Silakan coba lagi.');
+        setAllProducts([]);
       } finally {
         setLoading(false);
       }
@@ -85,6 +156,11 @@ export const useProducts = () => {
 
   const totalPages = Math.ceil(sortedProducts.length / productsPerPage);
 
+  // Calculate categories with counts
+  const categories = useMemo(() => {
+    return calculateCategories(allProducts);
+  }, [allProducts]);
+
   // Reset to first page when filters change
   useEffect(() => {
     setCurrentPage(1);
@@ -96,6 +172,7 @@ export const useProducts = () => {
     allProducts: sortedProducts,
     loading,
     error,
+    categories,
     
     // Filter state
     selectedCategory,
