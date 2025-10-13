@@ -2,9 +2,16 @@
 title: "5 Tips Memilih Kaos yang Berkualitas untuk Seragam Perusahaan"
 author: "Tim B13 Factory"
 date: 2024-01-20T00:00:00.000Z
+category: "tips-trik"
 image: "/uploads/blog/tips-kaos.jpg"
 excerpt: "Panduan lengkap memilih kaos yang tepat untuk kebutuhan seragam perusahaan dengan kualitas terbaik dan harga kompetitif"
-body: |
+tags:
+  - item: "kaos"
+  - item: "seragam"
+  - item: "tips"
+  - item: "bahan"
+featured: true
+---
   # 5 Tips Memilih Kaos yang Berkualitas untuk Seragam Perusahaan
   
   Memilih kaos untuk seragam perusahaan bukanlah hal yang sederhana. Berikut tips dari kami:
@@ -34,9 +41,3 @@ body: |
   Kaos yang berkualitas tidak mudah luntur dan tidak menyusut setelah dicuci.
   
   Dengan memperhatikan tips di atas, Anda bisa mendapatkan kaos seragam yang berkualitas dan tahan lama.
-tags:
-  - "kaos"
-  - "seragam"
-  - "tips"
-  - "bahan"
-featured: true
