@@ -1,7 +1,7 @@
 import Head from 'next/head';
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
-import { ShoppingCart, Star, Package, Truck, Shield, ChevronLeft, ChevronRight, Check, X } from 'lucide-react';
+import { ShoppingCart, Package, Truck, Shield, ChevronLeft, ChevronRight, Check } from 'lucide-react';
 import Button from '@/components/ui/Button';
 import Link from 'next/link';
 
@@ -14,6 +14,8 @@ export default function ProductDetail() {
   const [error, setError] = useState(null);
   const [selectedImage, setSelectedImage] = useState(0);
   const [quantity, setQuantity] = useState(1);
+  const [selectedSize, setSelectedSize] = useState('');
+  const [selectedSleeveType, setSelectedSleeveType] = useState('');
 
   // Fetch product data
   useEffect(() => {
@@ -69,6 +71,14 @@ export default function ProductDetail() {
             return [];
           };
 
+          const parseVariants = (data) => {
+            if (!data) return [];
+            if (Array.isArray(data)) {
+              return data;
+            }
+            return [];
+          };
+
           const transformedProduct = {
             slug: foundProduct.slug,
             name: foundProduct.name || 'Untitled Product',
@@ -83,8 +93,8 @@ export default function ProductDetail() {
             tags: parseArray(foundProduct.tags),
             inStock: foundProduct.inStock !== false,
             minOrder: foundProduct.minOrder || 1,
-            rating: parseFloat(foundProduct.rating) || 0,
-            reviewCount: parseInt(foundProduct.reviewCount) || 0,
+            stockType: foundProduct.stockType || 'order',
+            variants: parseVariants(foundProduct.variants),
             body: foundProduct.body || ''
           };
 
@@ -274,23 +284,16 @@ export default function ProductDetail() {
                 {product.name}
               </h1>
 
-              {/* Rating */}
-              {product.rating > 0 && (
-                <div className="flex items-center gap-2 mb-4">
-                  <div className="flex items-center">
-                    {[...Array(5)].map((_, i) => (
-                      <Star
-                        key={i}
-                        size={20}
-                        className={i < Math.floor(product.rating) ? 'fill-yellow-400 text-yellow-400' : 'text-neutral-300'}
-                      />
-                    ))}
-                  </div>
-                  <span className="text-neutral-600">
-                    {product.rating} ({product.reviewCount} reviews)
-                  </span>
-                </div>
-              )}
+              {/* Stock Type Badge */}
+              <div className="mb-4">
+                <span className={`inline-block px-4 py-2 rounded-full text-sm font-medium ${
+                  product.stockType === 'ready' 
+                    ? 'bg-green-100 text-green-700' 
+                    : 'bg-blue-100 text-blue-700'
+                }`}>
+                  {product.stockType === 'ready' ? '✓ Ready Stock' : '📦 Made to Order'}
+                </span>
+              </div>
 
               {/* Price */}
               <div className="mb-6">
@@ -334,6 +337,87 @@ export default function ProductDetail() {
                   <strong>Minimum Order:</strong> {product.minOrder} pcs
                 </p>
               </div>
+
+              {/* Variant Selector for Ready Stock */}
+              {product.stockType === 'ready' && product.variants && product.variants.length > 0 && (
+                <div className="mb-6 bg-neutral-50 rounded-lg p-4">
+                  <h3 className="text-lg font-semibold mb-4">Pilih Varian:</h3>
+                  
+                  {/* Size Selector */}
+                  <div className="mb-4">
+                    <label className="block text-sm font-medium text-neutral-700 mb-2">
+                      Ukuran:
+                    </label>
+                    <div className="flex flex-wrap gap-2">
+                      {[...new Set(product.variants.map(v => v.size))].map(size => (
+                        <button
+                          key={size}
+                          onClick={() => {
+                            setSelectedSize(size);
+                            setSelectedSleeveType('');
+                          }}
+                          className={`px-4 py-2 rounded-lg border-2 transition-all ${
+                            selectedSize === size
+                              ? 'border-primary-500 bg-primary-50 text-primary-700'
+                              : 'border-neutral-300 hover:border-neutral-400'
+                          }`}
+                        >
+                          {size}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Sleeve Type Selector */}
+                  {selectedSize && (
+                    <div className="mb-4">
+                      <label className="block text-sm font-medium text-neutral-700 mb-2">
+                        Tipe Lengan:
+                      </label>
+                      <div className="flex flex-wrap gap-2">
+                        {[...new Set(product.variants
+                          .filter(v => v.size === selectedSize)
+                          .map(v => v.sleeveType)
+                        )].map(sleeveType => {
+                          const variant = product.variants.find(
+                            v => v.size === selectedSize && v.sleeveType === sleeveType
+                          );
+                          return (
+                            <button
+                              key={sleeveType}
+                              onClick={() => setSelectedSleeveType(sleeveType)}
+                              className={`px-4 py-2 rounded-lg border-2 transition-all ${
+                                selectedSleeveType === sleeveType
+                                  ? 'border-primary-500 bg-primary-50 text-primary-700'
+                                  : 'border-neutral-300 hover:border-neutral-400'
+                              }`}
+                            >
+                              {sleeveType.charAt(0).toUpperCase() + sleeveType.slice(1)}
+                              <span className="text-xs ml-2 text-neutral-600">
+                                (Stok: {variant?.stock || 0})
+                              </span>
+                            </button>
+                          );
+                        })}
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Stock Info */}
+                  {selectedSize && selectedSleeveType && (
+                    <div className="mt-4 p-3 bg-white rounded-lg border border-neutral-200">
+                      <p className="text-sm">
+                        <strong>Stok tersedia:</strong>{' '}
+                        <span className="text-green-600 font-semibold">
+                          {product.variants.find(
+                            v => v.size === selectedSize && v.sleeveType === selectedSleeveType
+                          )?.stock || 0} pcs
+                        </span>
+                      </p>
+                    </div>
+                  )}
+                </div>
+              )}
 
               {/* Quantity Selector */}
               <div className="mb-6">

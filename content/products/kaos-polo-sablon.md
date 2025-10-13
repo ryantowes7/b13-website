@@ -21,6 +21,5 @@ tags:
   - "sablon"
 inStock: true
 minOrder: 12
-rating: 4.5
-reviewCount: 24
+stockType: "order"
 ---

@@ -1,4 +1,4 @@
-import { Download, Star } from 'lucide-react';
+import { Download } from 'lucide-react';
 import Button from '@/components/ui/Button';
 
 const ProductCard = ({ product, viewMode = 'grid' }) => {
@@ -6,7 +6,18 @@ const ProductCard = ({ product, viewMode = 'grid' }) => {
     return (
       <div className="bg-white rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 p-6">
         <div className="flex flex-col md:flex-row gap-6">
-          <div className="md:w-48 h-48 bg-gradient-to-br from-primary-100 to-secondary-100 rounded-lg flex items-center justify-center">
+          <div className="md:w-48 h-48 bg-gradient-to-br from-primary-100 to-secondary-100 rounded-lg flex items-center justify-center relative">
+            {product.stockType && (
+              <div className="absolute top-2 right-2">
+                <span className={`px-2 py-1 rounded-full text-xs font-medium ${
+                  product.stockType === 'ready' 
+                    ? 'bg-green-100 text-green-700' 
+                    : 'bg-blue-100 text-blue-700'
+                }`}>
+                  {product.stockType === 'ready' ? 'Ready Stock' : 'By Order'}
+                </span>
+              </div>
+            )}
             <div className="text-center text-neutral-600">
               <p>Product Image</p>
             </div>
@@ -15,21 +26,6 @@ const ProductCard = ({ product, viewMode = 'grid' }) => {
             <h3 className="text-2xl font-semibold mb-2 text-neutral-900">
               {product.name}
             </h3>
-            <div className="flex items-center mb-2">
-              {[...Array(5)].map((_, i) => (
-                <Star
-                  key={i}
-                  size={16}
-                  className={i < Math.floor(product.rating) 
-                    ? 'text-yellow-400 fill-current' 
-                    : 'text-neutral-300'
-                  }
-                />
-              ))}
-              <span className="text-sm text-neutral-600 ml-2">
-                ({product.reviewCount})
-              </span>
-            </div>
             <p className="text-neutral-600 mb-4">
               {product.description}
             </p>
@@ -79,9 +75,15 @@ const ProductCard = ({ product, viewMode = 'grid' }) => {
   return (
     <div className="bg-white rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 card-hover">
       <div className="aspect-square bg-gradient-to-br from-primary-100 to-secondary-100 rounded-t-xl flex items-center justify-center relative">
-        {!product.inStock && (
-          <div className="absolute top-3 right-3 bg-red-500 text-white px-2 py-1 rounded-full text-xs">
-            Stok Habis
+        {product.stockType && (
+          <div className="absolute top-3 right-3">
+            <span className={`px-3 py-1 rounded-full text-xs font-medium ${
+              product.stockType === 'ready' 
+                ? 'bg-green-500 text-white' 
+                : 'bg-blue-500 text-white'
+            }`}>
+              {product.stockType === 'ready' ? 'Ready Stock' : 'By Order'}
+            </span>
           </div>
         )}
         <div className="text-center text-neutral-600">
@@ -93,21 +95,6 @@ const ProductCard = ({ product, viewMode = 'grid' }) => {
         <h3 className="text-xl font-semibold mb-2 text-neutral-900">
           {product.name}
         </h3>
-        <div className="flex items-center mb-2">
-          {[...Array(5)].map((_, i) => (
-            <Star
-              key={i}
-              size={14}
-              className={i < Math.floor(product.rating) 
-                ? 'text-yellow-400 fill-current' 
-                : 'text-neutral-300'
-              }
-            />
-          ))}
-          <span className="text-xs text-neutral-600 ml-1">
-            ({product.reviewCount})
-          </span>
-        </div>
         <p className="text-neutral-600 mb-4 line-clamp-2">
           {product.description}
         </p>
@@ -131,9 +118,8 @@ const ProductCard = ({ product, viewMode = 'grid' }) => {
             href={`/produk/${product.slug}`} 
             variant="primary" 
             className="flex-1"
-            disabled={!product.inStock}
           >
-            {product.inStock ? 'Detail' : 'Stok Habis'}
+            Detail
           </Button>
           {product.katalog && (
             <Button 
