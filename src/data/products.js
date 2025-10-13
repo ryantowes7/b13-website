@@ -2,7 +2,11 @@
 // Default categories structure
 export const defaultCategories = [
   { id: 'all', name: 'Semua Produk' },
-  { id: 'kaos', name: 'Kaos Sablon' },
+  { id: 'kaos', name: 'Kaos' },
+  { id: 'polo', name: 'Polo' },
+  { id: 'kemeja', name: 'Kemeja' },
+  { id: 'jaket', name: 'Jaket' },
+  { id: 'topi', name: 'Topi' },
   { id: 'bordir', name: 'Bordir' },
   { id: 'banner', name: 'Banner & Spanduk' },
   { id: 'merchandise', name: 'Merchandise' },
@@ -28,5 +32,4 @@ export const sortOptions = [
   { value: 'name-desc', label: 'Nama Z-A' },
   { value: 'price-low', label: 'Harga Terendah' },
   { value: 'price-high', label: 'Harga Tertinggi' },
-  { value: 'rating', label: 'Rating Tertinggi' },
 ];

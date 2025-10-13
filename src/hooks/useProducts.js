@@ -36,6 +36,15 @@ const parseImages = (data) => {
   return [];
 };
 
+// Helper function to parse variants array
+const parseVariants = (data) => {
+  if (!data) return [];
+  if (Array.isArray(data)) {
+    return data;
+  }
+  return [];
+};
+
 export const useProducts = () => {
   const [allProducts, setAllProducts] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -84,8 +93,8 @@ export const useProducts = () => {
             tags: parseArray(product.tags),
             inStock: product.inStock !== false,
             minOrder: product.minOrder || 1,
-            rating: parseFloat(product.rating) || 0,
-            reviewCount: parseInt(product.reviewCount) || 0,
+            stockType: product.stockType || 'order',
+            variants: parseVariants(product.variants),
             body: product.body || ''
           }));
           
@@ -140,8 +149,6 @@ export const useProducts = () => {
         return sorted.sort((a, b) => a.price - b.price);
       case 'price-high':
         return sorted.sort((a, b) => b.price - a.price);
-      case 'rating':
-        return sorted.sort((a, b) => b.rating - a.rating);
       default:
         return sorted;
     }
