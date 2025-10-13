@@ -41,14 +41,23 @@ export async function getStaticProps({ params }) {
   const categories = getAllArticleCategories();
   const categoryInfo = categories.find(cat => cat.slug === post.category) || { name: post.category, color: 'blue' };
 
+  // Serialize dates to strings for JSON
+  const serializedPost = {
+    ...post,
+    contentHtml,
+    date: typeof post.date === 'string' ? post.date : post.date.toISOString(),
+  };
+
+  const serializedRelatedPosts = relatedPosts.map(p => ({
+    ...p,
+    date: typeof p.date === 'string' ? p.date : p.date.toISOString(),
+  }));
+
   return {
     props: {
-      post: {
-        ...post,
-        contentHtml,
-      },
+      post: serializedPost,
       categoryInfo,
-      relatedPosts,
+      relatedPosts: serializedRelatedPosts,
     },
   };
 }

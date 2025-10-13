@@ -7,10 +7,16 @@ import { getAllBlogPosts, getAllArticleCategories } from '../../../lib/markdown'
 export async function getStaticProps() {
   const posts = getAllBlogPosts();
   const categories = getAllArticleCategories();
+  
+  // Serialize dates to strings for JSON
+  const serializedPosts = posts.map(post => ({
+    ...post,
+    date: typeof post.date === 'string' ? post.date : post.date.toISOString(),
+  }));
 
   return {
     props: {
-      posts,
+      posts: serializedPosts,
       categories,
     },
   };
