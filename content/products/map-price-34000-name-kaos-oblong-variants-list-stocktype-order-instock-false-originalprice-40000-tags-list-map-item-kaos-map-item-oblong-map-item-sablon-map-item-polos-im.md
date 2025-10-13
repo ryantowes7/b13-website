@@ -17,7 +17,7 @@ tags:
   - item: oblong
   - item: sablon
   - item: polos
-inStock: false
+inStock: true
 minOrder: 1
 stockType: order
 variants: []
