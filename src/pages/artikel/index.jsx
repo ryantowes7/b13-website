@@ -2,7 +2,7 @@ import Head from 'next/head';
 import Link from 'next/link';
 import { useState } from 'react';
 import { Calendar, User, ArrowRight, Search, Filter, X } from 'lucide-react';
-import { getAllBlogPosts, getAllArticleCategories } from '@/lib/markdown';
+import { getAllBlogPosts, getAllArticleCategories } from '../../../lib/markdown';
 
 export async function getStaticProps() {
   const posts = getAllBlogPosts();

@@ -2,7 +2,7 @@
 import Head from 'next/head';
 import Link from 'next/link';
 import { Calendar, User, ArrowLeft, Share2, Facebook, Twitter, Linkedin, Clock } from 'lucide-react';
-import { getAllBlogPosts, getBlogPostBySlug, getRelatedBlogPosts, getAllArticleCategories } from '@/lib/markdown';
+import { getAllBlogPosts, getBlogPostBySlug, getRelatedBlogPosts, getAllArticleCategories } from '../../../lib/markdown';
 import { remark } from 'remark';
 import html from 'remark-html';
 
