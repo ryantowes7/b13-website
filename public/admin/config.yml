@@ -84,19 +84,27 @@ collections:
     slug: "{{slug}}"
     fields:
       - { label: "Product Name", name: "name", widget: "string" }
-      - { label: "Category", name: "category", widget: "select", options: ["kaos", "bordir", "banner", "merchandise"] }
+      - { label: "Category", name: "category", widget: "select", options: ["kaos", "bordir", "banner", "merchandise", "jaket", "polo", "kemeja", "topi"] }
       - { label: "Price", name: "price", widget: "string" }
       - { label: "Original Price", name: "originalPrice", widget: "string", required: false }
       - { label: "Featured Image", name: "image", widget: "image" }
-      - { label: "Gallery Images", name: "images", widget: "list", fields: [{label: "Image", name: "url", widget: "image"}] }
+      - { label: "Gallery Images", name: "images", widget: "list", fields: [{label: "Image", name: "url", widget: "image"}], required: false }
       - { label: "Description", name: "description", widget: "text" }
-      - { label: "Features", name: "features", widget: "list", fields: [{label: "Feature", name: "item", widget: "string"}] }
+      - { label: "Features", name: "features", widget: "list", fields: [{label: "Feature", name: "item", widget: "string"}], required: false }
       - { label: "Katalog File", name: "katalog", widget: "file", required: false }
-      - { label: "Tags", name: "tags", widget: "list", fields: [{label: "Tag", name: "item", widget: "string"}] }
+      - { label: "Tags", name: "tags", widget: "list", fields: [{label: "Tag", name: "item", widget: "string"}], required: false }
       - { label: "In Stock", name: "inStock", widget: "boolean", default: true }
       - { label: "Minimum Order", name: "minOrder", widget: "number", default: 1 }
-      - { label: "Rating", name: "rating", widget: "number", value_type: "float", min: 0, max: 5, step: 0.1 }
-      - { label: "Review Count", name: "reviewCount", widget: "number", default: 0 }
+      - { label: "Stock Type", name: "stockType", widget: "select", options: ["ready", "order"], default: "order", hint: "Pilih 'ready' untuk Ready Stock atau 'order' untuk Made to Order" }
+      - label: "Variants (untuk Ready Stock)"
+        name: "variants"
+        widget: "list"
+        required: false
+        hint: "Isi field ini hanya jika Stock Type = Ready Stock. Tambahkan variant berdasarkan ukuran dan jenis lengan."
+        fields:
+          - { label: "Size/Ukuran", name: "size", widget: "string", hint: "Contoh: S, M, L, XL, XXL" }
+          - { label: "Sleeve Type/Jenis Lengan", name: "sleeveType", widget: "select", options: ["pendek", "panjang"], default: "pendek" }
+          - { label: "Stock/Jumlah Stok", name: "stock", widget: "number", default: 0, min: 0 }
 
   # ==================== PORTFOLIO ====================
   - name: "portfolio"
