@@ -1,7 +1,7 @@
 import Head from 'next/head';
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
-import { Calendar, MapPin, User, ChevronLeft, ChevronRight, ExternalLink } from 'lucide-react';
+import { Calendar, MapPin, User, ChevronLeft, ChevronRight, ExternalLink, Award, Target, CheckCircle2, Quote, ArrowRight } from 'lucide-react';
 import Button from '@/components/ui/Button';
 import Link from 'next/link';
 
@@ -10,9 +10,11 @@ export default function PortfolioDetail() {
   const { slug } = router.query;
   
   const [portfolio, setPortfolio] = useState(null);
+  const [relatedProjects, setRelatedProjects] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [selectedImage, setSelectedImage] = useState(0);
+  const [lightboxOpen, setLightboxOpen] = useState(false);
 
   // Fetch portfolio data
   useEffect(() => {
@@ -65,6 +67,20 @@ export default function PortfolioDetail() {
           };
 
           setPortfolio(transformedPortfolio);
+
+          // Find related projects (same category, excluding current)
+          const related = data.portfolio
+            .filter(p => p.category === transformedPortfolio.category && p.slug !== slug)
+            .slice(0, 3)
+            .map(p => ({
+              slug: p.slug,
+              name: p.name,
+              image: p.image,
+              category: p.category,
+              client: p.client
+            }));
+          
+          setRelatedProjects(related);
         } else {
           throw new Error('Invalid data format');
         }
@@ -137,6 +153,48 @@ export default function PortfolioDetail() {
     });
   };
 
+  // Parse markdown-style details for better display
+  const parseDetails = (details) => {
+    if (!details) return null;
+    
+    const sections = [];
+    const lines = details.split('');
+    let currentSection = { type: 'text', content: [] };
+    
+    lines.forEach((line) => {
+      if (line.startsWith('## ')) {
+        if (currentSection.content.length > 0) {
+          sections.push(currentSection);
+        }
+        currentSection = { type: 'heading', content: line.replace('## ', '') };
+        sections.push(currentSection);
+        currentSection = { type: 'text', content: [] };
+      } else if (line.trim().startsWith('- ')) {
+        if (currentSection.type !== 'list') {
+          if (currentSection.content.length > 0) {
+            sections.push(currentSection);
+          }
+          currentSection = { type: 'list', content: [] };
+        }
+        currentSection.content.push(line.replace(/^- /, ''));
+      } else if (line.trim()) {
+        if (currentSection.type === 'list') {
+          sections.push(currentSection);
+          currentSection = { type: 'text', content: [] };
+        }
+        currentSection.content.push(line);
+      }
+    });
+    
+    if (currentSection.content.length > 0) {
+      sections.push(currentSection);
+    }
+    
+    return sections;
+  };
+
+  const detailSections = parseDetails(portfolio.details);
+
   return (
     <>
       <Head>
@@ -144,37 +202,60 @@ export default function PortfolioDetail() {
         <meta name="description" content={portfolio.description} />
       </Head>
 
-      {/* Hero Section */}
-      <section className="bg-gradient-to-r from-accent-500 to-accent-600 text-white py-20">
-        <div className="container-custom">
-          {/* Breadcrumb */}
-          <nav className="mb-6 text-sm">
-            <ol className="flex items-center space-x-2 text-white/80">
-              <li><Link href="/" className="hover:text-white">Home</Link></li>
-              <li>/</li>
-              <li><Link href="/portofolio" className="hover:text-white">Portfolio</Link></li>
-              <li>/</li>
-              <li className="text-white font-medium">{portfolio.name}</li>
-            </ol>
-          </nav>
+      {/* Hero Section - Elegant with Image Background */}
+      <section className="relative h-[60vh] min-h-[500px] overflow-hidden">
+        {/* Background Image */}
+        <div className="absolute inset-0">
+          {portfolio.image && portfolio.image !== '/uploads/placeholder.jpg' ? (
+            <img 
+              src={portfolio.image} 
+              alt={portfolio.name}
+              className="w-full h-full object-cover"
+            />
+          ) : (
+            <div className="w-full h-full bg-gradient-to-br from-primary-600 to-secondary-600"></div>
+          )}
+          <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/70 to-black/50"></div>
+        </div>
 
-          <h1 className="text-4xl md:text-5xl font-bold mb-4">
-            {portfolio.name}
-          </h1>
-          
-          <div className="flex flex-wrap gap-6 text-white/90">
-            <div className="flex items-center gap-2">
-              <User size={20} />
-              <span>{portfolio.client}</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <Calendar size={20} />
-              <span>{formatDate(portfolio.date)}</span>
-            </div>
-            <div>
-              <span className="bg-white/20 px-3 py-1 rounded-full text-sm">
+        {/* Content */}
+        <div className="relative h-full container-custom flex items-end pb-16">
+          <div className="max-w-4xl text-white">
+            {/* Breadcrumb */}
+            <nav className="mb-6 text-sm">
+              <ol className="flex items-center space-x-2 text-white/80">
+                <li><Link href="/" className="hover:text-white transition">Home</Link></li>
+                <li>/</li>
+                <li><Link href="/portofolio" className="hover:text-white transition">Portfolio</Link></li>
+                <li>/</li>
+                <li className="text-white font-medium">{portfolio.name}</li>
+              </ol>
+            </nav>
+
+            {/* Category Badge */}
+            <div className="mb-4">
+              <span className="inline-block bg-primary-500 px-4 py-2 rounded-full text-sm font-semibold capitalize">
                 {portfolio.category}
               </span>
+            </div>
+
+            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 leading-tight">
+              {portfolio.name}
+            </h1>
+            
+            <div className="flex flex-wrap gap-6 text-lg">
+              <div className="flex items-center gap-2">
+                <User size={22} />
+                <span>{portfolio.client}</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <Calendar size={22} />
+                <span>{formatDate(portfolio.date)}</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <MapPin size={22} />
+                <span>Jember, Jawa Timur</span>
+              </div>
             </div>
           </div>
         </div>
@@ -182,181 +263,346 @@ export default function PortfolioDetail() {
 
       <section className="section-padding bg-white">
         <div className="container-custom">
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
-            {/* Main Content */}
-            <div className="lg:col-span-2">
-              {/* Main Image Gallery */}
-              <div className="mb-8">
-                {/* Featured Image */}
-                <div className="bg-neutral-50 rounded-2xl overflow-hidden mb-4 aspect-video flex items-center justify-center relative group">
-                  {currentImage ? (
+          {/* Overview Section */}
+          <div className="max-w-6xl mx-auto mb-16">
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
+              {/* Main Overview */}
+              <div className="lg:col-span-2">
+                <div className="flex items-center gap-3 mb-6">
+                  <div className="w-12 h-12 bg-primary-100 rounded-lg flex items-center justify-center">
+                    <Target size={24} className="text-primary-600" />
+                  </div>
+                  <h2 className="text-3xl font-bold text-neutral-900">Project Overview</h2>
+                </div>
+                <p className="text-lg text-neutral-700 leading-relaxed">
+                  {portfolio.description}
+                </p>
+              </div>
+
+              {/* Quick Info Card */}
+              <div className="lg:col-span-1">
+                <div className="bg-gradient-to-br from-primary-50 to-secondary-50 rounded-2xl p-8 shadow-lg sticky top-24">
+                  <h3 className="text-xl font-bold text-neutral-900 mb-6">Project Info</h3>
+                  
+                  <div className="space-y-5">
+                    <div>
+                      <p className="text-sm text-neutral-600 mb-2 flex items-center gap-2">
+                        <User size={16} /> Client
+                      </p>
+                      <p className="font-semibold text-neutral-900 text-lg">{portfolio.client}</p>
+                    </div>
+                    
+                    <div>
+                      <p className="text-sm text-neutral-600 mb-2 flex items-center gap-2">
+                        <Award size={16} /> Category
+                      </p>
+                      <p className="font-semibold text-neutral-900 text-lg capitalize">{portfolio.category}</p>
+                    </div>
+                    
+                    <div>
+                      <p className="text-sm text-neutral-600 mb-2 flex items-center gap-2">
+                        <Calendar size={16} /> Date
+                      </p>
+                      <p className="font-semibold text-neutral-900 text-lg">{formatDate(portfolio.date)}</p>
+                    </div>
+                  </div>
+
+                  <div className="mt-8 pt-6 border-t border-neutral-200">
+                    <Button href="/contact-us" variant="primary" className="w-full justify-center mb-3">
+                      Mulai Proyek Serupa
+                    </Button>
+                    <Button href="/portofolio" variant="outline" className="w-full justify-center">
+                      Lihat Portfolio Lainnya
+                    </Button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Gallery Section */}
+          {allImages.length > 0 && (
+            <div className="max-w-6xl mx-auto mb-16">
+              <div className="flex items-center gap-3 mb-8">
+                <div className="w-12 h-12 bg-secondary-100 rounded-lg flex items-center justify-center">
+                  <ExternalLink size={24} className="text-secondary-600" />
+                </div>
+                <h2 className="text-3xl font-bold text-neutral-900">Project Gallery</h2>
+              </div>
+
+              {/* Main Image */}
+              <div className="mb-6">
+                <div 
+                  className="relative aspect-video bg-neutral-100 rounded-3xl overflow-hidden cursor-pointer group shadow-2xl"
+                  onClick={() => setLightboxOpen(true)}
+                >
+                  {currentImage && currentImage !== '/uploads/placeholder.jpg' ? (
                     <img 
                       src={currentImage} 
-                      alt={portfolio.name}
-                      className="w-full h-full object-cover"
+                      alt={`${portfolio.name} - Image ${selectedImage + 1}`}
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                     />
                   ) : (
-                    <div className="text-neutral-400 text-center">
-                      <p>Portfolio Image</p>
+                    <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-primary-100 to-secondary-100">
+                      <p className="text-neutral-500">Portfolio Image</p>
                     </div>
                   )}
                   
-                  {/* Image Navigation */}
+                  {/* Overlay */}
+                  <div className="absolute inset-0 bg-black/0 group-hover:bg-black/40 transition-all duration-300 flex items-center justify-center">
+                    <div className="transform scale-75 opacity-0 group-hover:scale-100 group-hover:opacity-100 transition-all duration-300">
+                      <div className="bg-white/90 backdrop-blur-sm rounded-full p-4">
+                        <ExternalLink size={32} className="text-primary-600" />
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Navigation Arrows */}
                   {allImages.length > 1 && (
                     <>
                       <button
-                        onClick={() => setSelectedImage((prev) => (prev - 1 + allImages.length) % allImages.length)}
-                        className="absolute left-4 top-1/2 transform -translate-y-1/2 bg-white/80 hover:bg-white rounded-full p-2 shadow-lg opacity-0 group-hover:opacity-100 transition-opacity"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setSelectedImage((prev) => (prev - 1 + allImages.length) % allImages.length);
+                        }}
+                        className="absolute left-6 top-1/2 -translate-y-1/2 bg-white/90 backdrop-blur-sm hover:bg-white rounded-full p-3 shadow-xl opacity-0 group-hover:opacity-100 transition-all z-10"
                       >
-                        <ChevronLeft size={24} />
+                        <ChevronLeft size={28} className="text-neutral-900" />
                       </button>
                       <button
-                        onClick={() => setSelectedImage((prev) => (prev + 1) % allImages.length)}
-                        className="absolute right-4 top-1/2 transform -translate-y-1/2 bg-white/80 hover:bg-white rounded-full p-2 shadow-lg opacity-0 group-hover:opacity-100 transition-opacity"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setSelectedImage((prev) => (prev + 1) % allImages.length);
+                        }}
+                        className="absolute right-6 top-1/2 -translate-y-1/2 bg-white/90 backdrop-blur-sm hover:bg-white rounded-full p-3 shadow-xl opacity-0 group-hover:opacity-100 transition-all z-10"
                       >
-                        <ChevronRight size={24} />
+                        <ChevronRight size={28} className="text-neutral-900" />
                       </button>
                     </>
                   )}
 
                   {/* Image Counter */}
                   {allImages.length > 1 && (
-                    <div className="absolute bottom-4 right-4 bg-black/50 text-white px-3 py-1 rounded-full text-sm">
+                    <div className="absolute bottom-6 right-6 bg-black/70 backdrop-blur-sm text-white px-4 py-2 rounded-full text-sm font-semibold">
                       {selectedImage + 1} / {allImages.length}
                     </div>
                   )}
                 </div>
+              </div>
 
-                {/* Thumbnail Gallery */}
-                {allImages.length > 1 && (
-                  <div className="grid grid-cols-4 md:grid-cols-6 gap-2">
-                    {allImages.map((img, index) => (
-                      <button
-                        key={index}
-                        onClick={() => setSelectedImage(index)}
-                        className={`aspect-video rounded-lg overflow-hidden border-2 transition-all ${
-                          selectedImage === index
-                            ? 'border-primary-500 scale-95'
-                            : 'border-transparent hover:border-neutral-300'
-                        }`}
-                      >
+              {/* Thumbnail Grid */}
+              {allImages.length > 1 && (
+                <div className="grid grid-cols-4 md:grid-cols-6 lg:grid-cols-8 gap-3">
+                  {allImages.map((img, index) => (
+                    <button
+                      key={index}
+                      onClick={() => setSelectedImage(index)}
+                      className={`aspect-square rounded-xl overflow-hidden border-3 transition-all ${
+                        selectedImage === index
+                          ? 'border-primary-500 ring-2 ring-primary-200 scale-95'
+                          : 'border-transparent hover:border-neutral-300'
+                      }`}
+                    >
+                      {img && img !== '/uploads/placeholder.jpg' ? (
                         <img 
                           src={img} 
-                          alt={`${portfolio.name} ${index + 1}`}
+                          alt={`Thumbnail ${index + 1}`}
                           className="w-full h-full object-cover"
                         />
-                      </button>
-                    ))}
-                  </div>
-                )}
-              </div>
-
-              {/* Project Overview */}
-              <div className="mb-8">
-                <h2 className="text-2xl font-bold text-neutral-900 mb-4">Project Overview</h2>
-                <p className="text-neutral-700 leading-relaxed text-lg">
-                  {portfolio.description}
-                </p>
-              </div>
-
-              {/* Project Details (Markdown Content) */}
-              {portfolio.details && (
-                <div className="mb-8 prose prose-lg max-w-none">
-                  <h2 className="text-2xl font-bold text-neutral-900 mb-4">Project Details</h2>
-                  <div className="text-neutral-700 leading-relaxed">
-                    {/* Simple markdown rendering - split by newlines */}
-                    {portfolio.details.split('').map((line, index) => {
-                      // Handle headers
-                      if (line.startsWith('## ')) {
-                        return <h3 key={index} className="text-xl font-bold mt-6 mb-3">{line.replace('## ', '')}</h3>;
-                      }
-                      // Handle bold text
-                      if (line.includes('**')) {
-                        const parts = line.split('**');
-                        return (
-                          <p key={index} className="mb-2">
-                            {parts.map((part, i) => i % 2 === 0 ? part : <strong key={i}>{part}</strong>)}
-                          </p>
-                        );
-                      }
-                      // Handle list items
-                      if (line.trim().startsWith('- ')) {
-                        return (
-                          <li key={index} className="ml-6 mb-1">
-                            {line.replace('- ', '')}
-                          </li>
-                        );
-                      }
-                      // Regular paragraph
-                      if (line.trim()) {
-                        return <p key={index} className="mb-3">{line}</p>;
-                      }
-                      return null;
-                    })}
-                  </div>
+                      ) : (
+                        <div className="w-full h-full bg-gradient-to-br from-neutral-200 to-neutral-300"></div>
+                      )}
+                    </button>
+                  ))}
                 </div>
               )}
+            </div>
+          )}
 
-              {/* Testimonial */}
-              {portfolio.testimonial && (
-                <div className="bg-gradient-to-br from-primary-50 to-secondary-50 rounded-2xl p-8 mb-8">
-                  <h3 className="text-xl font-bold text-neutral-900 mb-4">Client Testimonial</h3>
-                  <blockquote className="text-lg italic text-neutral-700 mb-4">
+          {/* Project Details Section */}
+          {detailSections && detailSections.length > 0 && (
+            <div className="max-w-6xl mx-auto mb-16">
+              <div className="flex items-center gap-3 mb-8">
+                <div className="w-12 h-12 bg-accent-100 rounded-lg flex items-center justify-center">
+                  <CheckCircle2 size={24} className="text-accent-600" />
+                </div>
+                <h2 className="text-3xl font-bold text-neutral-900">Project Details</h2>
+              </div>
+
+              <div className="prose prose-lg max-w-none">
+                {detailSections.map((section, index) => {
+                  if (section.type === 'heading') {
+                    return (
+                      <h3 key={index} className="text-2xl font-bold text-neutral-900 mt-8 mb-4">
+                        {section.content}
+                      </h3>
+                    );
+                  } else if (section.type === 'list') {
+                    return (
+                      <ul key={index} className="space-y-3 mb-6">
+                        {section.content.map((item, i) => (
+                          <li key={i} className="flex items-start gap-3">
+                            <div className="mt-1.5 w-2 h-2 bg-primary-500 rounded-full flex-shrink-0" />
+                            <span className="text-neutral-700 leading-relaxed">{item}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    );
+                  } else {
+                    return section.content.map((text, i) => (
+                      <p key={`${index}-${i}`} className="text-neutral-700 leading-relaxed mb-4">
+                        {text}
+                      </p>
+                    ));
+                  }
+                })}
+              </div>
+            </div>
+          )}
+
+          {/* Testimonial Section */}
+          {portfolio.testimonial && (
+            <div className="max-w-4xl mx-auto mb-16">
+              <div className="bg-gradient-to-br from-primary-500 to-secondary-500 rounded-3xl p-12 shadow-2xl text-white relative overflow-hidden">
+                {/* Decorative Background */}
+                <div className="absolute top-0 right-0 w-64 h-64 bg-white/10 rounded-full -mr-32 -mt-32"></div>
+                <div className="absolute bottom-0 left-0 w-48 h-48 bg-black/10 rounded-full -ml-24 -mb-24"></div>
+                
+                <div className="relative">
+                  <Quote size={48} className="text-white/30 mb-6" />
+                  <blockquote className="text-xl md:text-2xl font-medium leading-relaxed mb-8">
                     "{portfolio.testimonial}"
                   </blockquote>
                   {portfolio.client_name && (
-                    <p className="text-neutral-600 font-medium">
-                      — {portfolio.client_name}
-                    </p>
+                    <div className="flex items-center gap-4">
+                      <div className="w-16 h-16 bg-white/20 rounded-full flex items-center justify-center">
+                        <User size={32} className="text-white" />
+                      </div>
+                      <div>
+                        <p className="font-bold text-lg">{portfolio.client_name}</p>
+                        <p className="text-white/80">{portfolio.client}</p>
+                      </div>
+                    </div>
                   )}
-                </div>
-              )}
-            </div>
-
-            {/* Sidebar */}
-            <div className="lg:col-span-1">
-              <div className="bg-neutral-50 rounded-2xl p-6 sticky top-24">
-                <h3 className="text-xl font-bold text-neutral-900 mb-6">Project Info</h3>
-                
-                <div className="space-y-4 mb-8">
-                  <div>
-                    <p className="text-sm text-neutral-600 mb-1">Client</p>
-                    <p className="font-semibold text-neutral-900">{portfolio.client}</p>
-                  </div>
-                  
-                  <div>
-                    <p className="text-sm text-neutral-600 mb-1">Category</p>
-                    <p className="font-semibold text-neutral-900 capitalize">{portfolio.category}</p>
-                  </div>
-                  
-                  <div>
-                    <p className="text-sm text-neutral-600 mb-1">Date</p>
-                    <p className="font-semibold text-neutral-900">{formatDate(portfolio.date)}</p>
-                  </div>
-                </div>
-
-                <div className="border-t border-neutral-200 pt-6">
-                  <h4 className="font-semibold text-neutral-900 mb-4">Interested in Similar Project?</h4>
-                  <Button href="/contact-us" variant="primary" className="w-full justify-center mb-3">
-                    Start Your Project
-                  </Button>
-                  <Button href="/portofolio" variant="outline" className="w-full justify-center">
-                    View More Projects
-                  </Button>
                 </div>
               </div>
             </div>
-          </div>
+          )}
 
-          {/* Back to Portfolio */}
-          <div className="text-center mt-12">
-            <Button href="/portofolio" variant="outline">
-              <ChevronLeft size={20} className="mr-2" />
-              Kembali ke Portfolio
-            </Button>
+          {/* Related Projects */}
+          {relatedProjects.length > 0 && (
+            <div className="max-w-6xl mx-auto">
+              <div className="text-center mb-12">
+                <h2 className="text-3xl font-bold text-neutral-900 mb-4">Portfolio Terkait</h2>
+                <p className="text-lg text-neutral-600">
+                  Lihat proyek lainnya dalam kategori yang sama
+                </p>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                {relatedProjects.map((project) => (
+                  <Link key={project.slug} href={`/portofolio/${project.slug}`}>
+                    <div className="bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-500 overflow-hidden group cursor-pointer">
+                      <div className="relative aspect-[4/3] overflow-hidden">
+                        {project.image && project.image !== '/uploads/placeholder.jpg' ? (
+                          <img 
+                            src={project.image} 
+                            alt={project.name}
+                            className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                          />
+                        ) : (
+                          <div className="w-full h-full bg-gradient-to-br from-primary-100 to-secondary-100"></div>
+                        )}
+                        <div className="absolute inset-0 bg-black/0 group-hover:bg-black/40 transition-all duration-300"></div>
+                      </div>
+                      <div className="p-6">
+                        <h3 className="text-lg font-bold text-neutral-900 mb-2 group-hover:text-primary-600 transition-colors line-clamp-2">
+                          {project.name}
+                        </h3>
+                        <p className="text-sm text-neutral-600 mb-3">{project.client}</p>
+                        <div className="flex items-center text-primary-600 font-semibold group-hover:translate-x-2 transition-transform">
+                          <span className="mr-2">Lihat Detail</span>
+                          <ArrowRight size={16} />
+                        </div>
+                      </div>
+                    </div>
+                  </Link>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* CTA Section */}
+          <div className="max-w-4xl mx-auto mt-20">
+            <div className="text-center bg-gradient-to-br from-neutral-50 to-neutral-100 rounded-3xl p-12 shadow-xl">
+              <h2 className="text-3xl md:text-4xl font-bold mb-4 text-neutral-900">
+                Tertarik dengan Proyek Serupa?
+              </h2>
+              <p className="text-xl text-neutral-600 mb-8 leading-relaxed">
+                Mari diskusikan proyek Anda dengan tim profesional kami
+              </p>
+              <div className="flex flex-wrap justify-center gap-4">
+                <Button href="/contact-us" variant="primary" size="lg">
+                  Hubungi Kami
+                </Button>
+                <Button href="/portofolio" variant="outline" size="lg">
+                  <ChevronLeft size={20} className="mr-2" />
+                  Kembali ke Portfolio
+                </Button>
+              </div>
+            </div>
           </div>
         </div>
       </section>
+
+      {/* Lightbox Modal */}
+      {lightboxOpen && (
+        <div 
+          className="fixed inset-0 bg-black/95 z-50 flex items-center justify-center p-4"
+          onClick={() => setLightboxOpen(false)}
+        >
+          <button
+            onClick={() => setLightboxOpen(false)}
+            className="absolute top-6 right-6 text-white hover:text-neutral-300 transition"
+          >
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none">
+              <path d="M18 6L6 18M6 6L18 18" stroke="currentColor" strokeWidth="2"/>
+            </svg>
+          </button>
+          
+          <div className="relative max-w-7xl w-full">
+            <img 
+              src={currentImage} 
+              alt={portfolio.name}
+              className="w-full h-auto max-h-[90vh] object-contain"
+              onClick={(e) => e.stopPropagation()}
+            />
+            
+            {allImages.length > 1 && (
+              <>
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setSelectedImage((prev) => (prev - 1 + allImages.length) % allImages.length);
+                  }}
+                  className="absolute left-4 top-1/2 -translate-y-1/2 bg-white/10 backdrop-blur-sm hover:bg-white/20 text-white p-4 rounded-full transition-all"
+                >
+                  <ChevronLeft size={32} />
+                </button>
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setSelectedImage((prev) => (prev + 1) % allImages.length);
+                  }}
+                  className="absolute right-4 top-1/2 -translate-y-1/2 bg-white/10 backdrop-blur-sm hover:bg-white/20 text-white p-4 rounded-full transition-all"
+                >
+                  <ChevronRight size={32} />
+                </button>
+              </>
+            )}
+          </div>
+        </div>
+      )}
     </>
   );
 }

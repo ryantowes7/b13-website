@@ -1,23 +1,43 @@
-// website/src/pages/portofolio/index.jsx
 import Head from 'next/head';
 import { useState, useEffect } from 'react';
-import { Filter, Grid, ZoomIn, ExternalLink, Calendar, MapPin } from 'lucide-react';
+import { Filter, ZoomIn, ExternalLink, Calendar, MapPin } from 'lucide-react';
 import Button from '@/components/ui/Button';
+import PortfolioBanner from '@/components/portfolio/PortfolioBanner';
+import Pagination from '@/components/ui/Pagination';
 
 export default function Portfolio() {
   const [activeFilter, setActiveFilter] = useState('all');
   const [selectedProject, setSelectedProject] = useState(null);
   const [portfolioProjects, setPortfolioProjects] = useState([]);
+  const [categories, setCategories] = useState([]);
+  const [currentCategory, setCurrentCategory] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [currentPage, setCurrentPage] = useState(1);
+  
+  const ITEMS_PER_PAGE = 9; // 3x3 grid
 
-  const filters = [
-    { id: 'all', name: 'All Projects' },
-    { id: 'garment', name: 'Garment' },
-    { id: 'bordir', name: 'Bordir' },
-    { id: 'advertising', name: 'Advertising' },
-    { id: 'merchandise', name: 'Merchandise' },
-  ];
+  // Fetch portfolio categories
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const response = await fetch('/api/content/portfolio-categories');
+        if (!response.ok) throw new Error('Failed to fetch categories');
+        
+        const data = await response.json();
+        if (data.success && data.categories) {
+          setCategories(data.categories);
+          // Set default category
+          const defaultCat = data.categories.find(cat => cat.is_default || cat.slug === 'all');
+          setCurrentCategory(defaultCat || data.categories[0]);
+        }
+      } catch (err) {
+        console.error('Error fetching categories:', err);
+      }
+    };
+
+    fetchCategories();
+  }, []);
 
   // Fetch portfolio from CMS API
   useEffect(() => {
@@ -50,14 +70,14 @@ export default function Portfolio() {
               slug: item.slug,
               title: item.name || 'Untitled Project',
               name: item.name || 'Untitled Project',
-              category: item.category || 'garment',
+              category: item.category || 'kaos',
               client: item.client || 'Client',
-              location: 'Jember, Jawa Timur', // Default location
+              location: 'Jember, Jawa Timur',
               year: year,
               description: item.description || '',
               image: item.image || '/uploads/placeholder.jpg',
               images: gallery,
-              deliverables: [], // Will be extracted from details if needed
+              deliverables: [],
               details: item.details || '',
               testimonial: item.testimonial || '',
               client_name: item.client_name || item.client || ''
@@ -80,6 +100,13 @@ export default function Portfolio() {
     fetchPortfolio();
   }, []);
 
+  // Update current category when filter changes
+  useEffect(() => {
+    const category = categories.find(cat => cat.slug === activeFilter);
+    setCurrentCategory(category);
+    setCurrentPage(1); // Reset to page 1 when filter changes
+  }, [activeFilter, categories]);
+
   // Show loading state
   if (loading) {
     return (
@@ -87,11 +114,7 @@ export default function Portfolio() {
         <Head>
           <title>Portfolio - B13 Factory</title>
         </Head>
-        <section className="bg-gradient-to-r from-accent-500 to-accent-600 text-white py-20">
-          <div className="container-custom text-center">
-            <h1 className="text-4xl md:text-5xl font-bold mb-4">Our Portfolio</h1>
-          </div>
-        </section>
+        <PortfolioBanner category={currentCategory} />
         <section className="section-padding bg-white">
           <div className="container-custom">
             <div className="flex justify-center items-center py-20">
@@ -113,11 +136,7 @@ export default function Portfolio() {
         <Head>
           <title>Portfolio - B13 Factory</title>
         </Head>
-        <section className="bg-gradient-to-r from-accent-500 to-accent-600 text-white py-20">
-          <div className="container-custom text-center">
-            <h1 className="text-4xl md:text-5xl font-bold mb-4">Our Portfolio</h1>
-          </div>
-        </section>
+        <PortfolioBanner category={currentCategory} />
         <section className="section-padding bg-white">
           <div className="container-custom">
             <div className="flex justify-center items-center py-20">
@@ -137,9 +156,17 @@ export default function Portfolio() {
     );
   }
 
+  // Filter projects
   const filteredProjects = activeFilter === 'all' 
     ? portfolioProjects 
     : portfolioProjects.filter(project => project.category === activeFilter);
+
+  // Pagination calculations
+  const totalProjects = filteredProjects.length;
+  const totalPages = Math.ceil(totalProjects / ITEMS_PER_PAGE);
+  const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
+  const endIndex = startIndex + ITEMS_PER_PAGE;
+  const currentProjects = filteredProjects.slice(startIndex, endIndex);
 
   return (
     <>
@@ -148,75 +175,54 @@ export default function Portfolio() {
         <meta name="description" content="Lihat portfolio karya terbaik B13 Factory dalam bidang garment dan advertising" />
       </Head>
 
-      {/* Hero Section */}
-      <section className="bg-gradient-to-r from-accent-500 to-accent-600 text-white py-20">
-        <div className="container-custom text-center">
-          <h1 className="text-4xl md:text-5xl font-bold mb-4">Our Portfolio</h1>
-          <p className="text-xl text-white/90 max-w-2xl mx-auto">
-            Karya terbaik yang telah kami hasilkan untuk berbagai klien dari berbagai industri
-          </p>
-        </div>
-      </section>
+      {/* Dynamic Banner based on Category */}
+      <PortfolioBanner category={currentCategory} />
 
       <section className="section-padding bg-white">
         <div className="container-custom">
           {/* Filter Section */}
           <div className="text-center mb-12">
             <div className="flex flex-wrap justify-center gap-4 mb-8">
-              {filters.map(filter => (
+              {categories.map(category => (
                 <button
-                  key={filter.id}
-                  onClick={() => setActiveFilter(filter.id)}
+                  key={category.slug}
+                  onClick={() => setActiveFilter(category.slug)}
                   className={`px-6 py-3 rounded-full font-semibold transition-all duration-300 ${
-                    activeFilter === filter.id
+                    activeFilter === category.slug
                       ? 'bg-primary-500 text-white shadow-lg transform -translate-y-1'
                       : 'bg-white text-neutral-700 shadow-md hover:shadow-lg hover:bg-neutral-50'
                   }`}
                 >
-                  {filter.name}
+                  {category.name}
                 </button>
               ))}
             </div>
-            
-            {/* Stats */}
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-6 max-w-2xl mx-auto">
-              <div className="text-center">
-                <div className="text-3xl font-bold text-primary-600 mb-1">{portfolioProjects.length}+</div>
-                <div className="text-neutral-600">Projects</div>
-              </div>
-              <div className="text-center">
-                <div className="text-3xl font-bold text-secondary-600 mb-1">50+</div>
-                <div className="text-neutral-600">Happy Clients</div>
-              </div>
-              <div className="text-center">
-                <div className="text-3xl font-bold text-accent-500 mb-1">98%</div>
-                <div className="text-neutral-600">Satisfaction</div>
-              </div>
-              <div className="text-center">
-                <div className="text-3xl font-bold text-primary-500 mb-1">5</div>
-                <div className="text-neutral-600">Years Experience</div>
-              </div>
-            </div>
           </div>
 
-          {/* Portfolio Grid - Masonry Style */}
+          {/* Portfolio Grid - 3x3 */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
-            {filteredProjects.map((project, index) => (
+            {currentProjects.map((project, index) => (
               <div 
                 key={project.id} 
-                className={`bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-500 card-hover group cursor-pointer ${
-                  index % 4 === 0 ? 'md:col-span-2 lg:col-span-1' : ''
-                }`}
+                className="bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-500 card-hover group cursor-pointer"
                 onClick={() => setSelectedProject(project)}
               >
                 {/* Image Container */}
                 <div className="relative aspect-[4/3] overflow-hidden rounded-t-2xl">
-                  <div className="w-full h-full bg-gradient-to-br from-primary-100 to-secondary-100 flex items-center justify-center">
-                    <div className="text-center text-neutral-600">
-                      <p>Portfolio Image</p>
-                      <p className="text-sm mt-2">{project.title}</p>
+                  {project.image && project.image !== '/uploads/placeholder.jpg' ? (
+                    <img 
+                      src={project.image} 
+                      alt={project.title}
+                      className="w-full h-full object-cover"
+                    />
+                  ) : (
+                    <div className="w-full h-full bg-gradient-to-br from-primary-100 to-secondary-100 flex items-center justify-center">
+                      <div className="text-center text-neutral-600">
+                        <p>Portfolio Image</p>
+                        <p className="text-sm mt-2">{project.title}</p>
+                      </div>
                     </div>
-                  </div>
+                  )}
                   
                   {/* Overlay */}
                   <div className="absolute inset-0 bg-black/0 group-hover:bg-black/70 transition-all duration-500 flex items-center justify-center">
@@ -228,7 +234,7 @@ export default function Portfolio() {
 
                   {/* Category Badge */}
                   <div className="absolute top-4 left-4">
-                    <span className="bg-white/90 backdrop-blur-sm text-neutral-700 px-3 py-1 rounded-full text-sm font-medium">
+                    <span className="bg-white/90 backdrop-blur-sm text-neutral-700 px-3 py-1 rounded-full text-sm font-medium capitalize">
                       {project.category}
                     </span>
                   </div>
@@ -271,6 +277,15 @@ export default function Portfolio() {
             ))}
           </div>
 
+          {/* Pagination */}
+          {totalPages > 1 && (
+            <Pagination
+              currentPage={currentPage}
+              totalPages={totalPages}
+              onPageChange={setCurrentPage}
+            />
+          )}
+
           {/* CTA Section */}
           <div className="text-center bg-gradient-to-r from-primary-50 to-secondary-50 rounded-2xl p-12">
             <h2 className="text-3xl font-bold mb-4 text-neutral-900">
@@ -297,7 +312,7 @@ export default function Portfolio() {
           <div className="bg-white rounded-2xl max-w-4xl w-full max-h-[90vh] overflow-y-auto">
             <div className="relative">
               {/* Header */}
-              <div className="sticky top-0 bg-white border-b border-neutral-200 p-6 rounded-t-2xl">
+              <div className="sticky top-0 bg-white border-b border-neutral-200 p-6 rounded-t-2xl z-10">
                 <div className="flex justify-between items-start">
                   <div>
                     <h2 className="text-2xl font-bold text-neutral-900 mb-2">
@@ -312,7 +327,7 @@ export default function Portfolio() {
                         <MapPin size={16} className="mr-1" />
                         {selectedProject.location}
                       </div>
-                      <span className="bg-primary-100 text-primary-600 px-3 py-1 rounded-full">
+                      <span className="bg-primary-100 text-primary-600 px-3 py-1 rounded-full capitalize">
                         {selectedProject.category}
                       </span>
                     </div>
@@ -331,11 +346,19 @@ export default function Portfolio() {
               {/* Content */}
               <div className="p-6">
                 {/* Main Image */}
-                <div className="aspect-video bg-gradient-to-br from-primary-100 to-secondary-100 rounded-xl mb-6 flex items-center justify-center">
-                  <div className="text-center text-neutral-600">
-                    <p>Project Main Image</p>
-                    <p className="text-sm">{selectedProject.title}</p>
-                  </div>
+                <div className="aspect-video bg-gradient-to-br from-primary-100 to-secondary-100 rounded-xl mb-6 flex items-center justify-center overflow-hidden">
+                  {selectedProject.image && selectedProject.image !== '/uploads/placeholder.jpg' ? (
+                    <img 
+                      src={selectedProject.image} 
+                      alt={selectedProject.title}
+                      className="w-full h-full object-cover"
+                    />
+                  ) : (
+                    <div className="text-center text-neutral-600">
+                      <p>Project Main Image</p>
+                      <p className="text-sm">{selectedProject.title}</p>
+                    </div>
+                  )}
                 </div>
 
                 {/* Description */}
@@ -347,31 +370,33 @@ export default function Portfolio() {
                 </div>
 
                 {/* Deliverables */}
-                <div className="mb-6">
-                  <h3 className="text-xl font-semibold mb-3">Deliverables</h3>
-                  <ul className="grid grid-cols-1 md:grid-cols-2 gap-2">
-                    {selectedProject.deliverables.map((item, index) => (
-                      <li key={index} className="flex items-center text-neutral-700">
-                        <div className="w-2 h-2 bg-primary-500 rounded-full mr-3" />
-                        {item}
-                      </li>
-                    ))}
-                  </ul>
-                </div>
+                {selectedProject.deliverables && selectedProject.deliverables.length > 0 && (
+                  <div className="mb-6">
+                    <h3 className="text-xl font-semibold mb-3">Deliverables</h3>
+                    <ul className="grid grid-cols-1 md:grid-cols-2 gap-2">
+                      {selectedProject.deliverables.map((item, index) => (
+                        <li key={index} className="flex items-center text-neutral-700">
+                          <div className="w-2 h-2 bg-primary-500 rounded-full mr-3" />
+                          {item}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
 
                 {/* Client Info */}
-                <div className="bg-neutral-50 rounded-xl p-4">
+                <div className="bg-neutral-50 rounded-xl p-4 mb-6">
                   <h4 className="font-semibold mb-2">Client</h4>
                   <p className="text-neutral-700">{selectedProject.client}</p>
                 </div>
 
                 {/* Action Buttons */}
-                <div className="flex gap-4 mt-6">
+                <div className="flex gap-4">
                   <Button href="/contact-us" variant="primary" className="flex-1">
                     Start Similar Project
                   </Button>
                   <Button 
-                    href={`/portofolio/${selectedProject.id}`} 
+                    href={`/portofolio/${selectedProject.slug}`} 
                     variant="outline"
                     className="flex items-center"
                   >
