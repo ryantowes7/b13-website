@@ -84,7 +84,7 @@ collections:
     slug: "{{slug}}"
     fields:
       - { label: "Product Name", name: "name", widget: "string" }
-      - { label: "Category", name: "category", widget: "select", options: ["kaos", "bordir", "banner", "merchandise", "jaket", "polo", "kemeja", "topi"] }
+      - { label: "Category", name: "category", widget: "relation", collection: "product_categories", search_fields: ["name"], value_field: "slug", display_fields: ["name"], hint: "Pilih category dari daftar yang tersedia" }
       - { label: "Price", name: "price", widget: "string" }
       - { label: "Original Price", name: "originalPrice", widget: "string", required: false }
       - { label: "Featured Image", name: "image", widget: "image" }
@@ -149,6 +149,28 @@ collections:
       - { label: "Category Name", name: "name", widget: "string" }
       - { label: "Description", name: "description", widget: "text" }
       - { label: "Image", name: "image", widget: "image", required: false }
+
+  # ==================== PRODUCT CATEGORIES ====================
+  - name: "product_categories"
+    label: "Product Categories"
+    folder: "content/product-categories"
+    create: true
+    slug: "{{slug}}"
+    identifier_field: "name"
+    delete: false  # Prevent deletion of default "all" category
+    fields:
+      - { label: "Category Name", name: "name", widget: "string" }
+      - { label: "Slug", name: "slug", widget: "string", hint: "URL-friendly name (e.g., 'kaos', 'bordir', 'all' untuk Semua Produk)", pattern: ["^[a-z0-9-]+$", "Must be lowercase letters, numbers, and hyphens only"] }
+      - { label: "Description", name: "description", widget: "text", hint: "Deskripsi singkat category" }
+      - { label: "Banner Images", name: "banners", widget: "list", hint: "Upload banner(s). Category 'Semua Produk' dapat memiliki beberapa banner yang akan berganti otomatis.", fields: [
+          { label: "Banner Image", name: "image", widget: "image" },
+          { label: "Banner Title (Optional)", name: "title", widget: "string", required: false },
+          { label: "Banner Subtitle (Optional)", name: "subtitle", widget: "string", required: false }
+        ] 
+      }
+      - { label: "Color Theme", name: "color", widget: "select", options: ["blue", "green", "red", "purple", "orange", "teal", "slate"], default: "blue", hint: "Color theme for category" }
+      - { label: "Icon", name: "icon", widget: "string", required: false, hint: "Icon name from lucide-react" }
+      - { label: "Is Default (All Products)", name: "is_default", widget: "boolean", default: false, hint: "Set to true ONLY for 'Semua Produk' category" }
 
       # ==================== ARTICLE CATEGORIES ====================
   - name: "article_categories"

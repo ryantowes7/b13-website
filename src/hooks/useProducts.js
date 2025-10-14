@@ -47,6 +47,7 @@ const parseVariants = (data) => {
 
 export const useProducts = () => {
   const [allProducts, setAllProducts] = useState([]);
+  const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   
@@ -60,25 +61,29 @@ export const useProducts = () => {
   // Products per page
   const productsPerPage = 9;
 
-  // Fetch products from CMS API
+  // Fetch products and categories from CMS API
   useEffect(() => {
-    const fetchProducts = async () => {
+    const fetchData = async () => {
       try {
         setLoading(true);
         setError(null);
         
-        // Fetch from CMS API
-        const response = await fetch('/api/content/products');
+        // Fetch products and categories in parallel
+        const [productsResponse, categoriesResponse] = await Promise.all([
+          fetch('/api/content/products'),
+          fetch('/api/content/product-categories')
+        ]);
         
-        if (!response.ok) {
-          throw new Error('Failed to fetch products');
+        if (!productsResponse.ok || !categoriesResponse.ok) {
+          throw new Error('Failed to fetch data');
         }
         
-        const data = await response.json();
+        const productsData = await productsResponse.json();
+        const categoriesData = await categoriesResponse.json();
         
-        if (data.success && data.products) {
+        if (productsData.success && productsData.products) {
           // Transform CMS data to match expected format
-          const transformedProducts = data.products.map((product, index) => ({
+          const transformedProducts = productsData.products.map((product, index) => ({
             id: index + 1,
             slug: product.slug,
             name: product.name || 'Untitled Product',
@@ -100,18 +105,43 @@ export const useProducts = () => {
           
           setAllProducts(transformedProducts);
         } else {
-          throw new Error('Invalid data format');
+          throw new Error('Invalid products data format');
+        }
+
+        if (categoriesData.success && categoriesData.categories) {
+          // Calculate product counts for each category
+          const categoryCounts = {};
+          productsData.products.forEach(product => {
+            const cat = product.category || 'kaos';
+            categoryCounts[cat] = (categoryCounts[cat] || 0) + 1;
+          });
+
+          // Transform categories with counts
+          const transformedCategories = categoriesData.categories.map(cat => ({
+            id: cat.slug,
+            slug: cat.slug,
+            name: cat.name,
+            description: cat.description,
+            banners: cat.banners || [],
+            color: cat.color || 'blue',
+            icon: cat.icon || 'Package',
+            is_default: cat.is_default || false,
+            count: cat.slug === 'all' ? productsData.products.length : (categoryCounts[cat.slug] || 0)
+          }));
+
+          setCategories(transformedCategories);
         }
       } catch (err) {
-        console.error('Error fetching products:', err);
-        setError('Gagal memuat produk. Silakan coba lagi.');
+        console.error('Error fetching data:', err);
+        setError('Gagal memuat data. Silakan coba lagi.');
         setAllProducts([]);
+        setCategories([]);
       } finally {
         setLoading(false);
       }
     };
 
-    fetchProducts();
+    fetchData();
   }, []);
 
   // Filter products berdasarkan kategori dan pencarian
@@ -163,10 +193,10 @@ export const useProducts = () => {
 
   const totalPages = Math.ceil(sortedProducts.length / productsPerPage);
 
-  // Calculate categories with counts
-  const categories = useMemo(() => {
-    return calculateCategories(allProducts);
-  }, [allProducts]);
+  // Get current category data
+  const currentCategory = useMemo(() => {
+    return categories.find(cat => cat.slug === selectedCategory) || null;
+  }, [categories, selectedCategory]);
 
   // Reset to first page when filters change
   useEffect(() => {
@@ -180,6 +210,7 @@ export const useProducts = () => {
     loading,
     error,
     categories,
+    currentCategory,
     
     // Filter state
     selectedCategory,

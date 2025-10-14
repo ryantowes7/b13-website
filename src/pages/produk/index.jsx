@@ -2,6 +2,7 @@ import Head from 'next/head';
 import { Filter, Grid, List, Download, Search } from 'lucide-react';
 import Button from '@/components/ui/Button';
 import ProductCard from '@/components/products/ProductCard';
+import ProductBanner from '@/components/products/ProductBanner';
 import Pagination from '@/components/ui/Pagination';
 import { useProducts } from '@/hooks/useProducts';
 import { sortOptions } from '@/data/products';
@@ -13,6 +14,7 @@ export default function Produk() {
     loading,
     error,
     categories,
+    currentCategory,
     selectedCategory,
     setSelectedCategory,
     searchTerm,
@@ -35,17 +37,17 @@ export default function Produk() {
         <Head>
           <title>Produk - B13 Factory</title>
         </Head>
-        <section className="bg-gradient-to-r from-primary-600 to-primary-700 text-white py-20">
-          <div className="container-custom text-center">
+        <section className="bg-gradient-to-r from-blue-600 to-blue-700 text-white py-20">
+          <div className="container mx-auto px-6 text-center">
             <h1 className="text-4xl md:text-5xl font-bold mb-4">Our Products</h1>
           </div>
         </section>
-        <section className="section-padding bg-white">
-          <div className="container-custom">
+        <section className="py-16 bg-white">
+          <div className="container mx-auto px-6">
             <div className="flex justify-center items-center py-20">
               <div className="text-center">
-                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600 mx-auto mb-4"></div>
-                <p className="text-neutral-600">Memuat produk...</p>
+                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
+                <p className="text-slate-600">Memuat produk...</p>
               </div>
             </div>
           </div>
@@ -61,13 +63,13 @@ export default function Produk() {
         <Head>
           <title>Produk - B13 Factory</title>
         </Head>
-        <section className="bg-gradient-to-r from-primary-600 to-primary-700 text-white py-20">
-          <div className="container-custom text-center">
+        <section className="bg-gradient-to-r from-blue-600 to-blue-700 text-white py-20">
+          <div className="container mx-auto px-6 text-center">
             <h1 className="text-4xl md:text-5xl font-bold mb-4">Our Products</h1>
           </div>
         </section>
-        <section className="section-padding bg-white">
-          <div className="container-custom">
+        <section className="py-16 bg-white">
+          <div className="container mx-auto px-6">
             <div className="flex justify-center items-center py-20">
               <div className="text-center">
                 <p className="text-red-600 text-lg mb-4">{error}</p>
@@ -92,41 +94,34 @@ export default function Produk() {
         <meta name="description" content="Lihat berbagai produk garment dan advertising berkualitas dari B13 Factory" />
       </Head>
 
-      {/* Hero Section */}
-      <section className="bg-gradient-to-r from-primary-600 to-primary-700 text-white py-20">
-        <div className="container-custom text-center">
-          <h1 className="text-4xl md:text-5xl font-bold mb-4">Our Products</h1>
-          <p className="text-xl text-white/90 max-w-2xl mx-auto">
-            Temukan berbagai produk garment dan advertising berkualitas untuk kebutuhan bisnis Anda
-          </p>
-        </div>
-      </section>
+      {/* Dynamic Banner based on Category */}
+      <ProductBanner category={currentCategory} />
 
-      <section className="section-padding bg-white">
-        <div className="container-custom">
+      <section className="py-16 bg-white">
+        <div className="container mx-auto px-6">
           <div className="flex flex-col lg:flex-row gap-8">
             {/* Sidebar Filter */}
             <div className="lg:w-1/4">
-              <div className="bg-neutral-50 rounded-xl p-6 sticky top-24">
+              <div className="bg-slate-50 rounded-xl p-6 sticky top-24">
                 {/* Search Box */}
                 <div className="mb-6">
                   <label htmlFor="search" className="sr-only">Cari produk</label>
                   <div className="relative">
-                    <Search size={20} className="absolute left-3 top-1/2 transform -translate-y-1/2 text-neutral-400" />
+                    <Search size={20} className="absolute left-3 top-1/2 transform -translate-y-1/2 text-slate-400" />
                     <input
                       id="search"
                       type="text"
                       placeholder="Cari produk..."
                       value={searchTerm}
                       onChange={(e) => setSearchTerm(e.target.value)}
-                      className="w-full pl-10 pr-4 py-3 border border-neutral-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                      className="w-full pl-10 pr-4 py-3 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                     />
                   </div>
                 </div>
 
                 {/* Category Filter */}
                 <div className="mb-8">
-                  <h3 className="text-lg font-semibold mb-4 flex items-center">
+                  <h3 className="text-lg font-semibold mb-4 flex items-center text-slate-900">
                     <Filter size={20} className="mr-2" />
                     Kategori
                   </h3>
@@ -137,17 +132,17 @@ export default function Produk() {
                         onClick={() => setSelectedCategory(category.id)}
                         className={`w-full text-left px-4 py-3 rounded-lg transition-all ${
                           selectedCategory === category.id
-                            ? 'bg-primary-500 text-white shadow-md'
-                            : 'bg-white text-neutral-700 hover:bg-neutral-100'
+                            ? 'bg-blue-500 text-white shadow-md'
+                            : 'bg-white text-slate-700 hover:bg-slate-100 border border-slate-200'
                         }`}
                         aria-pressed={selectedCategory === category.id}
                       >
                         <div className="flex justify-between items-center">
-                          <span>{category.name}</span>
+                          <span className="font-medium">{category.name}</span>
                           <span className={`text-sm px-2 py-1 rounded-full ${
                             selectedCategory === category.id
                               ? 'bg-white/20 text-white'
-                              : 'bg-neutral-200 text-neutral-600'
+                              : 'bg-slate-200 text-slate-600'
                           }`}>
                             {category.count}
                           </span>
