@@ -191,17 +191,6 @@ collections:
       - { label: "Features", name: "features", widget: "list", fields: [{label: "Feature", name: "item", widget: "string"}] }
       - { label: "Price Starting From", name: "price_start", widget: "string", required: false }
 
-  # ==================== CATEGORIES ====================
-  - name: "categories"
-    label: "Product Categories"
-    folder: "content/categories"
-    create: true
-    slug: "{{slug}}"
-    fields:
-      - { label: "Category Name", name: "name", widget: "string" }
-      - { label: "Description", name: "description", widget: "text" }
-      - { label: "Image", name: "image", widget: "image", required: false }
-
       # ==================== ARTICLE CATEGORIES ====================
   - name: "article_categories"
     label: "Article Categories"
