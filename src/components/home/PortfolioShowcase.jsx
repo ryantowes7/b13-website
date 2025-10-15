@@ -7,6 +7,7 @@ import { ChevronRight, Play, Plus } from 'lucide-react';
 export default function PortfolioShowcase() {
   const [activeCategory, setActiveCategory] = useState('all');
   const [portfolioItems, setPortfolioItems] = useState([]);
+  const [portfolioStats, setPortfolioStats] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   
   const categories = [
