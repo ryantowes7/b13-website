@@ -3,69 +3,110 @@ import Head from 'next/head';
 import { useState, useEffect } from 'react';
 import { Users, Target, Award, Heart } from 'lucide-react';
 import Button from '@/components/ui/Button';
+import AboutBanner from '@/components/about/AboutBanner';
 
 export default function AboutUs() {
-  const [portfolioStats, setPortfolioStats] = useState(null);
+  const [aboutData, setAboutData] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
-    const fetchStats = async () => {
+    const fetchAboutData = async () => {
       try {
-        const response = await fetch('/api/content/home');
+        setLoading(true);
+        const response = await fetch('/api/content/about');
         if (response.ok) {
           const data = await response.json();
-          if (data.success && data.home?.portfolio_stats) {
-            setPortfolioStats(data.home.portfolio_stats);
+          if (data.success && data.about) {
+            setAboutData(data.about);
           }
+        } else {
+          throw new Error('Failed to fetch about data');
         }
       } catch (err) {
-        console.error('Error fetching portfolio stats:', err);
-        // Set default stats if fetch fails
-        setPortfolioStats({
-          projects_completed: '150+',
-          happy_clients: '50+',
-          years_experience: '5+'
+        console.error('Error fetching about data:', err);
+        setError(err.message);
+        // Set default data if fetch fails
+        setAboutData({
+          banner_title: 'About B13 Factory',
+          banner_subtitle: 'Specialist dalam garment dan advertising dengan pengalaman lebih dari 5 tahun',
+          company_title: 'Garment & Advertising Specialist',
+          company_description: '**B13 Factory** telah berdiri sejak 2019 dan telah dipercaya oleh berbagai klien.',
+          company_stats: {
+            years_experience: '5+',
+            projects_completed: '150+',
+            happy_clients: '50+'
+          },
+          mission: {
+            title: 'Mission',
+            description: 'Memberikan solusi garment dan advertising terbaik dengan kualitas premium.'
+          },
+          vision: {
+            title: 'Vision',
+            description: 'Menjadi partner terpercaya dalam industri garment dan advertising di Indonesia.'
+          },
+          values: {
+            title: 'Values',
+            description: 'Integritas, kualitas, dan kepuasan pelanggan adalah nilai utama kami.'
+          },
+          team_sections: [
+            { name: 'Management Team', role: 'Professional & Experienced', description: 'Tim management yang berpengalaman.' },
+            { name: 'Production Team', role: 'Skilled Craftsmen', description: 'Tim produksi yang ahli.' },
+            { name: 'Design Team', role: 'Creative & Innovative', description: 'Tim design kreatif.' }
+          ],
+          why_choose_us: [
+            { title: 'Quality Materials', description: 'Menggunakan bahan berkualitas terbaik' },
+            { title: 'Expert Team', description: 'Tim berpengalaman dan profesional' },
+            { title: 'Competitive Price', description: 'Harga kompetitif dengan kualitas premium' },
+            { title: 'Fast Delivery', description: 'Proses cepat tanpa mengorbankan kualitas' }
+          ]
         });
+      } finally {
+        setLoading(false);
       }
     };
 
-    fetchStats();
+    fetchAboutData();
   }, []);
 
-  const values = [
+  // Show loading state
+  if (loading) {
+    return (
+      <>
+        <Head>
+          <title>About Us - B13 Factory</title>
+        </Head>
+        <section className="bg-gradient-to-r from-primary-600 to-primary-700 text-white py-20">
+          <div className="container-custom text-center">
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-white mx-auto mb-4"></div>
+            <p className="text-white/90">Memuat halaman...</p>
+          </div>
+        </section>
+      </>
+    );
+  }
+
+  // Prepare values array from aboutData
+  const values = aboutData ? [
     {
       icon: <Target className="w-8 h-8" />,
-      title: 'Mission',
-      description: 'Memberikan solusi garment dan advertising terbaik dengan kualitas premium dan harga kompetitif untuk mendukung kesuksesan bisnis klien.'
+      title: aboutData.mission?.title || 'Mission',
+      description: aboutData.mission?.description || ''
     },
     {
       icon: <Award className="w-8 h-8" />,
-      title: 'Vision', 
-      description: 'Menjadi partner terpercaya dalam industri garment dan advertising di Indonesia dengan inovasi terus-menerus dan layanan profesional.'
+      title: aboutData.vision?.title || 'Vision', 
+      description: aboutData.vision?.description || ''
     },
     {
       icon: <Heart className="w-8 h-8" />,
-      title: 'Values',
-      description: 'Integritas, kualitas, dan kepuasan pelanggan adalah nilai utama yang kami junjung dalam setiap project yang dikerjakan.'
+      title: aboutData.values?.title || 'Values',
+      description: aboutData.values?.description || ''
     }
-  ];
+  ] : [];
 
-  const team = [
-    {
-      name: 'Management Team',
-      role: 'Professional & Experienced',
-      description: 'Tim management yang berpengalaman lebih dari 5 tahun dalam industri garment dan advertising.'
-    },
-    {
-      name: 'Production Team', 
-      role: 'Skilled Craftsmen',
-      description: 'Tim produksi yang ahli dalam berbagai teknik sablon, bordir, dan printing dengan standar kualitas tertinggi.'
-    },
-    {
-      name: 'Design Team',
-      role: 'Creative & Innovative', 
-      description: 'Tim design kreatif yang siap membantu mewujudkan ide dan konsep Anda menjadi produk yang menarik.'
-    }
-  ];
+  // Get team sections from aboutData
+  const team = aboutData?.team_sections || [];
 
   return (
     <>
@@ -74,66 +115,74 @@ export default function AboutUs() {
         <meta name="description" content="Tentang B13 Factory - Specialist garment dan advertising dengan pengalaman lebih dari 5 tahun" />
       </Head>
 
-      {/* Hero Section */}
-      <section className="bg-gradient-to-r from-primary-600 to-primary-700 text-white py-20">
-        <div className="container-custom">
-          <div className="max-w-3xl">
-            <h1 className="text-4xl md:text-5xl font-bold mb-6">About B13 Factory</h1>
-            <p className="text-xl text-white/90 leading-relaxed">
-              Specialist dalam garment dan advertising dengan pengalaman lebih dari 5 tahun. 
-              Kami berkomitmen memberikan solusi terbaik untuk kebutuhan bisnis Anda.
-            </p>
-          </div>
-        </div>
-      </section>
+      {/* Banner Section */}
+      <AboutBanner banner={aboutData} />
 
       {/* Company Overview */}
       <section className="section-padding bg-white">
         <div className="container-custom">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-            <div>
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
+            <div className="flex flex-col">
               <h2 className="text-3xl md:text-4xl font-bold mb-6 text-neutral-900">
-                Garment & Advertising Specialist
+                {aboutData?.company_title || 'Garment & Advertising Specialist'}
               </h2>
-              <div className="space-y-4 text-neutral-700">
-                <p>
-                  <strong>B13 Factory</strong> telah berdiri sejak 2019 dan telah dipercaya oleh berbagai klien 
-                  dari berbagai industri untuk memenuhi kebutuhan garment dan advertising mereka.
-                </p>
-                <p>
-                  Kami mengkhususkan diri dalam jasa sablon, bordir, dan berbagai produk advertising 
-                  seperti banner, spanduk, dan merchandise promosi.
-                </p>
-                <p>
-                  Dengan tim yang profesional dan berpengalaman, kami siap membantu mewujudkan 
-                  ide dan konsep Anda menjadi produk yang berkualitas dan bernilai.
-                </p>
+              <div className="space-y-4 text-neutral-700 prose prose-lg max-w-none">
+                {aboutData?.company_description ? (
+                  <div dangerouslySetInnerHTML={{ __html: aboutData.company_description.replace(/\n/g, '<br />') }} />
+                ) : (
+                  <>
+                    <p>
+                      <strong>B13 Factory</strong> telah berdiri sejak 2019 dan telah dipercaya oleh berbagai klien 
+                      dari berbagai industri untuk memenuhi kebutuhan garment dan advertising mereka.
+                    </p>
+                    <p>
+                      Kami mengkhususkan diri dalam jasa sablon, bordir, dan berbagai produk advertising 
+                      seperti banner, spanduk, dan merchandise promosi.
+                    </p>
+                    <p>
+                      Dengan tim yang profesional dan berpengalaman, kami siap membantu mewujudkan 
+                      ide dan konsep Anda menjadi produk yang berkualitas dan bernilai.
+                    </p>
+                  </>
+                )}
               </div>
 
-              {portfolioStats && (
+              {aboutData?.company_stats && (
                 <div className="grid grid-cols-3 gap-6 mt-8">
                   <div className="text-center">
-                    <div className="text-3xl font-bold text-primary-600 mb-2">{portfolioStats.years_experience}</div>
+                    <div className="text-3xl font-bold text-primary-600 mb-2">{aboutData.company_stats.years_experience}</div>
                     <div className="text-neutral-600">Tahun Pengalaman</div>
                   </div>
                   <div className="text-center">
-                    <div className="text-3xl font-bold text-secondary-600 mb-2">{portfolioStats.projects_completed}</div>
+                    <div className="text-3xl font-bold text-secondary-600 mb-2">{aboutData.company_stats.projects_completed}</div>
                     <div className="text-neutral-600">Project Selesai</div>
                   </div>
                   <div className="text-center">
-                    <div className="text-3xl font-bold text-accent-500 mb-2">{portfolioStats.happy_clients}</div>
+                    <div className="text-3xl font-bold text-accent-500 mb-2">{aboutData.company_stats.happy_clients}</div>
                     <div className="text-neutral-600">Klien Puas</div>
                   </div>
                 </div>
               )}
             </div>
 
-            <div className="bg-gradient-to-br from-primary-100 to-secondary-100 rounded-2xl p-8 aspect-square flex items-center justify-center">
-              <div className="text-center">
-                <Users className="w-24 h-24 text-primary-600 mx-auto mb-6" />
-                <p className="text-xl font-semibold text-neutral-700">Company Image/Logo</p>
-                <p className="text-neutral-600 mt-2">B13 Factory Team</p>
-              </div>
+            <div className="flex items-start justify-center lg:justify-end">
+              {aboutData?.company_image ? (
+                <div className="rounded-2xl overflow-hidden shadow-lg w-full aspect-square max-w-md">
+                  <img 
+                    src={aboutData.company_image} 
+                    alt="B13 Factory Team"
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+              ) : (
+                <div className="bg-gradient-to-br from-primary-100 to-secondary-100 rounded-2xl p-8 aspect-square flex items-center justify-center w-full max-w-md">
+                  <div className="text-center">
+                    <Users className="w-24 h-24 text-primary-600 mx-auto mb-6" />
+                    <p className="text-xl font-semibold text-neutral-700">Company Image/Logo</p>
+                    <p className="text-neutral-600 mt-2">B13 Factory Team</p>
+                  </div>
+                </div>
+              )}
             </div>
           </div>
         </div>
@@ -204,18 +253,13 @@ export default function AboutUs() {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {[
-              { title: 'Quality Materials', desc: 'Menggunakan bahan berkualitas terbaik' },
-              { title: 'Expert Team', desc: 'Tim berpengalaman dan profesional' },
-              { title: 'Competitive Price', desc: 'Harga kompetitif dengan kualitas premium' },
-              { title: 'Fast Delivery', desc: 'Proses cepat tanpa mengorbankan kualitas' }
-            ].map((item, index) => (
+            {(aboutData?.why_choose_us || []).map((item, index) => (
               <div key={index} className="text-center p-6">
                 <div className="w-12 h-12 bg-white/20 rounded-2xl flex items-center justify-center mx-auto mb-4">
                   <div className="w-2 h-2 bg-white rounded-full"></div>
                 </div>
                 <h3 className="text-lg font-semibold mb-2">{item.title}</h3>
-                <p className="text-white/80 text-sm">{item.desc}</p>
+                <p className="text-white/80 text-sm">{item.description}</p>
               </div>
             ))}
           </div>

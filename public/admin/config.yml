@@ -72,6 +72,65 @@ collections:
               - { label: "Happy Clients", name: "happy_clients", widget: "string", default: "50+", hint: "Contoh: 50+" }
               - { label: "Years Experience", name: "years_experience", widget: "string", default: "5+", hint: "Contoh: 5+" }
 
+  # ==================== ABOUT US PAGE ====================
+  - name: "about"
+    label: "About Us Page"
+    delete: false
+    editor:
+      preview: false
+    files:
+      - file: "content/about/about.md"
+        label: "About Us Content"
+        name: "about"
+        fields:
+          - { label: "Banner Image", name: "banner_image", widget: "image", hint: "Banner image untuk halaman About Us (single image)" }
+          - { label: "Banner Title", name: "banner_title", widget: "string", default: "About B13 Factory" }
+          - { label: "Banner Subtitle", name: "banner_subtitle", widget: "text", default: "Specialist dalam garment dan advertising dengan pengalaman lebih dari 5 tahun" }
+          - { label: "Company Title", name: "company_title", widget: "string", default: "Garment & Advertising Specialist" }
+          - { label: "Company Description", name: "company_description", widget: "markdown", hint: "Deskripsi lengkap tentang perusahaan" }
+          - { label: "Company Image", name: "company_image", widget: "image", required: false, hint: "Gambar untuk section Company Overview" }
+          - label: "Company Stats"
+            name: "company_stats"
+            widget: "object"
+            hint: "Statistik perusahaan"
+            fields:
+              - { label: "Years Experience", name: "years_experience", widget: "string", default: "5+" }
+              - { label: "Projects Completed", name: "projects_completed", widget: "string", default: "150+" }
+              - { label: "Happy Clients", name: "happy_clients", widget: "string", default: "50+" }
+          - label: "Mission"
+            name: "mission"
+            widget: "object"
+            fields:
+              - { label: "Title", name: "title", widget: "string", default: "Mission" }
+              - { label: "Description", name: "description", widget: "text" }
+          - label: "Vision"
+            name: "vision"
+            widget: "object"
+            fields:
+              - { label: "Title", name: "title", widget: "string", default: "Vision" }
+              - { label: "Description", name: "description", widget: "text" }
+          - label: "Values"
+            name: "values"
+            widget: "object"
+            fields:
+              - { label: "Title", name: "title", widget: "string", default: "Values" }
+              - { label: "Description", name: "description", widget: "text" }
+          - label: "Team Sections"
+            name: "team_sections"
+            widget: "list"
+            hint: "Team sections yang ditampilkan"
+            fields:
+              - { label: "Team Name", name: "name", widget: "string" }
+              - { label: "Team Role", name: "role", widget: "string" }
+              - { label: "Team Description", name: "description", widget: "text" }
+          - label: "Why Choose Us"
+            name: "why_choose_us"
+            widget: "list"
+            hint: "Alasan memilih B13 Factory"
+            fields:
+              - { label: "Title", name: "title", widget: "string" }
+              - { label: "Description", name: "description", widget: "text" }
+
   # ==================== PAGES ====================
   - name: "pages"
     label: "Pages"
