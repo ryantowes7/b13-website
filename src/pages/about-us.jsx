@@ -1,9 +1,36 @@
 // website/src/pages/about-us.jsx
 import Head from 'next/head';
+import { useState, useEffect } from 'react';
 import { Users, Target, Award, Heart } from 'lucide-react';
 import Button from '@/components/ui/Button';
 
 export default function AboutUs() {
+  const [portfolioStats, setPortfolioStats] = useState(null);
+
+  useEffect(() => {
+    const fetchStats = async () => {
+      try {
+        const response = await fetch('/api/content/home');
+        if (response.ok) {
+          const data = await response.json();
+          if (data.success && data.home?.portfolio_stats) {
+            setPortfolioStats(data.home.portfolio_stats);
+          }
+        }
+      } catch (err) {
+        console.error('Error fetching portfolio stats:', err);
+        // Set default stats if fetch fails
+        setPortfolioStats({
+          projects_completed: '150+',
+          happy_clients: '50+',
+          years_experience: '5+'
+        });
+      }
+    };
+
+    fetchStats();
+  }, []);
+
   const values = [
     {
       icon: <Target className="w-8 h-8" />,
@@ -83,24 +110,22 @@ export default function AboutUs() {
                 </p>
               </div>
 
-              <div className="grid grid-cols-2 gap-6 mt-8">
-                <div className="text-center">
-                  <div className="text-3xl font-bold text-primary-600 mb-2">5+</div>
-                  <div className="text-neutral-600">Tahun Pengalaman</div>
+              {portfolioStats && (
+                <div className="grid grid-cols-3 gap-6 mt-8">
+                  <div className="text-center">
+                    <div className="text-3xl font-bold text-primary-600 mb-2">{portfolioStats.years_experience}</div>
+                    <div className="text-neutral-600">Tahun Pengalaman</div>
+                  </div>
+                  <div className="text-center">
+                    <div className="text-3xl font-bold text-secondary-600 mb-2">{portfolioStats.projects_completed}</div>
+                    <div className="text-neutral-600">Project Selesai</div>
+                  </div>
+                  <div className="text-center">
+                    <div className="text-3xl font-bold text-accent-500 mb-2">{portfolioStats.happy_clients}</div>
+                    <div className="text-neutral-600">Klien Puas</div>
+                  </div>
                 </div>
-                <div className="text-center">
-                  <div className="text-3xl font-bold text-secondary-600 mb-2">150+</div>
-                  <div className="text-neutral-600">Project Selesai</div>
-                </div>
-                <div className="text-center">
-                  <div className="text-3xl font-bold text-accent-500 mb-2">50+</div>
-                  <div className="text-neutral-600">Klien Puas</div>
-                </div>
-                <div className="text-center">
-                  <div className="text-3xl font-bold text-primary-500 mb-2">98%</div>
-                  <div className="text-neutral-600">Kepuasan Klien</div>
-                </div>
-              </div>
+              )}
             </div>
 
             <div className="bg-gradient-to-br from-primary-100 to-secondary-100 rounded-2xl p-8 aspect-square flex items-center justify-center">

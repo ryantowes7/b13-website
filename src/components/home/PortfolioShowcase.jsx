@@ -18,6 +18,31 @@ export default function PortfolioShowcase() {
   { id: 'merchandise', name: 'Merchandise' },
   ];
 
+  // Load portfolio stats dari API
+  useEffect(() => {
+    const loadStats = async () => {
+      try {
+        const res = await fetch('/api/content/home');
+        if (res.ok) {
+          const data = await res.json();
+          if (data.success && data.home?.portfolio_stats) {
+            setPortfolioStats(data.home.portfolio_stats);
+          }
+        }
+      } catch (error) {
+        console.error('Error loading stats:', error);
+        // Set default stats if fetch fails
+        setPortfolioStats({
+          projects_completed: '150+',
+          happy_clients: '50+',
+          years_experience: '5+'
+        });
+      }
+    };
+    
+    loadStats();
+  }, []);
+
   // Load portfolio dari API
   useEffect(() => {
     const loadPortfolio = async () => {
@@ -83,25 +108,23 @@ export default function PortfolioShowcase() {
             </div>
           </div>
 
-          {/* Stats */}
-          <div className="grid grid-cols-2 gap-8">
+          {/* Stats - Only 3 stats, without Client Satisfaction */}
+          {portfolioStats && (
+            <div className="grid grid-cols-3 gap-8">
             <div className="text-center">
-              <div className="text-4xl md:text-5xl font-bold text-primary-600 mb-2">150+</div>
+              <div className="text-4xl md:text-5xl font-bold text-primary-600 mb-2">{portfolioStats.projects_completed}</div>
               <div className="text-neutral-600">Projects Completed</div>
             </div>
             <div className="text-center">
-              <div className="text-4xl md:text-5xl font-bold text-secondary-600 mb-2">98%</div>
-              <div className="text-neutral-600">Client Satisfaction</div>
-            </div>
-            <div className="text-center">
-              <div className="text-4xl md:text-5xl font-bold text-accent-500 mb-2">50+</div>
+              <div className="text-4xl md:text-5xl font-bold text-accent-500 mb-2">{portfolioStats.happy_clients}</div>
               <div className="text-neutral-600">Happy Clients</div>
             </div>
             <div className="text-center">
-              <div className="text-4xl md:text-5xl font-bold text-primary-500 mb-2">5</div>
+              <div className="text-4xl md:text-5xl font-bold text-primary-500 mb-2">{portfolioStats.years_experience}</div>
               <div className="text-neutral-600">Years Experience</div>
             </div>
           </div>
+          )}
         </div>
 
         {/* Category Filter */}

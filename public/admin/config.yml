@@ -63,6 +63,14 @@ collections:
               { label: "Service Description", name: "description", widget: "text" }
             ] 
           }
+          - label: "Portfolio Stats"
+            name: "portfolio_stats"
+            widget: "object"
+            hint: "Statistics yang ditampilkan di halaman Portfolio dan About Us"
+            fields:
+              - { label: "Projects Completed", name: "projects_completed", widget: "string", default: "150+", hint: "Contoh: 150+" }
+              - { label: "Happy Clients", name: "happy_clients", widget: "string", default: "50+", hint: "Contoh: 50+" }
+              - { label: "Years Experience", name: "years_experience", widget: "string", default: "5+", hint: "Contoh: 5+" }
 
   # ==================== PAGES ====================
   - name: "pages"

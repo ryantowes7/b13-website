@@ -21,7 +21,7 @@ export default function handler(req, res) {
     // Return parsed data
     return res.status(200).json({
       success: true,
-      data: {
+      home: {
         ...data,
         body: content
       }

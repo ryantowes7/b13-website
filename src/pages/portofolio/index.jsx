@@ -14,6 +14,7 @@ export default function Portfolio() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
+  const [portfolioStats, setPortfolioStats] = useState(null);
   
   const ITEMS_PER_PAGE = 9; // 3x3 grid
 
@@ -38,6 +39,32 @@ export default function Portfolio() {
 
     fetchCategories();
   }, []);
+
+  // Fetch portfolio stats
+  useEffect(() => {
+    const fetchStats = async () => {
+      try {
+        const response = await fetch('/api/content/home');
+        if (response.ok) {
+          const data = await response.json();
+          if (data.success && data.home?.portfolio_stats) {
+            setPortfolioStats(data.home.portfolio_stats);
+          }
+        }
+      } catch (err) {
+        console.error('Error fetching portfolio stats:', err);
+        // Set default stats if fetch fails
+        setPortfolioStats({
+          projects_completed: '150+',
+          happy_clients: '50+',
+          years_experience: '5+'
+        });
+      }
+    };
+
+    fetchStats();
+  }, []);
+
 
   // Fetch portfolio from CMS API
   useEffect(() => {
@@ -178,10 +205,10 @@ export default function Portfolio() {
       {/* Dynamic Banner based on Category */}
       <PortfolioBanner category={currentCategory} />
 
-      <section className="section-padding bg-white">
+      <section className="pt-12 pb-20 bg-white">
         <div className="container-custom">
           {/* Filter Section */}
-          <div className="text-center mb-12">
+          <div className="text-center mb-8">
             <div className="flex flex-wrap justify-center gap-4 mb-8">
               {categories.map(category => (
                 <button
@@ -198,6 +225,30 @@ export default function Portfolio() {
               ))}
             </div>
           </div>
+
+          {/* Portfolio Stats Section */}
+          {portfolioStats && (
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+              <div className="bg-gradient-to-br from-primary-50 to-primary-100 rounded-2xl p-8 text-center transform hover:scale-105 transition-transform duration-300">
+                <div className="text-4xl font-bold text-primary-600 mb-2">
+                  {portfolioStats.projects_completed}
+                </div>
+                <div className="text-neutral-700 font-semibold">Projects Completed</div>
+              </div>
+              <div className="bg-gradient-to-br from-secondary-50 to-secondary-100 rounded-2xl p-8 text-center transform hover:scale-105 transition-transform duration-300">
+                <div className="text-4xl font-bold text-secondary-600 mb-2">
+                  {portfolioStats.happy_clients}
+                </div>
+                <div className="text-neutral-700 font-semibold">Happy Clients</div>
+              </div>
+              <div className="bg-gradient-to-br from-accent-50 to-accent-100 rounded-2xl p-8 text-center transform hover:scale-105 transition-transform duration-300">
+                <div className="text-4xl font-bold text-accent-600 mb-2">
+                  {portfolioStats.years_experience}
+                </div>
+                <div className="text-neutral-700 font-semibold">Years Experience</div>
+              </div>
+            </div>
+          )}
 
           {/* Portfolio Grid - 3x3 */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
