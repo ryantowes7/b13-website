@@ -205,10 +205,10 @@ export default function Portfolio() {
       {/* Dynamic Banner based on Category */}
       <PortfolioBanner category={currentCategory} />
 
-      <section className="pt-12 pb-20 bg-white">
+      <section className="pt-8 pb-20 bg-white">
         <div className="container-custom">
           {/* Filter Section */}
-          <div className="text-center mb-8">
+          <div className="text-center mb-6">
             <div className="flex flex-wrap justify-center gap-4 mb-8">
               {categories.map(category => (
                 <button
@@ -228,24 +228,24 @@ export default function Portfolio() {
 
           {/* Portfolio Stats Section */}
           {portfolioStats && (
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
-              <div className="bg-gradient-to-br from-primary-50 to-primary-100 rounded-2xl p-8 text-center transform hover:scale-105 transition-transform duration-300">
-                <div className="text-4xl font-bold text-primary-600 mb-2">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-10">
+              <div className="text-center">
+                <div className="text-3xl font-bold text-primary-600 mb-1">
                   {portfolioStats.projects_completed}
                 </div>
-                <div className="text-neutral-700 font-semibold">Projects Completed</div>
+                <div className="text-neutral-600 text-sm">Projects Completed</div>
               </div>
-              <div className="bg-gradient-to-br from-secondary-50 to-secondary-100 rounded-2xl p-8 text-center transform hover:scale-105 transition-transform duration-300">
-                <div className="text-4xl font-bold text-secondary-600 mb-2">
+              <div className="text-center">
+                <div className="text-3xl font-bold text-secondary-600 mb-1">
                   {portfolioStats.happy_clients}
                 </div>
-                <div className="text-neutral-700 font-semibold">Happy Clients</div>
+                <div className="text-neutral-600 text-sm">Happy Clients</div>
               </div>
-              <div className="bg-gradient-to-br from-accent-50 to-accent-100 rounded-2xl p-8 text-center transform hover:scale-105 transition-transform duration-300">
-                <div className="text-4xl font-bold text-accent-600 mb-2">
+              <div className="text-center">
+                <div className="text-3xl font-bold text-accent-600 mb-1">
                   {portfolioStats.years_experience}
                 </div>
-                <div className="text-neutral-700 font-semibold">Years Experience</div>
+                <div className="text-neutral-600 text-sm">Years Experience</div>
               </div>
             </div>
           )}

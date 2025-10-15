@@ -15,8 +15,7 @@ export default function PortfolioShowcase() {
     { id: 'garment', name: 'Garment' },
     { id: 'advertising', name: 'Advertising' },
     { id: 'bordir', name: 'Bordir' },
-  
-  { id: 'merchandise', name: 'Merchandise' },
+    { id: 'merchandise', name: 'Merchandise' },
   ];
 
   // Load portfolio stats dari API
