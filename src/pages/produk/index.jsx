@@ -1,5 +1,5 @@
 import Head from 'next/head';
-import { useState } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { Filter, Grid, List, Download, Search, ChevronDown } from 'lucide-react';
 import Button from '@/components/ui/Button';
 import ProductCard from '@/components/products/ProductCard';
@@ -33,6 +33,32 @@ export default function Produk() {
 
   // State untuk kategori dropdown
   const [isCategoryOpen, setIsCategoryOpen] = useState(false);
+  const closeTimeoutRef = useRef(null);
+
+  // Cleanup timeout on unmount
+  useEffect(() => {
+    return () => {
+      if (closeTimeoutRef.current) {
+        clearTimeout(closeTimeoutRef.current);
+      }
+    };
+  }, []);
+
+  // Handle mouse enter - cancel any pending close and open dropdown
+  const handleMouseEnter = () => {
+    if (closeTimeoutRef.current) {
+      clearTimeout(closeTimeoutRef.current);
+      closeTimeoutRef.current = null;
+    }
+    setIsCategoryOpen(true);
+  };
+
+  // Handle mouse leave - delay closing the dropdown
+  const handleMouseLeave = () => {
+    closeTimeoutRef.current = setTimeout(() => {
+      setIsCategoryOpen(false);
+    }, 400); // 400ms delay sebelum menutup
+  };
 
   // Handle loading state
   if (loading) {
@@ -125,19 +151,22 @@ export default function Produk() {
 
                 {/* Category Filter - Minimized dengan Hover */}
                 <div className="mb-8">
+                  {/* Label Kategori */}
+                  <h3 className="text-lg font-semibold mb-4 flex items-center text-slate-900">
+                    <Filter size={20} className="mr-2 text-blue-600" />
+                    Kategori
+                  </h3>
+                  
                   <div 
                     className="relative"
-                    onMouseEnter={() => setIsCategoryOpen(true)}
-                    onMouseLeave={() => setIsCategoryOpen(false)}
+                    onMouseEnter={handleMouseEnter}
+                    onMouseLeave={handleMouseLeave}
                   >
                     {/* Category Header - Always Visible */}
                     <div className="flex items-center justify-between bg-white border-2 border-slate-200 rounded-lg px-4 py-3 cursor-pointer hover:border-blue-500 transition-all">
-                      <div className="flex items-center">
-                        <Filter size={20} className="mr-2 text-blue-600" />
-                        <span className="font-semibold text-slate-900">
-                          {categories.find(c => c.id === selectedCategory)?.name || 'Kategori'}
+                      <span className="font-medium text-slate-700">
+                        {categories.find(c => c.id === selectedCategory)?.name || 'Semua Kategori'}
                         </span>
-                      </div>
                       <ChevronDown 
                         size={20} 
                         className={`text-slate-600 transition-transform duration-200 ${
@@ -160,6 +189,9 @@ export default function Produk() {
                         key={category.id}
                         onClick={() => {
                           setSelectedCategory(category.id);
+                          if (closeTimeoutRef.current) {
+                            clearTimeout(closeTimeoutRef.current);
+                          }
                           setIsCategoryOpen(false);
                         }}
                         className={`w-full text-left px-4 py-3 rounded-lg transition-all ${
