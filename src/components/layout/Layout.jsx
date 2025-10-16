@@ -5,13 +5,16 @@ import { useRouter } from 'next/router';
 
 export default function Layout({ children }) {
   const router = useRouter();
-  const isHomePage = router.pathname === '/';
+  
+  // Pages dengan banner yang harus start dari top (seperti homepage)
+  const pagesWithBanner = ['/', '/produk', '/about-us', '/contact-us', '/portofolio', '/artikel'];
+  const hasBanner = pagesWithBanner.includes(router.pathname);
   
   return (
     <div className="min-h-screen flex flex-col">
       <Header />
-      {/* Hanya tambah padding jika bukan home page */}
-      <main className={`flex-grow ${isHomePage ? '' : 'pt-16'}`}>
+      {/* Tidak ada padding untuk halaman dengan banner */}
+      <main className={`flex-grow ${hasBanner ? '' : 'pt-16'}`}>
         {children}
       </main>
       <Footer />
