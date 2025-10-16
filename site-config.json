@@ -5,5 +5,8 @@
   "favicon": "/uploads/logo1.png",
   "contact_email": "info@b13factory.com",
   "contact_phone": "+62 812-3456-7890",
-  "address": "Jl. Arowana Perum Kebon Agung Indah, Jember, Indonesia"
+  "address": "Jl. Arowana Perum Kebon Agung Indah, Jember, Indonesia",
+  "business_hours": {
+    "hours": "Buka Setiap Hari (Weekday 09.00 - 17.00, Weekend 09.00 - 15.00)"
+  }
 }
