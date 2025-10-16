@@ -1,11 +1,4 @@
 {
-  "title": "B13 Factory - Garment & Advertising",
-  "description": "Produsen garment dan advertising berkualitas tinggi untuk kebutuhan bisnis Anda",
-  "logo": "/uploads/logo1.png",
-  "favicon": "/uploads/logo1.png",
-  "contact_email": "info@b13factory.com",
-  "contact_phone": "+62 812-3456-7890",
-  "address": "Jl. Arowana Perum Kebon Agung Indah, Jember, Indonesia",
   "header_navigation": [
     {
       "name": "Home",
@@ -38,6 +31,14 @@
       "order": 6
     }
   ],
+  "logo": "/uploads/logo1.png",
+  "contact_phone": "+62 812-3456-7890",
+  "business_hours": {
+    "hours": "Buka Setiap Hari (Weekday 09.00 - 17.00, Weekend 09.00 - 15.00)"
+  },
+  "social_media": [],
+  "favicon": "/uploads/logo1.png",
+  "address": "Jl. Arowana Perum Kebon Agung Indah, Jember, Indonesia",
   "footer_links": [
     {
       "name": "Produk",
@@ -65,24 +66,7 @@
       "order": 5
     }
   ],
-  "business_hours": {
-    "hours": "Buka Setiap Hari (Weekday 09.00 - 17.00, Weekend 09.00 - 15.00)"
-  },
-  "social_media": [
-    {
-      "platform": "whatsapp",
-      "url": "https://wa.me/6281234567890",
-      "display": true
-    },
-    {
-      "platform": "instagram",
-      "url": "https://instagram.com/b13factory",
-      "display": true
-    },
-    {
-      "platform": "facebook",
-      "url": "https://facebook.com/b13factory",
-      "display": true
-    }
-  ]
+  "title": "B13 Factory - Garment & Advertising",
+  "description": "Produsen garment dan advertising berkualitas tinggi untuk kebutuhan bisnis Anda",
+  "contact_email": "info@b13factory.com"
 }
