@@ -1,5 +1,6 @@
 import Head from 'next/head';
-import { Filter, Grid, List, Download, Search } from 'lucide-react';
+import { useState } from 'react';
+import { Filter, Grid, List, Download, Search, ChevronDown } from 'lucide-react';
 import Button from '@/components/ui/Button';
 import ProductCard from '@/components/products/ProductCard';
 import ProductBanner from '@/components/products/ProductBanner';
@@ -29,6 +30,9 @@ export default function Produk() {
     totalProducts,
     showingProducts
   } = useProducts();
+
+  // State untuk kategori dropdown
+  const [isCategoryOpen, setIsCategoryOpen] = useState(false);
 
   // Handle loading state
   if (loading) {
@@ -119,38 +123,67 @@ export default function Produk() {
                   </div>
                 </div>
 
-                {/* Category Filter */}
+                {/* Category Filter - Minimized dengan Hover */}
                 <div className="mb-8">
-                  <h3 className="text-lg font-semibold mb-4 flex items-center text-slate-900">
-                    <Filter size={20} className="mr-2" />
-                    Kategori
-                  </h3>
-                  <div className="space-y-2">
-                    {categories.map(category => (
+                  <div 
+                    className="relative"
+                    onMouseEnter={() => setIsCategoryOpen(true)}
+                    onMouseLeave={() => setIsCategoryOpen(false)}
+                  >
+                    {/* Category Header - Always Visible */}
+                    <div className="flex items-center justify-between bg-white border-2 border-slate-200 rounded-lg px-4 py-3 cursor-pointer hover:border-blue-500 transition-all">
+                      <div className="flex items-center">
+                        <Filter size={20} className="mr-2 text-blue-600" />
+                        <span className="font-semibold text-slate-900">
+                          {categories.find(c => c.id === selectedCategory)?.name || 'Kategori'}
+                        </span>
+                      </div>
+                      <ChevronDown 
+                        size={20} 
+                        className={`text-slate-600 transition-transform duration-200 ${
+                          isCategoryOpen ? 'rotate-180' : ''
+                        }`}
+                      />
+                    </div>
+
+                    {/* Category Dropdown - Shows on Hover */}
+                    <div 
+                      className={`absolute top-full left-0 right-0 mt-2 bg-white border-2 border-slate-200 rounded-lg shadow-xl z-50 transition-all duration-200 ${
+                        isCategoryOpen 
+                          ? 'opacity-100 visible translate-y-0' 
+                          : 'opacity-0 invisible -translate-y-2 pointer-events-none'
+                      }`}
+                    >
+                      <div className="p-2 space-y-1 max-h-96 overflow-y-auto">
+                        {categories.map(category => (
                       <button
                         key={category.id}
-                        onClick={() => setSelectedCategory(category.id)}
+                        onClick={() => {
+                          setSelectedCategory(category.id);
+                          setIsCategoryOpen(false);
+                        }}
                         className={`w-full text-left px-4 py-3 rounded-lg transition-all ${
                           selectedCategory === category.id
                             ? 'bg-blue-500 text-white shadow-md'
-                            : 'bg-white text-slate-700 hover:bg-slate-100 border border-slate-200'
+                            : 'bg-white text-slate-700 hover:bg-blue-50 border border-transparent hover:border-blue-200'
                         }`}
-                        aria-pressed={selectedCategory === category.id}
                       >
                         <div className="flex justify-between items-center">
                           <span className="font-medium">{category.name}</span>
                           <span className={`text-sm px-2 py-1 rounded-full ${
                             selectedCategory === category.id
                               ? 'bg-white/20 text-white'
-                              : 'bg-slate-200 text-slate-600'
+                              : 'bg-slate-100 text-slate-600'
                           }`}>
                             {category.count}
                           </span>
                         </div>
                       </button>
                     ))}
+                    </div>
                   </div>
                 </div>
+              </div>
 
                 {/* Download Katalog */}
                 <div className="border-t pt-6">

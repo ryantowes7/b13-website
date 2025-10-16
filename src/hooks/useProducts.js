@@ -58,8 +58,8 @@ export const useProducts = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [viewMode, setViewMode] = useState('grid');
 
-  // Products per page
-  const productsPerPage = 9;
+  // Products per page - maksimal 6 produk per halaman
+  const productsPerPage = 6;
 
   // Fetch products and categories from CMS API
   useEffect(() => {
