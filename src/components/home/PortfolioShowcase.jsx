@@ -2,21 +2,12 @@
 'use client';
 import { useState, useEffect } from 'react';
 import Button from '@/components/ui/Button';
-import { ChevronRight, Play, Plus } from 'lucide-react';
+import { ChevronRight, Plus } from 'lucide-react';
 
 export default function PortfolioShowcase() {
-  const [activeCategory, setActiveCategory] = useState('all');
   const [portfolioItems, setPortfolioItems] = useState([]);
   const [portfolioStats, setPortfolioStats] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
-  
-  const categories = [
-    { id: 'all', name: 'All Projects' },
-    { id: 'garment', name: 'Garment' },
-    { id: 'advertising', name: 'Advertising' },
-    { id: 'bordir', name: 'Bordir' },
-    { id: 'merchandise', name: 'Merchandise' },
-  ];
 
   // Load portfolio stats dari API
   useEffect(() => {
@@ -64,10 +55,6 @@ export default function PortfolioShowcase() {
     loadPortfolio();
   }, []);  
 
-  const filteredItems = activeCategory === 'all' 
-    ? portfolioItems 
-    : portfolioItems.filter(item => item.category === activeCategory);
-
   if (isLoading) {
     return (
       <section className="min-h-screen flex items-center justify-center bg-white">
@@ -85,7 +72,7 @@ export default function PortfolioShowcase() {
       <div className="absolute inset-0 bg-gradient-to-br from-primary-50/20 to-secondary-50/20" />
       
       <div className="container-custom section-padding relative z-10">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 mb-16">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center mb-16">
           {/* Header Section */}
           <div>
             <h2 className="text-4xl md:text-5xl font-bold text-neutral-900 mb-6">
@@ -108,104 +95,107 @@ export default function PortfolioShowcase() {
             </div>
           </div>
 
-          {/* Stats - Only 3 stats, without Client Satisfaction */}
+          {/* Stats - Centered vertically with left content */}
           {portfolioStats && (
             <div className="grid grid-cols-3 gap-8">
             <div className="text-center">
               <div className="text-4xl md:text-5xl font-bold text-primary-600 mb-2">{portfolioStats.projects_completed}</div>
-              <div className="text-neutral-600">Projects Completed</div>
+              <div className="text-neutral-600 text-sm">Projects Completed</div>
             </div>
             <div className="text-center">
               <div className="text-4xl md:text-5xl font-bold text-accent-500 mb-2">{portfolioStats.happy_clients}</div>
-              <div className="text-neutral-600">Happy Clients</div>
+              <div className="text-neutral-600 text-sm">Happy Clients</div>
             </div>
             <div className="text-center">
               <div className="text-4xl md:text-5xl font-bold text-primary-500 mb-2">{portfolioStats.years_experience}</div>
-              <div className="text-neutral-600">Years Experience</div>
+              <div className="text-neutral-600 text-sm">Years Experience</div>
             </div>
           </div>
           )}
         </div>
 
-        {/* Category Filter */}
-        <div className="flex flex-wrap justify-center gap-4 mb-12">
-          {categories.map((category) => (
-            <button
-              key={category.id}
-              onClick={() => setActiveCategory(category.id)}
-              className={`px-6 py-3 rounded-full font-medium transition-all ${
-                activeCategory === category.id
-                  ? 'bg-primary-500 text-white shadow-lg'
-                  : 'bg-white text-neutral-700 hover:bg-neutral-100 shadow-sm'
-              }`}
-            >
-              {category.name}
-            </button>
-          ))}
-        </div>
-
-        {/* Portfolio Grid */}
-        {filteredItems.length === 0 ? (
+        {/* Portfolio Grid - Redesigned */}
+        {portfolioItems.length === 0 ? (
           <div className="text-center py-12">
             <p className="text-neutral-500 text-lg">Belum ada portfolio yang tersedia</p>
           </div>
         ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
-          {filteredItems.slice(0, 6).map((item, index) => (
-            <div
+        <div className="mb-12">
+          {/* Grid Layout - 3 columns */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {portfolioItems.slice(0, 6).map((item, index) => (
+              <a
               key={item.slug || index}
-              className="group relative bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-500 hover:transform hover:-translate-y-2"
+              href={`/portofolio/${item.slug}`}
+                className="group block bg-white rounded-lg overflow-hidden hover:shadow-xl transition-all duration-300"
             >
-              {/* Image Container */}
-              <div className="aspect-[4/3] bg-gradient-to-br from-primary-100 to-secondary-100 relative overflow-hidden">
+              {/* Image Container - Aspect ratio 16:10 */}
+              <div className="aspect-[16/10] bg-gradient-to-br from-neutral-100 to-neutral-200 relative overflow-hidden">
                 {item.image ? (
                     <img 
                       src={item.image} 
                       alt={item.name}
-                      className="w-full h-full object-cover"
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                     />
                   ) : (
                 <div className="w-full h-full flex items-center justify-center">
                   <div className="text-center">
-                    <div className="w-16 h-16 bg-white/20 rounded-full flex items-center justify-center mb-4 mx-auto">
-                      <Plus size={24} className="text-white" />
+                    <div className="w-16 h-16 bg-neutral-300 rounded-full flex items-center justify-center mb-4 mx-auto">
+                          <Plus size={24} className="text-neutral-500" />
+                        </div>
+                        <p className="text-neutral-500 font-medium">Portfolio Image</p>
+                      </div>
                     </div>
-                    <p className="text-white font-medium">Portfolio Image</p>
-                  </div>
+                  )}
                 </div>
-                )}
                 
-                {/* Overlay */}
-                <div className="absolute inset-0 bg-primary-600/0 group-hover:bg-primary-600/90 transition-all duration-500 flex items-center justify-center">
-                  <div className="transform translate-y-4 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-500 text-center text-white p-6">
-                    <Play size={48} className="mx-auto mb-4" />
-                    <h4 className="text-xl font-bold mb-2">{item.name}</h4>
-                    <p className="text-white/90 text-sm mb-4">{item.description}</p>
-                    <div className="flex justify-between text-xs text-white/80">
+                
+                {/* Content - Clean & Minimalist */}
+                <div className="p-6">
+                  {/* Date & Category Badge */}
+                  <div className="flex items-center gap-3 mb-3">
+                    <span className="text-sm text-neutral-500">
+                      {item.date ? new Date(item.date).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' }) : '2024'}
+                    </span>
+                    {item.category && (
+                      <>
+                        <span className="text-neutral-300">•</span>
+                        <span className="text-xs uppercase tracking-wider text-primary-600 font-semibold">
+                          {item.category}
+                        </span>
+                      </>
+                    )}
+                  </div>
+
+                  {/* Title */}
+                  <h3 className="text-xl font-bold text-neutral-900 mb-3 group-hover:text-primary-600 transition-colors line-clamp-2">
+                    {item.name}
+                  </h3>
+
+                  {/* Description */}
+                  <p className="text-neutral-600 text-sm leading-relaxed mb-4 line-clamp-2">
+                    {item.description}
+                  </p>
+
+                  {/* Client Info */}
+                  {item.client && (
+                    <div className="flex items-center gap-2 text-sm text-neutral-500">
+                      <span className="font-medium">Client:</span>
                       <span>{item.client}</span>
-                      <span>{item.date ? new Date(item.date).getFullYear() : '2024'}</span>
                     </div>
+                  )}
+
+                  {/* Read More Link */}
+                  <div className="mt-4 pt-4 border-t border-neutral-100">
+                    <span className="text-primary-600 text-sm font-medium inline-flex items-center group-hover:gap-2 transition-all">
+                      Read more
+                      <ChevronRight size={16} className="opacity-0 -ml-4 group-hover:opacity-100 group-hover:ml-0 transition-all" />
+                    </span>
                   </div>
                 </div>
-              </div>
-
-              {/* Content */}
-              <div className="p-6">
-                <h3 className="text-xl font-bold text-neutral-900 mb-2 group-hover:text-primary-600 transition-colors">
-                  {item.name}
-                </h3>
-                <p className="text-neutral-600 text-sm mb-4 line-clamp-2">
-                  {item.description}
-                </p>
-                <div className="flex justify-between items-center text-sm text-neutral-500">
-                  <span className="bg-primary-100 text-primary-600 px-3 py-1 rounded-full">
-                    {item.category}
-                  </span>
-                  <span>{item.date ? new Date(item.date).getFullYear() : '2024'}</span>
-                </div>
-              </div>
-            </div>
-          ))}
+              </a>
+            ))}
+          </div>
         </div>
         )}
 
