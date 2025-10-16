@@ -131,6 +131,70 @@ collections:
               - { label: "Title", name: "title", widget: "string" }
               - { label: "Description", name: "description", widget: "text" }
 
+  # ==================== CONTACT US PAGE ====================
+  - name: "contact"
+    label: "Contact Us Page"
+    delete: false
+    editor:
+      preview: false
+    files:
+      - file: "content/contact/contact.md"
+        label: "Contact Us Content"
+        name: "contact"
+        fields:
+          - { label: "Banner Image", name: "banner_image", widget: "image", hint: "Banner image untuk halaman Contact Us" }
+          - { label: "Banner Title", name: "banner_title", widget: "string", default: "Contact Us" }
+          - { label: "Banner Subtitle", name: "banner_subtitle", widget: "text", default: "Siap membantu kebutuhan garment dan advertising Anda. Hubungi kami untuk konsultasi gratis." }
+          - { label: "Page Title", name: "page_title", widget: "string", default: "Hubungi Kami" }
+          - { label: "Page Description", name: "page_description", widget: "text", default: "Tim B13 Factory siap membantu Anda. Isi form atau hubungi kami melalui kontak yang tersedia." }
+          - label: "Contact Information"
+            name: "contact_info"
+            widget: "object"
+            hint: "Informasi kontak yang ditampilkan"
+            fields:
+              - label: "Office Address"
+                name: "address"
+                widget: "object"
+                fields:
+                  - { label: "Title", name: "title", widget: "string", default: "Visit Our Office" }
+                  - { label: "Address Line 1", name: "line1", widget: "string", default: "JL. Arowana, Perum Kebon Agung Indah" }
+                  - { label: "Address Line 2", name: "line2", widget: "string", default: "Kab. Jember, Jawa Timur" }
+                  - { label: "Address Line 3", name: "line3", widget: "string", default: "Indonesia" }
+                  - { label: "Google Maps Link", name: "map_link", widget: "string", default: "https://maps.google.com" }
+              - label: "Email"
+                name: "email"
+                widget: "object"
+                fields:
+                  - { label: "Title", name: "title", widget: "string", default: "Email Us" }
+                  - { label: "Email Address", name: "address", widget: "string", default: "b13factory@gmail.com" }
+                  - { label: "Response Time", name: "response_time", widget: "string", default: "Response within 24 hours" }
+              - label: "WhatsApp"
+                name: "whatsapp"
+                widget: "object"
+                fields:
+                  - { label: "Title", name: "title", widget: "string", default: "WhatsApp" }
+                  - { label: "Phone Number", name: "number", widget: "string", default: "+62 812-3456-7890", hint: "Format: +62 812-3456-7890" }
+                  - { label: "Display Number", name: "display_number", widget: "string", default: "+62 812-3456-7890" }
+                  - { label: "Message", name: "message", widget: "string", default: "Fast response" }
+                  - { label: "WhatsApp Link", name: "link", widget: "string", default: "https://wa.me/6281234567890", hint: "Format: https://wa.me/6281234567890" }
+          - label: "Business Hours"
+            name: "business_hours"
+            widget: "object"
+            fields:
+              - { label: "Title", name: "title", widget: "string", default: "Business Hours" }
+              - label: "Schedule"
+                name: "schedule"
+                widget: "list"
+                fields:
+                  - { label: "Day", name: "day", widget: "string", hint: "Contoh: Monday - Friday" }
+                  - { label: "Hours", name: "hours", widget: "string", hint: "Contoh: 09:00 - 17:00" }
+          - label: "Form Settings"
+            name: "form_settings"
+            widget: "object"
+            fields:
+              - { label: "Success Message", name: "success_message", widget: "text", default: "Pesan berhasil dikirim! Kami akan menghubungi Anda segera." }
+              - { label: "Button Text", name: "button_text", widget: "string", default: "Send Message" }
+
   # ==================== PAGES ====================
   - name: "pages"
     label: "Pages"

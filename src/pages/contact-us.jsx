@@ -1,8 +1,9 @@
 // website/src/pages/contact-us.jsx
 import Head from 'next/head';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { MapPin, Phone, Mail, Clock, Send, MessageCircle } from 'lucide-react';
 import Button from '@/components/ui/Button';
+import ContactBanner from '@/components/contact/ContactBanner';
 
 export default function ContactUs() {
   const [formData, setFormData] = useState({
@@ -15,6 +16,46 @@ export default function ContactUs() {
   });
 
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [contactData, setContactData] = useState(null);
+  const [productCategories, setProductCategories] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  // Fetch contact data and product categories
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        setLoading(true);
+        
+        // Fetch contact data
+        const contactResponse = await fetch('/api/content/contact');
+        if (contactResponse.ok) {
+          const contactResult = await contactResponse.json();
+          if (contactResult.success && contactResult.contact) {
+            setContactData(contactResult.contact);
+          }
+        }
+
+        // Fetch product categories for subject dropdown
+        const categoriesResponse = await fetch('/api/content/product-categories');
+        if (categoriesResponse.ok) {
+          const categoriesResult = await categoriesResponse.json();
+          if (categoriesResult.success && categoriesResult.categories) {
+            // Filter out 'all' category if exists
+            const filteredCategories = categoriesResult.categories.filter(
+              cat => cat.slug !== 'all' && !cat.is_default
+            );
+            setProductCategories(filteredCategories);
+          }
+        }
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, []);
 
   const handleChange = (e) => {
     setFormData({
@@ -29,7 +70,9 @@ export default function ContactUs() {
     
     // Simulate form submission
     setTimeout(() => {
-      alert('Pesan berhasil dikirim! Kami akan menghubungi Anda segera.');
+      const successMessage = contactData?.form_settings?.success_message || 
+        'Pesan berhasil dikirim! Kami akan menghubungi Anda segera.';
+      alert(successMessage);
       setFormData({
         name: '', email: '', phone: '', company: '', subject: '', message: ''
       });
@@ -37,7 +80,11 @@ export default function ContactUs() {
     }, 2000);
   };
 
-  const contactMethods = [
+  // Contact methods - Removed "Call Us", only kept: Office, Email, WhatsApp
+  const getContactMethods = () => {
+    if (!contactData) {
+      // Default fallback data without "Call Us"
+      return [
     {
       icon: <MapPin className="w-6 h-6" />,
       title: 'Visit Our Office',
@@ -53,13 +100,6 @@ export default function ContactUs() {
       link: 'mailto:b13factory@gmail.com'
     },
     {
-      icon: <Phone className="w-6 h-6" />,
-      title: 'Call Us',
-      details: ['+62 812-3456-7890', 'Mon - Fri: 9:00 - 17:00'],
-      action: 'Call Now',
-      link: 'tel:+6281234567890'
-    },
-    {
       icon: <MessageCircle className="w-6 h-6" />,
       title: 'WhatsApp',
       details: ['+62 812-3456-7890', 'Fast response'],
@@ -68,6 +108,65 @@ export default function ContactUs() {
     }
   ];
 
+}
+  // Build from CMS data - without \"Call Us\"
+    const methods = [];
+
+    if (contactData.contact_info?.address) {
+      const addr = contactData.contact_info.address;
+      methods.push({
+        icon: <MapPin className="w-6 h-6" />,
+        title: addr.title || 'Visit Our Office',
+        details: [addr.line1, addr.line2, addr.line3].filter(Boolean),
+        action: 'Get Directions',
+        link: addr.map_link || 'https://maps.google.com'
+      });
+    }
+
+    if (contactData.contact_info?.email) {
+      const email = contactData.contact_info.email;
+      methods.push({
+        icon: <Mail className="w-6 h-6" />,
+        title: email.title || 'Email Us',
+        details: [email.address, email.response_time].filter(Boolean),
+        action: 'Send Email',
+        link: `mailto:${email.address}`
+      });
+    }
+
+    if (contactData.contact_info?.whatsapp) {
+      const wa = contactData.contact_info.whatsapp;
+      methods.push({
+        icon: <MessageCircle className="w-6 h-6" />,
+        title: wa.title || 'WhatsApp',
+        details: [wa.display_number, wa.message].filter(Boolean),
+        action: 'Chat Now',
+        link: wa.link || `https://wa.me/${wa.number?.replace(/\D/g, '')}`
+      });
+    }
+
+    return methods;
+  };
+
+  const contactMethods = getContactMethods();
+
+  // Show loading state
+  if (loading) {
+    return (
+      <>
+        <Head>
+          <title>Contact Us - B13 Factory</title>
+        </Head>
+        <section className="bg-gradient-to-r from-secondary-600 to-secondary-700 text-white py-20">
+          <div className="container-custom text-center">
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-white mx-auto mb-4"></div>
+            <p className="text-white/90">Memuat halaman...</p>
+          </div>
+        </section>
+      </>
+    );
+  }
+
   return (
     <>
       <Head>
@@ -75,15 +174,8 @@ export default function ContactUs() {
         <meta name="description" content="Hubungi B13 Factory untuk konsultasi garment dan advertising. Fast response!" />
       </Head>
 
-      {/* Hero Section */}
-      <section className="bg-gradient-to-r from-secondary-600 to-secondary-700 text-white py-20">
-        <div className="container-custom text-center">
-          <h1 className="text-4xl md:text-5xl font-bold mb-4">Contact Us</h1>
-          <p className="text-xl text-white/90 max-w-2xl mx-auto">
-            Siap membantu kebutuhan garment dan advertising Anda. Hubungi kami untuk konsultasi gratis.
-          </p>
-        </div>
-      </section>
+      {/* Hero Banner with Background Image */}
+      <ContactBanner banner={contactData} />
 
       <section className="section-padding bg-white">
         <div className="container-custom">
@@ -120,9 +212,20 @@ export default function ContactUs() {
               <div className="mt-8 p-6 bg-primary-50 rounded-xl">
                 <div className="flex items-center space-x-3 mb-4">
                   <Clock className="w-6 h-6 text-primary-600" />
-                  <h3 className="font-semibold text-neutral-900">Business Hours</h3>
+                  <h3 className="font-semibold text-neutral-900">
+                    {contactData?.business_hours?.title || 'Business Hours'}
+                  </h3>
                 </div>
                 <div className="space-y-2 text-sm text-neutral-700">
+                  {contactData?.business_hours?.schedule ? (
+                    contactData.business_hours.schedule.map((item, idx) => (
+                      <div key={idx} className="flex justify-between">
+                        <span>{item.day}</span>
+                        <span className="font-semibold">{item.hours}</span>
+                      </div>
+                    ))
+                  ) : (
+                    <>
                   <div className="flex justify-between">
                     <span>Monday - Friday</span>
                     <span className="font-semibold">09:00 - 17:00</span>
@@ -135,6 +238,8 @@ export default function ContactUs() {
                     <span>Sunday</span>
                     <span className="font-semibold">Closed</span>
                   </div>
+                  </>
+                  )}
                 </div>
               </div>
             </div>
@@ -221,11 +326,21 @@ export default function ContactUs() {
                       className="w-full px-4 py-3 border border-neutral-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all"
                     >
                       <option value="">Pilih subject</option>
-                      <option value="kaos-sablon">Kaos Sablon</option>
-                      <option value="bordir">Bordir</option>
-                      <option value="banner">Banner & Spanduk</option>
-                      <option value="merchandise">Merchandise</option>
-                      <option value="lainnya">Lainnya</option>
+                      {productCategories.length > 0 ? (
+                        productCategories.map((category) => (
+                          <option key={category.slug} value={category.slug}>
+                            {category.name}
+                          </option>
+                        ))
+                      ) : (
+                        <>
+                          <option value="kaos">Kaos</option>
+                          <option value="bordir">Bordir</option>
+                          <option value="banner">Banner & Spanduk</option>
+                          <option value="merchandise">Merchandise</option>
+                          <option value="lainnya">Lainnya</option>
+                      </>
+                      )}
                     </select>
                   </div>
 
@@ -258,7 +373,7 @@ export default function ContactUs() {
                     ) : (
                       <>
                         <Send size={20} className="mr-2" />
-                        Send Message
+                        {contactData?.form_settings?.button_text || 'Send Message'}
                       </>
                     )}
                   </Button>
