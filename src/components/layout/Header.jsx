@@ -38,7 +38,8 @@ export default function Header() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  const navigation = [
+  // Default navigation jika CMS belum load
+  const defaultNavigation = [
     { name: 'Home', href: '/' },
     { name: 'Produk', href: '/produk' },
     { name: 'Artikel', href: '/artikel' },
@@ -46,6 +47,11 @@ export default function Header() {
     { name: 'About Us', href: '/about-us' },
     { name: 'Contact Us', href: '/contact-us' },
   ];
+  
+  // Gunakan navigation dari CMS atau fallback ke default
+  const navigation = siteConfig?.header_navigation 
+    ? [...siteConfig.header_navigation].sort((a, b) => a.order - b.order)
+    : defaultNavigation;
 
   // Background style berdasarkan kondisi - transparent untuk semua halaman saat di top
   const getHeaderBackground = () => {

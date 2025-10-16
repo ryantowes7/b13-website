@@ -35,6 +35,30 @@ export default function Footer() {
     return null; // Loading state
   }
 
+  // Default footer links jika tidak ada di CMS
+  const defaultFooterLinks = [
+    { name: 'Produk', href: '/produk' },
+    { name: 'Artikel', href: '/artikel' },
+    { name: 'Portofolio', href: '/portofolio' },
+    { name: 'About Us', href: '/about-us' },
+    { name: 'Contact Us', href: '/contact-us' }
+  ];
+
+  // Gunakan footer links dari CMS atau fallback ke default
+  const footerLinks = siteConfig?.footer_links 
+    ? [...siteConfig.footer_links].sort((a, b) => a.order - b.order)
+    : defaultFooterLinks;
+
+  // Social media icons mapping
+  const socialIcons = {
+    facebook: 'https://www.facebook.com',
+    instagram: 'https://www.instagram.com',
+    twitter: 'https://www.twitter.com',
+    linkedin: 'https://www.linkedin.com',
+    whatsapp: 'https://wa.me',
+    tiktok: 'https://www.tiktok.com'
+  };
+
   return (
     <footer className="bg-neutral-900 text-white relative z-10">
       <div className="container-custom py-8">
@@ -42,13 +66,13 @@ export default function Footer() {
         <div className="text-center mb-6">
           <h3 className="font-semibold mb-3 text-base">Quick Links</h3>
           <div className="flex flex-wrap justify-center gap-x-6 gap-y-2">
-            {['Produk', 'Artikel', 'Portofolio', 'About Us', 'Contact Us'].map((item) => (
+            {footerLinks.map((item) => (
               <Link 
-                key={item}
-                href={`/${item.toLowerCase().replace(' ', '-')}`}
+                key={item.name}
+                href={item.href}
                 className="text-neutral-300 hover:text-white transition-colors text-sm"
               >
-                {item}
+                {item.name}
               </Link>
             ))}
           </div>
@@ -83,7 +107,7 @@ export default function Footer() {
             </p>
             <div className="flex items-center space-x-2 text-neutral-300 text-sm">
               <Clock size={14} />
-              <span>Buka Setiap Hari Pukul 09.00 - 17.00 WIB</span>
+              <span>{siteConfig?.business_hours?.hours || 'Buka Setiap Hari Pukul 09.00 - 17.00 WIB'}</span>
             </div>
           </div>
 
@@ -114,6 +138,38 @@ export default function Footer() {
             </div>
           </div>
         </div>
+
+        {/* Social Media - New Section */}
+        {siteConfig?.social_media && siteConfig.social_media.length > 0 && (
+          <div className="border-t border-neutral-800 pt-6 pb-4">
+            <div className="flex justify-center items-center gap-4">
+              <span className="text-neutral-400 text-sm">Follow Us:</span>
+              <div className="flex gap-3">
+                {siteConfig.social_media
+                  .filter(social => social.display)
+                  .map((social, index) => (
+                    <a
+                      key={index}
+                      href={social.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="w-10 h-10 bg-neutral-800 hover:bg-primary-600 rounded-full flex items-center justify-center transition-colors group"
+                      aria-label={social.platform}
+                    >
+                      <span className="text-neutral-400 group-hover:text-white text-sm capitalize">
+                        {social.platform === 'whatsapp' && '💬'}
+                        {social.platform === 'instagram' && '📷'}
+                        {social.platform === 'facebook' && '👍'}
+                        {social.platform === 'twitter' && '🐦'}
+                        {social.platform === 'linkedin' && '💼'}
+                        {social.platform === 'tiktok' && '🎵'}
+                      </span>
+                    </a>
+                  ))}
+              </div>
+            </div>
+          </div>
+        )}
 
         {/* Copyright - Compact */}
         <div className="border-t border-neutral-800 pt-4 text-center">
