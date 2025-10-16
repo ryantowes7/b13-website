@@ -36,6 +36,36 @@ collections:
           - { label: "Contact Email", name: "contact_email", widget: "string" }
           - { label: "Contact Phone", name: "contact_phone", widget: "string" }
           - { label: "Address", name: "address", widget: "text" }
+          - label: "Header Navigation"
+            name: "header_navigation"
+            widget: "list"
+            hint: "Menu navigasi yang tampil di header"
+            fields:
+              - { label: "Menu Name", name: "name", widget: "string" }
+              - { label: "Link URL", name: "href", widget: "string", hint: "Contoh: /produk, /artikel, /" }
+              - { label: "Order", name: "order", widget: "number", default: 1, hint: "Urutan menu dari kiri ke kanan" }
+          - label: "Footer Quick Links"
+            name: "footer_links"
+            widget: "list"
+            hint: "Link yang tampil di footer"
+            fields:
+              - { label: "Link Name", name: "name", widget: "string" }
+              - { label: "Link URL", name: "href", widget: "string" }
+              - { label: "Order", name: "order", widget: "number", default: 1 }
+          - label: "Business Hours"
+            name: "business_hours"
+            widget: "object"
+            fields:
+              - { label: "Operating Hours", name: "hours", widget: "string", default: "Buka Setiap Hari Pukul 09.00 - 17.00 WIB" }
+          - label: "Social Media"
+            name: "social_media"
+            widget: "list"
+            required: false
+            hint: "Link media sosial perusahaan"
+            fields:
+              - { label: "Platform", name: "platform", widget: "select", options: ["facebook", "instagram", "twitter", "linkedin", "whatsapp", "tiktok"] }
+              - { label: "URL", name: "url", widget: "string" }
+              - { label: "Display", name: "display", widget: "boolean", default: true }
 
   # ==================== HOMEPAGE ====================
   - name: "home"

@@ -166,7 +166,7 @@ export default function Produk() {
                     <div className="flex items-center justify-between bg-white border-2 border-slate-200 rounded-lg px-4 py-3 cursor-pointer hover:border-blue-500 transition-all">
                       <span className="font-medium text-slate-700">
                         {categories.find(c => c.id === selectedCategory)?.name || 'Semua Kategori'}
-                        </span>
+                      </span>
                       <ChevronDown 
                         size={20} 
                         className={`text-slate-600 transition-transform duration-200 ${
@@ -177,7 +177,7 @@ export default function Produk() {
 
                     {/* Category Dropdown - Shows on Hover */}
                     <div 
-                      className={`absolute top-full left-0 right-0 mt-2 bg-white border-2 border-slate-200 rounded-lg shadow-xl z-50 transition-all duration-200 ${
+                      className={`absolute top-full left-0 right-0 mt-2 bg-white border-2 border-slate-200 rounded-lg shadow-xl z-[100] transition-all duration-200 ${
                         isCategoryOpen 
                           ? 'opacity-100 visible translate-y-0' 
                           : 'opacity-0 invisible -translate-y-2 pointer-events-none'
