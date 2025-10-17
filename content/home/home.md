@@ -38,11 +38,8 @@ services:
     title: Printing & Banner
     description: Cetak banner, spanduk, dan material advertising lainnya dengan
       kualitas terbaik
-  - icon: gift
-    title: Merchandise
-    description: Berbagai merchandise perusahaan untuk kebutuhan branding dan promosi
 portfolio_stats:
-  projects_completed: "150+"
-  happy_clients: "50+"
-  years_experience: "5+"
+  projects_completed: 150+
+  happy_clients: 50+
+  years_experience: 5+
 ---
