@@ -141,20 +141,20 @@ export default function FeaturedProducts() {
                     </div>
                     
                     {/* Content - Bottom */}
-                    <div className="absolute bottom-0 left-0 right-0 p-8 md:p-10">
+                    <div className="absolute bottom-0 left-0 right-0 p-8 md:p-12">
                       {/* Product Name */}
-                      <h3 className="text-4xl md:text-5xl font-bold text-white mb-3 group-hover:text-primary-300 transition-colors">
+                      <h3 className="text-4xl md:text-5xl font-bold text-white mb-4 group-hover:text-primary-300 transition-colors">
                         {featuredProduct.name || featuredProduct.title}
                       </h3>
                       
                       {/* Description */}
                       {featuredProduct.description && (
-                        <p className="text-white/90 text-base md:text-lg mb-4 line-clamp-2">
+                        <p className="text-white/90 text-base md:text-lg mb-6 line-clamp-2">
                           {featuredProduct.description}
                         </p>
                       )}
                       
-                      {/* Read More Link - Kanan Bawah */}
+                      {/* Detail Button - Kanan Bawah */}
                       <div className="flex justify-end">
                         <span className="inline-flex items-center gap-2 text-white font-semibold text-sm group-hover:gap-3 transition-all">
                           Detail
@@ -201,19 +201,22 @@ export default function FeaturedProducts() {
 
                     {/* Content - Bottom */}
                     <div className="absolute bottom-0 left-0 right-0 p-6 md:p-8">
-                      {/* Product Name */}
-                      <h3 className="text-2xl md:text-3xl font-bold text-white mb-6 group-hover:text-primary-300 transition-colors">
-                        {secondProduct.name || secondProduct.title}
-                      </h3>
-                      
-                      {/* Read More Link - Kanan Bawah */}
-                      <div className="flex justify-end">
-                        <span className="inline-flex items-center gap-2 text-white font-semibold text-sm group-hover:gap-3 transition-all">
-                          Detail
-                          <svg className="w-4 h-4 transform group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                          </svg>
-                        </span>
+                      <div className="flex items-end justify-between gap-4">
+                        {/* Product Name - Sejajar dengan button */}
+                        <h3 className="text-xl md:text-2xl font-bold text-white group-hover:text-primary-300 transition-colors line-clamp-2 flex-1 overflow-hidden text-ellipsis">
+                          {secondProduct.name || secondProduct.title}
+                        </h3>
+                        
+                        {/* Detail Button - Elegant Rounded Style */}
+                        <div className="flex-shrink-0">
+                          <span className="inline-flex items-center gap-2 px-5 py-3 rounded-full bg-teal-500/90 hover:bg-teal-600 backdrop-blur-sm text-white font-semibold text-sm shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300">
+                            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <circle cx="12" cy="12" r="10" strokeWidth="2"/>
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                            </svg>
+                            Detail
+                          </span>
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -265,20 +268,23 @@ export default function FeaturedProducts() {
                           </div>
                           
                           {/* Content - Bottom */}
-                          <div className="absolute bottom-0 left-0 right-0 p-6">
-                            {/* Product Name */}
-                            <h4 className="text-xl font-bold text-white mb-6 group-hover:text-primary-300 transition-colors line-clamp-2">
-                              {product.name || product.title}
-                            </h4>
-                            
-                            {/* Read More Link - Kanan Bawah */}
-                            <div className="flex justify-end">
-                              <span className="inline-flex items-center gap-1.5 text-white font-semibold text-sm group-hover:gap-2.5 transition-all">
-                                Detail
-                                <svg className="w-3.5 h-3.5 transform group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                                </svg>
-                              </span>
+                          <div className="absolute bottom-0 left-0 right-0 p-5">
+                            <div className="flex items-end justify-between gap-3">
+                              {/* Product Name - Sejajar dengan button */}
+                              <h4 className="text-lg font-bold text-white group-hover:text-primary-300 transition-colors line-clamp-2 flex-1 overflow-hidden text-ellipsis">
+                                {product.name || product.title}
+                              </h4>
+                              
+                              {/* Detail Button - Elegant Rounded Style */}
+                              <div className="flex-shrink-0">
+                                <span className="inline-flex items-center gap-2 px-4 py-2.5 rounded-full bg-teal-500/90 hover:bg-teal-600 backdrop-blur-sm text-white font-semibold text-xs shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300">
+                                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <circle cx="12" cy="12" r="10" strokeWidth="2"/>
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                                  </svg>
+                                  Detail
+                                </span>
+                              </div>
                             </div>
                           </div>
                         </div>
