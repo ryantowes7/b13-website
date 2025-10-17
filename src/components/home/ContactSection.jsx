@@ -1,8 +1,60 @@
 // website/src/components/home/ContactSection.jsx
+'use client';
+import { useState, useEffect } from 'react';
 import Button from '@/components/ui/Button';
 import { MapPin, Phone, Mail, Clock, MessageCircle } from 'lucide-react';
 
 export default function ContactSection() {
+  const [contactData, setContactData] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
+
+  // Load contact data from CMS
+  useEffect(() => {
+    const loadContactData = async () => {
+      try {
+        setIsLoading(true);
+        const res = await fetch('/api/content/site-config');
+        
+        if (res.ok) {
+          const data = await res.json();
+          setContactData(data);
+        } else {
+          throw new Error('Failed to fetch site config');
+        }
+      } catch (error) {
+        console.error('Error loading contact data:', error);
+        // Fallback to default data
+        setContactData({
+          address: 'JL. Arowana, Perum Kebon Agung Indah, Kab. Jember, Jawa Timur, Indonesia',
+          contact_email: 'b13factory@gmail.com',
+          contact_phone: '+62 812-3456-7890',
+          business_hours: {
+            hours: 'Setiap Hari: 09.00 - 17.00 WIB'
+          }
+        });
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    
+    loadContactData();
+  }, []);
+
+  if (isLoading) {
+    return (
+      <section className="min-h-screen flex items-center justify-center bg-gradient-to-br from-neutral-900 to-neutral-800">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-white mx-auto mb-4"></div>
+          <p className="text-white">Loading contact information...</p>
+        </div>
+      </section>
+    );
+  }
+
+  // Format WhatsApp number (remove spaces and special chars)
+  const whatsappNumber = contactData?.contact_phone?.replace(/\D/g, '') || '6281234567890';
+  const whatsappLink = `https://wa.me/${whatsappNumber}`;
+
   return (
     <section className="min-h-screen flex items-center bg-gradient-to-br from-neutral-900 to-neutral-800 relative overflow-hidden">
       {/* Background Elements */}
@@ -24,64 +76,70 @@ export default function ContactSection() {
             {/* Contact Details */}
             <div className="space-y-8">
               {/* Address */}
-              <div className="flex items-start space-x-6 group">
-                <div className="flex-shrink-0">
-                  <div className="w-16 h-16 bg-primary-500/20 rounded-2xl flex items-center justify-center group-hover:bg-primary-500/30 transition-colors">
-                    <MapPin size={32} className="text-primary-400" />
+              {contactData?.address && (
+                <div className="flex items-start space-x-6 group">
+                  <div className="flex-shrink-0">
+                    <div className="w-16 h-16 bg-primary-500/20 rounded-2xl flex items-center justify-center group-hover:bg-primary-500/30 transition-colors">
+                      <MapPin size={32} className="text-primary-400" />
+                    </div>
+                  </div>
+                  <div>
+                    <h3 className="text-xl font-semibold text-white mb-2">Our Location</h3>
+                    <p className="text-neutral-300 text-lg leading-relaxed">
+                      {contactData.address}
+                    </p>
                   </div>
                 </div>
-                <div>
-                  <h3 className="text-xl font-semibold text-white mb-2">Our Location</h3>
-                  <p className="text-neutral-300 text-lg leading-relaxed">
-                    JL. Arowana, Perum Kebon Agung Indah<br />
-                    Kab. Jember, Jawa Timur<br />
-                    Indonesia
-                  </p>
-                </div>
-              </div>
+              )}
 
               {/* Email */}
-              <div className="flex items-start space-x-6 group">
-                <div className="flex-shrink-0">
-                  <div className="w-16 h-16 bg-secondary-500/20 rounded-2xl flex items-center justify-center group-hover:bg-secondary-500/30 transition-colors">
-                    <Mail size={32} className="text-secondary-400" />
+              {contactData?.contact_email && (
+                <div className="flex items-start space-x-6 group">
+                  <div className="flex-shrink-0">
+                    <div className="w-16 h-16 bg-secondary-500/20 rounded-2xl flex items-center justify-center group-hover:bg-secondary-500/30 transition-colors">
+                      <Mail size={32} className="text-secondary-400" />
+                    </div>
+                  </div>
+                  <div>
+                    <h3 className="text-xl font-semibold text-white mb-2">Email Us</h3>
+                    <p className="text-neutral-300 text-lg">{contactData.contact_email}</p>
                   </div>
                 </div>
-                <div>
-                  <h3 className="text-xl font-semibold text-white mb-2">Email Us</h3>
-                  <p className="text-neutral-300 text-lg">b13factory@gmail.com</p>
-                </div>
-              </div>
+              )}
 
               {/* Business Hours */}
-              <div className="flex items-start space-x-6 group">
-                <div className="flex-shrink-0">
-                  <div className="w-16 h-16 bg-accent-500/20 rounded-2xl flex items-center justify-center group-hover:bg-accent-500/30 transition-colors">
-                    <Clock size={32} className="text-accent-400" />
+              {contactData?.business_hours && (
+                <div className="flex items-start space-x-6 group">
+                  <div className="flex-shrink-0">
+                    <div className="w-16 h-16 bg-accent-500/20 rounded-2xl flex items-center justify-center group-hover:bg-accent-500/30 transition-colors">
+                      <Clock size={32} className="text-accent-400" />
+                    </div>
+                  </div>
+                  <div>
+                    <h3 className="text-xl font-semibold text-white mb-2">Business Hours</h3>
+                    <p className="text-neutral-300 text-lg">
+                      {contactData.business_hours.hours || contactData.business_hours}
+                    </p>
                   </div>
                 </div>
-                <div>
-                  <h3 className="text-xl font-semibold text-white mb-2">Business Hours</h3>
-                  <p className="text-neutral-300 text-lg">
-                    Setiap Hari: 09.00 - 17.00 WIB
-                  </p>
-                </div>
-              </div>
+              )}
 
               {/* Quick Contact */}
-              <div className="flex items-start space-x-6 group">
-                <div className="flex-shrink-0">
-                  <div className="w-16 h-16 bg-primary-500/20 rounded-2xl flex items-center justify-center group-hover:bg-primary-500/30 transition-colors">
-                    <MessageCircle size={32} className="text-primary-400" />
+              {contactData?.contact_phone && (
+                <div className="flex items-start space-x-6 group">
+                  <div className="flex-shrink-0">
+                    <div className="w-16 h-16 bg-primary-500/20 rounded-2xl flex items-center justify-center group-hover:bg-primary-500/30 transition-colors">
+                      <MessageCircle size={32} className="text-primary-400" />
+                    </div>
+                  </div>
+                  <div>
+                    <h3 className="text-xl font-semibold text-white mb-2">Quick Response</h3>
+                    <p className="text-neutral-300 text-lg">
+                      WhatsApp: {contactData.contact_phone}
+                    </p>
                   </div>
                 </div>
-                <div>
-                  <h3 className="text-xl font-semibold text-white mb-2">Quick Response</h3>
-                  <p className="text-neutral-300 text-lg">
-                    WhatsApp: +62 812-3456-7890
-                  </p>
-                </div>
-              </div>
+              )}
             </div>
 
             {/* Action Buttons */}
@@ -94,7 +152,7 @@ export default function ContactSection() {
                 Get In Touch
               </Button>
               <Button 
-                href="https://wa.me/6281234567890" 
+                href={whatsappLink}
                 variant="secondary"
                 className="bg-secondary-500 hover:bg-secondary-600 text-lg px-8 py-4"
               >
@@ -111,7 +169,9 @@ export default function ContactSection() {
                 <div className="text-center">
                   <MapPin size={48} className="text-primary-500 mx-auto mb-4" />
                   <p className="text-neutral-700 font-medium">Google Maps Embed</p>
-                  <p className="text-neutral-500 text-sm mt-2">JL. Arowana, Perum Kebon Agung Indah, Jember</p>
+                  <p className="text-neutral-500 text-sm mt-2 px-4">
+                    {contactData?.address || 'JL. Arowana, Perum Kebon Agung Indah, Jember'}
+                  </p>
                 </div>
               </div>
             </div>
@@ -120,7 +180,12 @@ export default function ContactSection() {
             <div className="bg-white rounded-2xl p-8 shadow-2xl">
               <h3 className="text-2xl font-bold text-neutral-900 mb-6">Quick Consultation</h3>
               <div className="space-y-4">
-                <div className="flex items-center justify-between p-4 bg-neutral-50 rounded-xl hover:bg-primary-50 transition-colors cursor-pointer group">
+                <a 
+                  href={whatsappLink}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center justify-between p-4 bg-neutral-50 rounded-xl hover:bg-primary-50 transition-colors cursor-pointer group"
+                >
                   <div className="flex items-center space-x-3">
                     <div className="w-12 h-12 bg-green-500 rounded-full flex items-center justify-center">
                       <MessageCircle size={24} className="text-white" />
@@ -133,9 +198,12 @@ export default function ContactSection() {
                   <div className="text-primary-500 font-semibold group-hover:translate-x-1 transition-transform">
                     →
                   </div>
-                </div>
+                </a>
 
-                <div className="flex items-center justify-between p-4 bg-neutral-50 rounded-xl hover:bg-primary-50 transition-colors cursor-pointer group">
+                <a
+                  href={`mailto:${contactData?.contact_email || 'b13factory@gmail.com'}`}
+                  className="flex items-center justify-between p-4 bg-neutral-50 rounded-xl hover:bg-primary-50 transition-colors cursor-pointer group"
+                >
                   <div className="flex items-center space-x-3">
                     <div className="w-12 h-12 bg-blue-500 rounded-full flex items-center justify-center">
                       <Mail size={24} className="text-white" />
@@ -148,7 +216,7 @@ export default function ContactSection() {
                   <div className="text-primary-500 font-semibold group-hover:translate-x-1 transition-transform">
                     →
                   </div>
-                </div>
+                </a>
               </div>
             </div>
           </div>

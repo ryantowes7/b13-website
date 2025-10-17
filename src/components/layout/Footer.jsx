@@ -173,7 +173,7 @@ export default function Footer() {
 
         {/* Copyright - Compact */}
         <div className="border-t border-neutral-800 pt-4 text-center">
-          <p className="text-neutral-400 text-xs">&copy; {new Date().getFullYear()} {siteConfig.title || 'B13 Factory'}. All rights reserved.</p>
+          <p className="text-neutral-400 text-xs">&copy; {new Date().getFullYear()} {siteConfig.title || 'B13 Factory'}. Designed by Pulu KTW.</p>
         </div>
       </div>
     </footer>
