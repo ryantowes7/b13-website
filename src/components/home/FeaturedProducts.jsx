@@ -142,24 +142,26 @@ export default function FeaturedProducts() {
                     
                     {/* Content - Bottom */}
                     <div className="absolute bottom-0 left-0 right-0 p-8 md:p-10">
-                      {/* Featured Badge */}
-                      <span className="inline-flex items-center px-4 py-2 rounded-full text-sm font-bold bg-white/20 backdrop-blur-md text-white border border-white/30 mb-4">
-                        Featured
-                      </span>
-                      
                       {/* Product Name */}
-                      <h3 className="text-4xl md:text-5xl font-bold text-white mb-4 group-hover:text-primary-300 transition-colors">
+                      <h3 className="text-4xl md:text-5xl font-bold text-white mb-3 group-hover:text-primary-300 transition-colors">
                         {featuredProduct.name || featuredProduct.title}
                       </h3>
                       
-                      {/* Detail Button - Kanan Bawah */}
+                      {/* Description */}
+                      {featuredProduct.description && (
+                        <p className="text-white/90 text-base md:text-lg mb-4 line-clamp-2">
+                          {featuredProduct.description}
+                        </p>
+                      )}
+                      
+                      {/* Read More Link - Kanan Bawah */}
                       <div className="flex justify-end">
-                        <button className="group/btn inline-flex items-center gap-2 px-5 py-2.5 bg-white/20 backdrop-blur-md hover:bg-white hover:text-primary-600 text-white rounded-xl font-semibold text-sm transition-all duration-300 transform hover:scale-105 border border-white/30 hover:border-white shadow-lg">
+                        <span className="inline-flex items-center gap-2 text-white font-semibold text-sm group-hover:gap-3 transition-all">
                           Detail
-                          <svg className="w-4 h-4 transform group-hover/btn:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <svg className="w-4 h-4 transform group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                           </svg>
-                        </button>
+                        </span>
                       </div>
                     </div>
                   </div>
@@ -200,18 +202,18 @@ export default function FeaturedProducts() {
                     {/* Content - Bottom */}
                     <div className="absolute bottom-0 left-0 right-0 p-6 md:p-8">
                       {/* Product Name */}
-                      <h3 className="text-2xl md:text-3xl font-bold text-white mb-4 group-hover:text-primary-300 transition-colors">
+                      <h3 className="text-2xl md:text-3xl font-bold text-white mb-6 group-hover:text-primary-300 transition-colors">
                         {secondProduct.name || secondProduct.title}
                       </h3>
                       
-                      {/* Detail Button - Kanan Bawah */}
+                      {/* Read More Link - Kanan Bawah */}
                       <div className="flex justify-end">
-                        <button className="group/btn inline-flex items-center gap-2 px-4 py-2 bg-white/20 backdrop-blur-md hover:bg-white hover:text-primary-600 text-white rounded-lg font-semibold text-sm transition-all duration-300 transform hover:scale-105 border border-white/30 hover:border-white shadow-lg">
+                        <span className="inline-flex items-center gap-2 text-white font-semibold text-sm group-hover:gap-3 transition-all">
                           Detail
-                          <svg className="w-4 h-4 transform group-hover/btn:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <svg className="w-4 h-4 transform group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                           </svg>
-                        </button>
+                        </span>
                       </div>
                     </div>
                   </div>
@@ -265,18 +267,18 @@ export default function FeaturedProducts() {
                           {/* Content - Bottom */}
                           <div className="absolute bottom-0 left-0 right-0 p-6">
                             {/* Product Name */}
-                            <h4 className="text-xl font-bold text-white mb-4 group-hover:text-primary-300 transition-colors line-clamp-2">
+                            <h4 className="text-xl font-bold text-white mb-6 group-hover:text-primary-300 transition-colors line-clamp-2">
                               {product.name || product.title}
                             </h4>
                             
-                            {/* Detail Button - Kanan Bawah */}
+                            {/* Read More Link - Kanan Bawah */}
                             <div className="flex justify-end">
-                              <button className="group/btn inline-flex items-center gap-1.5 px-4 py-2 bg-white/20 backdrop-blur-md hover:bg-white hover:text-primary-600 text-white rounded-lg font-semibold text-xs transition-all duration-300 transform hover:scale-105 border border-white/30 hover:border-white shadow-lg">
-                                Detail
-                                <svg className="w-3.5 h-3.5 transform group-hover/btn:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <span className="inline-flex items-center gap-1.5 text-white font-semibold text-sm group-hover:gap-2.5 transition-all">
+                                Read more
+                                <svg className="w-3.5 h-3.5 transform group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                                 </svg>
-                              </button>
+                              </span>
                             </div>
                           </div>
                         </div>
