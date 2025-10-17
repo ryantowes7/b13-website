@@ -8,7 +8,6 @@ export default function FeaturedProducts() {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [products, setProducts] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [isPaused, setIsPaused] = useState(false);
   const intervalRef = useRef(null);
 
   // Load products dari API
@@ -34,10 +33,14 @@ export default function FeaturedProducts() {
 
   // Auto-play carousel
   useEffect(() => {
-    if (products.length > 3 && !isPaused) {
+    if (products.length > 3) {
       intervalRef.current = setInterval(() => {
-        setCurrentIndex((prev) => (prev + 1) % (products.length - 2));
-      }, 4000); // Ganti slide setiap 4 detik
+        setCurrentIndex((prev) => {
+          const maxIndex = carouselProducts.length - 4;
+          if (maxIndex <= 0) return 0;
+          return (prev + 1) % (maxIndex + 1);
+        });
+      }, 3000); // Ganti slide setiap 3 detik, terus berputar
     }
 
     return () => {
@@ -45,7 +48,7 @@ export default function FeaturedProducts() {
         clearInterval(intervalRef.current);
       }
     };
-  }, [products.length, isPaused]);
+  }, [products.length]);
 
   const featuredProduct = products.length > 0 ? products[0] : null;
   const secondProduct = products.length > 1 ? products[1] : null;
@@ -62,13 +65,13 @@ export default function FeaturedProducts() {
   const getStockTypeBadge = (stockType) => {
     if (stockType === 'ready') {
       return (
-        <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-green-100 text-green-700">
+        <span className="inline-flex items-center px-3 py-1.5 rounded-lg text-xs font-bold bg-green-500/90 text-white backdrop-blur-md shadow-lg">
           Ready Stock
         </span>
       );
     }
     return (
-      <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-blue-100 text-blue-700">
+      <span className="inline-flex items-center px-3 py-1.5 rounded-lg text-xs font-bold bg-blue-500/90 text-white backdrop-blur-md shadow-lg">
         By Order
       </span>
     );
@@ -125,32 +128,39 @@ export default function FeaturedProducts() {
                       <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent"></div>
                     </div>
                     
-                    {/* Content */}
-                    <div className="relative h-full flex flex-col justify-end p-8 md:p-10">
-                      {/* Badges */}
-                      <div className="flex flex-wrap gap-3 mb-4">
-                        <span className="inline-flex items-center px-4 py-2 rounded-full text-sm font-bold bg-white/20 backdrop-blur-md text-white border border-white/30">
-                          Featured
+                    {/* Badges - Top Corners */}
+                    <div className="absolute top-6 left-6 right-6 flex justify-between items-start">
+                      {/* Category Badge - Kiri Atas */}
+                      {featuredProduct.category && (
+                        <span className="inline-flex items-center px-4 py-2 rounded-xl text-sm font-bold bg-primary-500/90 backdrop-blur-md text-white capitalize shadow-lg">
+                          {featuredProduct.category}
                         </span>
+                      )}
+                      {/* Stock Type Badge - Kanan Atas */}
                         {getStockTypeBadge(featuredProduct.stockType)}
-                        {featuredProduct.category && (
-                          <span className="inline-flex items-center px-4 py-2 rounded-full text-sm font-semibold bg-primary-500/90 text-white capitalize">
-                            {featuredProduct.category}
+                        </div>
+                    
+                    {/* Content - Bottom */}
+                    <div className="absolute bottom-0 left-0 right-0 p-8 md:p-10">
+                      {/* Featured Badge */}
+                      <span className="inline-flex items-center px-4 py-2 rounded-full text-sm font-bold bg-white/20 backdrop-blur-md text-white border border-white/30 mb-4">
+                        Featured
                           </span>
-                        )}
-                      </div>
                       
                       {/* Product Name */}
-                      <h3 className="text-4xl md:text-5xl font-bold text-white mb-3 group-hover:text-primary-300 transition-colors">
+                      <h3 className="text-4xl md:text-5xl font-bold text-white mb-4 group-hover:text-primary-300 transition-colors">
                         {featuredProduct.name || featuredProduct.title}
                       </h3>
                       
-                      {/* Price */}
-                      {featuredProduct.price && (
-                        <p className="text-2xl font-bold text-white">
-                          {featuredProduct.price}
-                        </p>
-                      )}
+                      {/* Detail Button - Kanan Bawah */}
+                      <div className="flex justify-end">
+                        <button className="group/btn inline-flex items-center gap-2 px-5 py-2.5 bg-white/20 backdrop-blur-md hover:bg-white hover:text-primary-600 text-white rounded-xl font-semibold text-sm transition-all duration-300 transform hover:scale-105 border border-white/30 hover:border-white shadow-lg">
+                          Detail
+                          <svg className="w-4 h-4 transform group-hover/btn:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                          </svg>
+                        </button>
+                      </div>
                     </div>
                   </div>
                 </Link>
@@ -175,42 +185,43 @@ export default function FeaturedProducts() {
                       <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent"></div>
                     </div>
 
-                    {/* Content */}
-                    <div className="relative h-full flex flex-col justify-end p-6 md:p-8">
-                      {/* Badges */}
-                      <div className="flex flex-wrap gap-2 mb-4">
-                        {getStockTypeBadge(secondProduct.stockType)}
-                        {secondProduct.category && (
-                          <span className="inline-flex items-center px-3 py-1.5 rounded-full text-xs font-semibold bg-primary-500/90 text-white capitalize">
-                            {secondProduct.category}
-                          </span>
-                        )}
-                      </div>
+                    {/* Badges - Top Corners */}
+                    <div className="absolute top-6 left-6 right-6 flex justify-between items-start">
+                      {/* Category Badge - Kiri Atas */}
+                      {secondProduct.category && (
+                        <span className="inline-flex items-center px-3 py-1.5 rounded-xl text-xs font-bold bg-primary-500/90 backdrop-blur-md text-white capitalize shadow-lg">
+                          {secondProduct.category}
+                        </span>
+                      )}
+                      {/* Stock Type Badge - Kanan Atas */}
+                      {getStockTypeBadge(secondProduct.stockType)}
+                    </div>
 
-              {/* Product Name */}
-                <h3 className="text-2xl md:text-3xl font-bold text-white mb-2 group-hover:text-primary-300 transition-colors">
-                  {secondProduct.name || secondProduct.title}
+              {/* Content - Bottom */}
+                <div className="absolute bottom-0 left-0 right-0 p-6 md:p-8">
+                  {/* Product Name */}
+                    <h3 className="text-2xl md:text-3xl font-bold text-white mb-4 group-hover:text-primary-300 transition-colors">
+                      {secondProduct.name || secondProduct.title}
                     </h3>
                       
-                      {/* Price */}
-                      {secondProduct.price && (
-                        <p className="text-xl font-bold text-white">
-                          {secondProduct.price}
-                        </p>
-                      )}
+                  {/* Detail Button - Kanan Bawah */}
+                    <div className="flex justify-end">
+                      <button className="group/btn inline-flex items-center gap-2 px-4 py-2 bg-white/20 backdrop-blur-md hover:bg-white hover:text-primary-600 text-white rounded-lg font-semibold text-sm transition-all duration-300 transform hover:scale-105 border border-white/30 hover:border-white shadow-lg">
+                          Detail
+                      <svg className="w-4 h-4 transform group-hover/btn:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                      </svg>
+                      </button>
                     </div>
                   </div>
-                </Link>
+                </div>
+              </Link>
               )}
             </div>
 
             {/* Carousel Section */}
             {carouselProducts.length > 0 && (
-              <div 
-                className="relative"
-                onMouseEnter={() => setIsPaused(true)}
-                onMouseLeave={() => setIsPaused(false)}
-              >
+              <div className="relative">
                 <div className="overflow-hidden">
                   <div 
                     className="flex gap-6 transition-transform duration-700 ease-in-out"
@@ -239,29 +250,34 @@ export default function FeaturedProducts() {
                             <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent"></div>
                           </div>
                           
-                          {/* Content */}
-                          <div className="relative h-full flex flex-col justify-end p-6">
-                            {/* Badges */}
-                            <div className="flex flex-wrap gap-2 mb-3">
-                              {getStockTypeBadge(product.stockType)}
-                              {product.category && (
-                                <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-primary-500/90 text-white capitalize">
-                                  {product.category}
-                                </span>
-                              )}
-                            </div>
-                            
+                          {/* Badges - Top Corners */}
+                          <div className="absolute top-4 left-4 right-4 flex justify-between items-start">
+                            {/* Category Badge - Kiri Atas */}
+                            {product.category && (
+                              <span className="inline-flex items-center px-3 py-1.5 rounded-lg text-xs font-bold bg-primary-500/90 backdrop-blur-md text-white capitalize shadow-lg">
+                                {product.category}
+                              </span>
+                            )}
+                            {/* Stock Type Badge - Kanan Atas */}
+                            {getStockTypeBadge(product.stockType)}
+                          </div>
+                          
+                          {/* Content - Bottom */}
+                          <div className="absolute bottom-0 left-0 right-0 p-6">
                             {/* Product Name */}
-                            <h4 className="text-xl font-bold text-white mb-2 group-hover:text-primary-300 transition-colors line-clamp-2">
+                            <h4 className="text-xl font-bold text-white mb-4 group-hover:text-primary-300 transition-colors line-clamp-2">
                               {product.name || product.title}
                             </h4>
                             
-                            {/* Price */}
-                            {product.price && (
-                              <p className="text-lg font-bold text-white">
-                                {product.price}
-                              </p>
-                            )}
+                            {/* Detail Button - Kanan Bawah */}
+                            <div className="flex justify-end">
+                              <button className="group/btn inline-flex items-center gap-1.5 px-4 py-2 bg-white/20 backdrop-blur-md hover:bg-white hover:text-primary-600 text-white rounded-lg font-semibold text-xs transition-all duration-300 transform hover:scale-105 border border-white/30 hover:border-white shadow-lg">
+                                Detail
+                                <svg className="w-3.5 h-3.5 transform group-hover/btn:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                                </svg>
+                              </button>
+                            </div>
                           </div>
                         </div>
                       </Link>
