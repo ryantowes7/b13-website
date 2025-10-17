@@ -58,27 +58,51 @@ export default function HeroBanner() {
       try {
         setIsLoading(true);
 
-        // Fetch home content dari API
-        const homeRes = await fetch('/api/content/home');
+        // Fetch home content dan site config
+        const [homeRes, configRes] = await Promise.all([
+          fetch('/api/content/home'),
+          fetch('/api/content/site-config')
+        ]);
         
         if (homeRes.ok) {
           const homeData = await homeRes.json();
           
-          if (homeData.success && homeData.data) {
+          if (homeData.success && homeData.home) {
             // Transform data dari CMS format ke format slides
-            const slides = [
-              {
+            const heroBanners = homeData.home.hero_banners || [];
+            
+            const slides = heroBanners.map((banner, index) => ({
+              id: index + 1,
+              image: banner.image || '/uploads/hero-1.jpg',
+              title: banner.title || 'GARMENT AND ADVERTISING',
+              description: banner.subtitle || 'Professional garment and advertising solutions',
+              button_text: banner.button_text,
+              button_link: banner.button_link
+            }));
+            
+            // Fallback jika tidak ada banners
+            if (slides.length === 0) {
+              slides.push({
                 id: 1,
-                image: homeData.data.hero_image || '/uploads/hero-1.jpg',
-                title: homeData.data.hero_title || 'GARMENT AND ADVERTISING',
-                description: homeData.data.hero_subtitle || 'Professional garment and advertising solutions',
-                button_text: homeData.data.hero_button_text,
-                button_link: homeData.data.hero_button_link
-              }
-            ];
+                image: '/uploads/hero-1.jpg',
+                title: 'GARMENT AND ADVERTISING',
+                description: 'Professional garment and advertising solutions',
+                button_text: 'Lihat Produk',
+                button_link: '/produk'
+              });
+            }
             
             setHeroData({ slides });
-            setContactData({ business_hours:"Buka Setiap Hari Pukul 09.00 - 17.00 WIB" });
+            
+            // Get business hours from site config
+            if (configRes.ok) {
+              const configData = await configRes.json();
+              setContactData({ 
+                business_hours: configData.business_hours?.hours || "Buka Setiap Hari Pukul 09.00 - 17.00 WIB" 
+              });
+            } else {
+              setContactData({ business_hours: "Buka Setiap Hari Pukul 09.00 - 17.00 WIB" });
+            }
           } else {
             throw new Error('Invalid data format');
           }

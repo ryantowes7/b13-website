@@ -78,25 +78,29 @@ collections:
         label: "Home Page Content"
         name: "home"
         fields:
-          - { label: "Hero Title", name: "hero_title", widget: "string" }
-          - { label: "Hero Subtitle", name: "hero_subtitle", widget: "text" }
-          - { label: "Hero Image", name: "hero_image", widget: "image" }
-          - { label: "Hero Button Text", name: "hero_button_text", widget: "string" }
-          - { label: "Hero Button Link", name: "hero_button_link", widget: "string" }
-          - { label: "About Title", name: "about_title", widget: "string" }
-          - { label: "About Content", name: "about_content", widget: "markdown" }
-          - { label: "About Image", name: "about_image", widget: "image" }
-          - { label: "Services Title", name: "services_title", widget: "string" }
-          - { label: "Services", name: "services", widget: "list", fields: [
-              { label: "Service Icon", name: "icon", widget: "string" },
-              { label: "Service Title", name: "title", widget: "string" },
-              { label: "Service Description", name: "description", widget: "text" }
-            ] 
-          }
+          - label: "Hero Banners"
+            name: "hero_banners"
+            widget: "list"
+            hint: "Slider banner untuk hero section. Bisa tambahkan beberapa banner yang akan berganti otomatis."
+            fields:
+              - { label: "Banner Image", name: "image", widget: "image", hint: "Gambar banner (recommended: 1920x1080px)" }
+              - { label: "Banner Title", name: "title", widget: "string", hint: "Judul utama banner" }
+              - { label: "Banner Subtitle", name: "subtitle", widget: "text", hint: "Deskripsi/subtitle banner" }
+              - { label: "Button Text", name: "button_text", widget: "string", required: false, hint: "Text tombol CTA (opsional)" }
+              - { label: "Button Link", name: "button_link", widget: "string", required: false, hint: "Link tujuan tombol (contoh: /produk)" }
+          - { label: "Services Section Title", name: "services_title", widget: "string", default: "Layanan Kami", hint: "Judul untuk section layanan/services" }
+          - label: "Services"
+            name: "services"
+            widget: "list"
+            hint: "Daftar layanan yang ditampilkan di homepage"
+            fields:
+              - { label: "Service Icon", name: "icon", widget: "string", hint: "Nama icon dari lucide-react (contoh: shirt, printer, gift, scissors)" }
+              - { label: "Service Title", name: "title", widget: "string", hint: "Nama layanan" }
+              - { label: "Service Description", name: "description", widget: "text", hint: "Deskripsi singkat layanan" }
           - label: "Portfolio Stats"
             name: "portfolio_stats"
             widget: "object"
-            hint: "Statistics yang ditampilkan di halaman Portfolio dan About Us"
+            hint: "Statistik perusahaan yang ditampilkan di section portfolio"
             fields:
               - { label: "Projects Completed", name: "projects_completed", widget: "string", default: "150+", hint: "Contoh: 150+" }
               - { label: "Happy Clients", name: "happy_clients", widget: "string", default: "50+", hint: "Contoh: 50+" }
