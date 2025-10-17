@@ -171,7 +171,8 @@ export default function FeaturedProducts() {
               {/* Second Product */}
               {secondProduct && (
                 <Link href={`/produk/${secondProduct.slug}`} className="group">
-                  <div className="relative h-[500px] rounded-3xl overflow-hidden shadow-xl hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2">
+                  <div className="relative h-[500px] rounded-3xl overflow-visible shadow-xl hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2">
+                    <div className="absolute inset-0 rounded-3xl overflow-hidden">
                     {/* Image Background */}
                     <div className="absolute inset-0">
                       {secondProduct.image ? (
@@ -186,9 +187,10 @@ export default function FeaturedProducts() {
                       {/* Gradient Overlay */}
                       <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent"></div>
                     </div>
+                    </div>
 
                     {/* Badges - Top Corners */}
-                    <div className="absolute top-6 left-6 right-6 flex justify-between items-start">
+                    <div className="absolute top-6 left-6 right-6 flex justify-between items-start z-10">
                       {/* Category Badge - Kiri Atas */}
                       {secondProduct.category && (
                         <span className="inline-flex items-center px-3 py-1.5 rounded-xl text-xs font-bold bg-primary-500/90 backdrop-blur-md text-white capitalize shadow-lg">
@@ -200,16 +202,16 @@ export default function FeaturedProducts() {
                     </div>
 
                     {/* Content - Bottom */}
-                    <div className="absolute bottom-0 left-0 right-0 p-6 md:p-8">
+                    <div className="absolute bottom-0 left-0 right-0 p-6 md:p-8 z-10">
                       <div className="flex items-end justify-between gap-4">
                         {/* Product Name - Sejajar dengan button */}
                         <h3 className="text-xl md:text-2xl font-bold text-white group-hover:text-primary-300 transition-colors line-clamp-2 flex-1 overflow-hidden text-ellipsis">
                           {secondProduct.name || secondProduct.title}
                         </h3>
                         
-                        {/* Detail Button - Floating Prominent Style */}
-                        <div className="flex-shrink-0">
-                          <span className="inline-flex items-center gap-2.5 px-6 py-3.5 rounded-full bg-teal-500 hover:bg-teal-600 text-white font-bold text-sm border-2 border-white shadow-[0_8px_30px_rgba(0,0,0,0.3)] hover:shadow-[0_12px_40px_rgba(0,0,0,0.4)] transform hover:scale-110 hover:-translate-y-1 transition-all duration-300">
+                        {/* Detail Button - Cutting Edge Style (Keluar dari Card) */}
+                        <div className="flex-shrink-0 relative -mr-4 -mb-4">
+                          <span className="inline-flex items-center gap-2.5 px-6 py-3.5 rounded-full bg-teal-500 hover:bg-teal-600 text-white font-bold text-sm border-3 border-white shadow-[0_8px_30px_rgba(0,0,0,0.3)] hover:shadow-[0_12px_40px_rgba(0,0,0,0.4)] transform hover:scale-110 hover:-translate-y-1 transition-all duration-300">
                             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                               <circle cx="12" cy="12" r="10" strokeWidth="2.5"/>
                               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M9 5l7 7-7 7" />
@@ -239,7 +241,8 @@ export default function FeaturedProducts() {
                         className="flex-shrink-0 w-full sm:w-1/2 lg:w-1/4 group"
                         style={{ minWidth: 'calc(25% - 18px)' }}
                       >
-                        <div className="relative h-[400px] rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-3">
+                        <div className="relative h-[400px] rounded-2xl overflow-visible shadow-lg hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-3">
+                          <div className="absolute inset-0 rounded-2xl overflow-hidden">
                           {/* Image */}
                           <div className="absolute inset-0">
                             {product.image ? (
@@ -254,9 +257,10 @@ export default function FeaturedProducts() {
                             {/* Gradient Overlay */}
                             <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent"></div>
                           </div>
+                          </div>
                           
                           {/* Badges - Top Corners */}
-                          <div className="absolute top-4 left-4 right-4 flex justify-between items-start">
+                          <div className="absolute top-4 left-4 right-4 flex justify-between items-start z-10">
                             {/* Category Badge - Kiri Atas */}
                             {product.category && (
                               <span className="inline-flex items-center px-3 py-1.5 rounded-lg text-xs font-bold bg-primary-500/90 backdrop-blur-md text-white capitalize shadow-lg">
@@ -268,16 +272,16 @@ export default function FeaturedProducts() {
                           </div>
                           
                           {/* Content - Bottom */}
-                          <div className="absolute bottom-0 left-0 right-0 p-5">
+                          <div className="absolute bottom-0 left-0 right-0 p-5 z-10">
                             <div className="flex items-end justify-between gap-3">
                               {/* Product Name - Sejajar dengan button */}
                               <h4 className="text-lg font-bold text-white group-hover:text-primary-300 transition-colors line-clamp-2 flex-1 overflow-hidden text-ellipsis">
                                 {product.name || product.title}
                               </h4>
                               
-                              {/* Detail Button - Floating Prominent Style */}
-                              <div className="flex-shrink-0">
-                                <span className="inline-flex items-center gap-2 px-5 py-3 rounded-full bg-teal-500 hover:bg-teal-600 text-white font-bold text-xs border-2 border-white shadow-[0_6px_25px_rgba(0,0,0,0.3)] hover:shadow-[0_10px_35px_rgba(0,0,0,0.4)] transform hover:scale-110 hover:-translate-y-1 transition-all duration-300">
+                              {/* Detail Button - Cutting Edge Style (Keluar dari Card) */}
+                              <div className="flex-shrink-0 relative -mr-3 -mb-3">
+                                <span className="inline-flex items-center gap-2 px-5 py-3 rounded-full bg-teal-500 hover:bg-teal-600 text-white font-bold text-xs border-3 border-white shadow-[0_6px_25px_rgba(0,0,0,0.3)] hover:shadow-[0_10px_35px_rgba(0,0,0,0.4)] transform hover:scale-110 hover:-translate-y-1 transition-all duration-300">
                                   <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <circle cx="12" cy="12" r="10" strokeWidth="2.5"/>
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M9 5l7 7-7 7" />
