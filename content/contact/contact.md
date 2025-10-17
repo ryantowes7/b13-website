@@ -12,10 +12,7 @@ contact_info:
     line1: JL. Arowana, Perum Kebon Agung Indah
     line2: Kab. Jember, Jawa Timur
     line3: Indonesia
-    map_link: <iframe
-      src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d515.1352122348118!2d113.67513863764486!3d-8.15694555937482!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2dd695aacafb6b9f%3A0x5c31177bd50779d8!2sB13%20Sablon%20%26%20Advertising!5e1!3m2!1sid!2sid!4v1760713233502!5m2!1sid!2sid"
-      width="700" height="700" style="border:0;" allowfullscreen=""
-      loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+    map_link: https://maps.app.goo.gl/Ly4EtHkLX2Xd6WKu8
   email:
     title: Email Us
     address: b13factory@gmail.com
