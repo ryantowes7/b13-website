@@ -274,7 +274,7 @@ export default function FeaturedProducts() {
                             {/* Read More Link - Kanan Bawah */}
                             <div className="flex justify-end">
                               <span className="inline-flex items-center gap-1.5 text-white font-semibold text-sm group-hover:gap-2.5 transition-all">
-                                Read more
+                                Detail
                                 <svg className="w-3.5 h-3.5 transform group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                                 </svg>
