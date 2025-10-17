@@ -1,12 +1,15 @@
 // website/src/components/home/FeaturedProducts.jsx
 'use client';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
+import Link from 'next/link';
 
 export default function FeaturedProducts() {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [products, setProducts] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [isPaused, setIsPaused] = useState(false);
+  const intervalRef = useRef(null);
 
   // Load products dari API
   useEffect(() => {
@@ -29,121 +32,278 @@ export default function FeaturedProducts() {
     loadProducts();
   }, []);
 
-  const featuredProduct = products.length > 0 ? products[0] : {
-    id: 1,
-    name: 'Produk Unggulan',
-    description: 'Deskripsi produk unggulan yang lebih detail dan menarik...',
-    image: '/uploads/featured-product.jpg'
-  };
+  // Auto-play carousel
+  useEffect(() => {
+    if (products.length > 3 && !isPaused) {
+      intervalRef.current = setInterval(() => {
+        setCurrentIndex((prev) => (prev + 1) % (products.length - 2));
+      }, 4000); // Ganti slide setiap 4 detik
+    }
 
-  const visibleProducts = products.slice(currentIndex, currentIndex + 4);
+    return () => {
+      if (intervalRef.current) {
+        clearInterval(intervalRef.current);
+      }
+    };
+  }, [products.length, isPaused]);
+
+  const featuredProduct = products.length > 0 ? products[0] : null;
+  const secondProduct = products.length > 1 ? products[1] : null;
+  const carouselProducts = products.slice(2); // Produk ketiga dan seterusnya untuk carousel
 
   const nextSlide = () => {
-    setCurrentIndex((prev) => (prev + 1) % (products.length - 3));
+    setCurrentIndex((prev) => (prev + 1) % (carouselProducts.length - 2));
   };
 
   const prevSlide = () => {
-    setCurrentIndex((prev) => (prev - 1 + (products.length - 3)) % (products.length - 3));
+    setCurrentIndex((prev) => (prev - 1 + (carouselProducts.length - 2)) % (carouselProducts.length - 2));
+  };
+
+  const getStockTypeBadge = (stockType) => {
+    if (stockType === 'ready') {
+      return (
+        <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-green-100 text-green-700">
+          Ready Stock
+        </span>
+      );
+    }
+    return (
+      <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-blue-100 text-blue-700">
+        By Order
+      </span>
+    );
   };
 
   if (isLoading) {
     return (
-      <section className="min-h-screen flex items-center justify-center bg-white">
+      <section className="min-h-screen flex items-center justify-center bg-gradient-to-b from-neutral-50 to-white">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600 mx-auto mb-4"></div>
-          <p className="text-neutral-600">Loading products...</p>
+          <div className="animate-spin rounded-full h-16 w-16 border-b-4 border-primary-600 mx-auto mb-4"></div>
+          <p className="text-neutral-600 text-lg font-medium">Loading products...</p>
         </div>
       </section>
     );
   }
 
   return (
-    <section className="min-h-screen flex items-center bg-white">
+    <section className="min-h-screen flex items-center bg-gradient-to-b from-white to-neutral-50 py-20">
       <div className="container-custom section-padding">
-        <h2 className="text-4xl md:text-5xl font-bold text-center mb-16 text-neutral-900">
+        {/* Header */}
+        <div className="text-center mb-16">
+          <h2 className="text-5xl md:text-6xl font-bold text-neutral-900 mb-4">
           Product Updates
         </h2>
+        <p className="text-neutral-600 text-lg max-w-2xl mx-auto">
+            Discover our latest collection of premium products
+        </p>
+      </div>
 
         {products.length === 0 ? (
-          <div className="text-center py-12">
-            <p className="text-neutral-500 text-lg">Belum ada produk yang tersedia</p>
+          <div className="text-center py-20">
+            <p className="text-neutral-500 text-xl">Belum ada produk yang tersedia</p>
           </div>
         ) : (
           <>
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-12">
+            {/* Featured Section - Featured Product + 1 Product */}
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-16">
               {/* Featured Product - Besar */}
-              <div className="lg:col-span-2">
-                <div className="bg-gradient-to-br from-primary-50 to-secondary-50 rounded-2xl p-8 h-full">
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                    <div>
-                      <h3 className="text-3xl font-bold mb-4 text-primary-600">
-                        {featuredProduct.name || featuredProduct.title}
-                      </h3>
-                      <p className="text-neutral-700 text-lg leading-relaxed mb-6">
-                        {featuredProduct.description}
-                      </p>
-                      <button className="btn-primary">
-                        Lihat Detail
-                      </button>
-                    </div>
-                    <div className="bg-white rounded-xl p-4 flex items-center justify-center">
+              {featuredProduct && (
+                <Link href={`/produk/${featuredProduct.slug}`} className="lg:col-span-2 group">
+                  <div className="relative h-[500px] rounded-3xl overflow-hidden shadow-2xl hover:shadow-3xl transition-all duration-500 transform hover:-translate-y-2">
+                    {/* Image Background */}
+                    <div className="absolute inset-0">
                       {featuredProduct.image ? (
                         <img 
                           src={featuredProduct.image} 
                           alt={featuredProduct.name}
-                          className="w-full h-64 object-cover rounded-lg"
+                          className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700"
                         />
                       ) : (
-                        <div className="w-full h-64 bg-neutral-100 rounded-lg flex items-center justify-center">
-                          <p className="text-neutral-500">Featured Product Image</p>
-                        </div>
+                        <div className="w-full h-full bg-gradient-to-br from-primary-100 to-secondary-100"></div>
+                      )}
+                      {/* Gradient Overlay */}
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent"></div>
+                    </div>
+                    
+                    {/* Content */}
+                    <div className="relative h-full flex flex-col justify-end p-8 md:p-10">
+                      {/* Badges */}
+                      <div className="flex flex-wrap gap-3 mb-4">
+                        <span className="inline-flex items-center px-4 py-2 rounded-full text-sm font-bold bg-white/20 backdrop-blur-md text-white border border-white/30">
+                          Featured
+                        </span>
+                        {getStockTypeBadge(featuredProduct.stockType)}
+                        {featuredProduct.category && (
+                          <span className="inline-flex items-center px-4 py-2 rounded-full text-sm font-semibold bg-primary-500/90 text-white capitalize">
+                            {featuredProduct.category}
+                          </span>
+                        )}
+                      </div>
+                      
+                      {/* Product Name */}
+                      <h3 className="text-4xl md:text-5xl font-bold text-white mb-3 group-hover:text-primary-300 transition-colors">
+                        {featuredProduct.name || featuredProduct.title}
+                      </h3>
+                      
+                      {/* Price */}
+                      {featuredProduct.price && (
+                        <p className="text-2xl font-bold text-white">
+                          {featuredProduct.price}
+                        </p>
                       )}
                     </div>
                   </div>
-                </div>
-              </div>
+                </Link>
+              )}
 
-              {/* Product List - Kecil */}
-              <div className="space-y-6">
-                {visibleProducts.slice(0, 2).map((product, index) => (
-                  <div key={product.slug || index} className="bg-neutral-50 rounded-xl p-6 hover:shadow-lg transition-shadow">
-                    <h4 className="text-xl font-bold mb-2 text-primary-600">{product.name || product.title}</h4>
-                    <p className="text-neutral-600">{product.description}</p>
+              {/* Second Product */}
+              {secondProduct && (
+                <Link href={`/produk/${secondProduct.slug}`} className="group">
+                  <div className="relative h-[500px] rounded-3xl overflow-hidden shadow-xl hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2">
+                    {/* Image Background */}
+                    <div className="absolute inset-0">
+                      {secondProduct.image ? (
+                        <img 
+                          src={secondProduct.image} 
+                          alt={secondProduct.name}
+                          className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700"
+                        />
+                      ) : (
+                        <div className="w-full h-full bg-gradient-to-br from-secondary-100 to-primary-100"></div>
+                      )}
+                      {/* Gradient Overlay */}
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent"></div>
+                    </div>
+
+                    {/* Content */}
+                    <div className="relative h-full flex flex-col justify-end p-6 md:p-8">
+                      {/* Badges */}
+                      <div className="flex flex-wrap gap-2 mb-4">
+                        {getStockTypeBadge(secondProduct.stockType)}
+                        {secondProduct.category && (
+                          <span className="inline-flex items-center px-3 py-1.5 rounded-full text-xs font-semibold bg-primary-500/90 text-white capitalize">
+                            {secondProduct.category}
+                          </span>
+                        )}
+                      </div>
+
+              {/* Product Name */}
+                <h3 className="text-2xl md:text-3xl font-bold text-white mb-2 group-hover:text-primary-300 transition-colors">
+                  {secondProduct.name || secondProduct.title}
+                    </h3>
+                      
+                      {/* Price */}
+                      {secondProduct.price && (
+                        <p className="text-xl font-bold text-white">
+                          {secondProduct.price}
+                        </p>
+                      )}
+                    </div>
                   </div>
-                ))}
-              </div>
+                </Link>
+              )}
             </div>
 
-            {/* Product Slider */}
-            {products.length > 4 && (
-              <div className="relative">
-                <div className="flex space-x-6 overflow-hidden">
-                  {visibleProducts.map((product, index) => (
-                    <div key={product.slug || index} className="flex-shrink-0 w-80">
-                      <div className="bg-neutral-50 rounded-xl p-6 hover:shadow-lg transition-all duration-300">
-                        <h4 className="text-xl font-bold mb-3 text-primary-600">{product.name || product.title}</h4>
-                        <p className="text-neutral-600 mb-4">{product.description}</p>
-                        <button className="text-primary-500 hover:text-primary-600 font-medium">
-                          Selengkapnya →
-                        </button>
-                      </div>
-                    </div>
-                  ))}
+            {/* Carousel Section */}
+            {carouselProducts.length > 0 && (
+              <div 
+                className="relative"
+                onMouseEnter={() => setIsPaused(true)}
+                onMouseLeave={() => setIsPaused(false)}
+              >
+                <div className="overflow-hidden">
+                  <div 
+                    className="flex gap-6 transition-transform duration-700 ease-in-out"
+                    style={{ transform: `translateX(-${currentIndex * (100 / 4)}%)` }}
+                  >
+                    {carouselProducts.map((product, index) => (
+                      <Link 
+                        href={`/produk/${product.slug}`}
+                        key={product.slug || index} 
+                        className="flex-shrink-0 w-full sm:w-1/2 lg:w-1/4 group"
+                        style={{ minWidth: 'calc(25% - 18px)' }}
+                      >
+                        <div className="relative h-[400px] rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-3">
+                          {/* Image */}
+                          <div className="absolute inset-0">
+                            {product.image ? (
+                              <img 
+                                src={product.image} 
+                                alt={product.name}
+                                className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700"
+                              />
+                            ) : (
+                              <div className="w-full h-full bg-gradient-to-br from-neutral-200 to-neutral-300"></div>
+                            )}
+                            {/* Gradient Overlay */}
+                            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent"></div>
+                          </div>
+                          
+                          {/* Content */}
+                          <div className="relative h-full flex flex-col justify-end p-6">
+                            {/* Badges */}
+                            <div className="flex flex-wrap gap-2 mb-3">
+                              {getStockTypeBadge(product.stockType)}
+                              {product.category && (
+                                <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-primary-500/90 text-white capitalize">
+                                  {product.category}
+                                </span>
+                              )}
+                            </div>
+                            
+                            {/* Product Name */}
+                            <h4 className="text-xl font-bold text-white mb-2 group-hover:text-primary-300 transition-colors line-clamp-2">
+                              {product.name || product.title}
+                            </h4>
+                            
+                            {/* Price */}
+                            {product.price && (
+                              <p className="text-lg font-bold text-white">
+                                {product.price}
+                              </p>
+                            )}
+                          </div>
+                        </div>
+                      </Link>
+                    ))}
+                  </div>
                 </div>
 
-                {/* Slider Controls */}
-                <button
-                  onClick={prevSlide}
-                  className="absolute left-0 top-1/2 transform -translate-y-1/2 -translate-x-6 bg-white shadow-lg rounded-full p-3 hover:shadow-xl transition-all"
-                >
-                  <ChevronLeft size={24} />
-                </button>
-                <button
-                  onClick={nextSlide}
-                  className="absolute right-0 top-1/2 transform -translate-y-1/2 translate-x-6 bg-white shadow-lg rounded-full p-3 hover:shadow-xl transition-all"
-                >
-                  <ChevronRight size={24} />
-                </button>
+                {/* Navigation Buttons */}
+                {carouselProducts.length > 4 && (
+                  <>
+                    <button
+                      onClick={prevSlide}
+                      className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-4 bg-white shadow-2xl rounded-full p-4 hover:bg-primary-500 hover:text-white transition-all duration-300 transform hover:scale-110 z-10"
+                      aria-label="Previous"
+                    >
+                      <ChevronLeft size={28} strokeWidth={2.5} />
+                    </button>
+                    <button
+                      onClick={nextSlide}
+                      className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-4 bg-white shadow-2xl rounded-full p-4 hover:bg-primary-500 hover:text-white transition-all duration-300 transform hover:scale-110 z-10"
+                      aria-label="Next"
+                    >
+                      <ChevronRight size={28} strokeWidth={2.5} />
+                    </button>
+                  </>
+                )}
+
+                {/* Dots Indicator */}
+                {carouselProducts.length > 4 && (
+                  <div className="flex justify-center gap-2 mt-8">
+                    {Array.from({ length: Math.ceil(carouselProducts.length / 4) }).map((_, idx) => (
+                      <button
+                        key={idx}
+                        onClick={() => setCurrentIndex(idx)}
+                        className={`h-2 rounded-full transition-all duration-300 ${
+                          currentIndex === idx ? 'w-8 bg-primary-500' : 'w-2 bg-neutral-300 hover:bg-neutral-400'
+                        }`}
+                        aria-label={`Go to slide ${idx + 1}`}
+                      />
+                    ))}
+                  </div>
+                )}
               </div>
             )}
           </>
