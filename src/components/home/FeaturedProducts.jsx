@@ -112,7 +112,7 @@ export default function FeaturedProducts() {
               {/* Featured Product - Besar */}
               {featuredProduct && (
                 <Link href={`/produk/${featuredProduct.slug}`} className="lg:col-span-2 group">
-                  <div className="relative h-[500px] rounded-3xl overflow-hidden shadow-2xl hover:shadow-3xl transition-all duration-500 transform hover:-translate-y-2">
+                  <div className="relative h-[600px] rounded-3xl overflow-hidden shadow-2xl hover:shadow-3xl transition-all duration-500 transform hover:-translate-y-2">
                     {/* Image Background */}
                     <div className="absolute inset-0">
                       {featuredProduct.image ? (
@@ -169,7 +169,7 @@ export default function FeaturedProducts() {
               {/* Second Product */}
               {secondProduct && (
                 <Link href={`/produk/${secondProduct.slug}`} className="group">
-                  <div className="relative h-[500px] rounded-3xl overflow-hidden shadow-xl hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2">
+                  <div className="relative h-[600px] rounded-3xl overflow-hidden shadow-xl hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2">
                     {/* Image Background */}
                     <div className="absolute inset-0">
                       {secondProduct.image ? (
@@ -234,7 +234,7 @@ export default function FeaturedProducts() {
                         className="flex-shrink-0 w-full sm:w-1/2 lg:w-1/4 group"
                         style={{ minWidth: 'calc(25% - 18px)' }}
                       >
-                        <div className="relative h-[400px] rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-3">
+                        <div className="relative h-[450px] rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-3">
                           {/* Image */}
                           <div className="absolute inset-0">
                             {product.image ? (
