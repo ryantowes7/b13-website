@@ -194,7 +194,7 @@ collections:
                   - { label: "Address Line 1", name: "line1", widget: "string", default: "JL. Arowana, Perum Kebon Agung Indah" }
                   - { label: "Address Line 2", name: "line2", widget: "string", default: "Kab. Jember, Jawa Timur" }
                   - { label: "Address Line 3", name: "line3", widget: "string", default: "Indonesia" }
-                  - { label: "Google Maps Link", name: "map_link", widget: "string", default: "https://maps.google.com" }
+                  - { label: "Google Maps Embed URL", name: "google_maps_embed", widget: "text", required: false, hint: "Copy dari Google Maps → Share → Embed a map → Copy HTML. Paste seluruh <iframe>...</iframe> atau hanya URL di src=\"...\"" }
               - label: "Email"
                 name: "email"
                 widget: "object"
