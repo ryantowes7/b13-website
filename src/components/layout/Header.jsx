@@ -79,38 +79,39 @@ export default function Header() {
 
   return (
     <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${getHeaderBackground()} ${getTextColor()}`}>
-      <nav className="container-custom">
-        <div className="flex justify-between items-center py-3">
-          {/* Logo */}
+      <nav className="container-custom px-4 sm:px-6 lg:px-8">
+        <div className="flex justify-between items-center py-3 sm:py-4">
+          {/* Logo - Mobile Optimized */}
           <Link href="/" className="flex items-center space-x-2">
             {siteConfig?.logo ? (
-              <div className="relative w-9 h-9">
+              <div className="relative w-8 h-8 sm:w-9 sm:h-9">
                 <Image 
                   src={siteConfig.logo} 
                   alt={siteConfig.title || 'B13 Factory'}
                   fill
                   className="object-contain"
+                  priority
                 />
               </div>
             ) : (
-            <div className={`w-9 h-9 rounded-lg flex items-center justify-center transition-colors ${
+            <div className={`w-8 h-8 sm:w-9 sm:h-9 rounded-lg flex items-center justify-center transition-colors ${
               !isScrolled ? 'bg-white/20' : 'bg-primary-500'
             }`}>
-              <span className="text-white font-bold text-base">B13</span>
+              <span className="text-white font-bold text-sm sm:text-base">B13</span>
             </div>
             )}
-            <span className="text-lg font-bold">
+            <span className="text-base sm:text-lg font-bold truncate max-w-[150px] sm:max-w-none">
               {siteConfig?.title || 'B13 Factory'}
             </span>
           </Link>
 
           {/* Desktop Navigation */}
-          <div className="hidden md:flex space-x-8">
+          <div className="hidden md:flex space-x-6 lg:space-x-8">
             {navigation.map((item) => (
               <Link
                 key={item.name}
                 href={item.href}
-                className={`font-medium transition-colors duration-200 ${getLinkColor()}`}
+                className={`font-medium text-sm lg:text-base transition-colors duration-200 ${getLinkColor()}`}
               >
                 {item.name}
               </Link>
@@ -121,22 +122,23 @@ export default function Header() {
           <button
             className={`md:hidden p-2 transition-colors ${getTextColor()}`}
             onClick={() => setIsMenuOpen(!isMenuOpen)}
+            aria-label="Toggle menu"
           >
             {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
           </button>
         </div>
 
-        {/* Mobile Navigation */}
+        {/* Mobile Navigation - Improved */}
         {isMenuOpen && (
           <div className={`md:hidden py-4 border-t transition-colors ${
             !isScrolled ? 'border-white/20' : 'border-neutral-200'
           }`}>
-            <div className="flex flex-col space-y-4">
+            <div className="flex flex-col space-y-3">
               {navigation.map((item) => (
                 <Link
                   key={item.name}
                   href={item.href}
-                  className={`font-medium py-2 transition-colors ${getLinkColor()}`}
+                  className={`font-medium py-2 px-2 text-base transition-colors ${getLinkColor()}`}
                   onClick={() => setIsMenuOpen(false)}
                 >
                   {item.name}

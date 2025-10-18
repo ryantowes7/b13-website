@@ -61,16 +61,16 @@ export default function Footer() {
 
   return (
     <footer className="bg-neutral-900 text-white relative z-10">
-      <div className="container-custom py-8">
-        {/* Quick Links - Horizontal di bagian atas */}
+      <div className="container-custom py-8 px-4 sm:px-6 lg:px-8">
+        {/* Quick Links - Horizontal di bagian atas - Mobile Optimized */}
         <div className="text-center mb-6">
-          <h3 className="font-semibold mb-3 text-base">Quick Links</h3>
-          <div className="flex flex-wrap justify-center gap-x-6 gap-y-2">
+          <h3 className="font-semibold mb-3 text-base sm:text-lg">Quick Links</h3>
+          <div className="flex flex-wrap justify-center gap-x-4 sm:gap-x-6 gap-y-2">
             {footerLinks.map((item) => (
               <Link 
                 key={item.name}
                 href={item.href}
-                className="text-neutral-300 hover:text-white transition-colors text-sm"
+                className="text-neutral-300 hover:text-white transition-colors text-xs sm:text-sm"
               >
                 {item.name}
               </Link>
@@ -81,13 +81,13 @@ export default function Footer() {
         {/* Divider */}
         <div className="border-t border-neutral-800 my-6"></div>
 
-        {/* Company Info & Contact - Compact Layout */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+        {/* Company Info & Contact - Mobile Optimized Layout */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8 mb-6">
           {/* Company Info */}
           <div>
             <Link href="/" className="flex items-center space-x-2 mb-3">
               {siteConfig.logo ? (
-                <div className="relative w-8 h-8">
+                <div className="relative w-7 h-7 sm:w-8 sm:h-8">
                   <Image 
                     src={siteConfig.logo} 
                     alt={siteConfig.title || 'B13 Factory'}
@@ -96,42 +96,42 @@ export default function Footer() {
                   />
                 </div>
               ) : (
-              <div className="w-7 h-7 bg-primary-500 rounded-lg flex items-center justify-center">
-                <span className="text-white font-bold text-sm">B13</span>
+              <div className="w-7 h-7 sm:w-8 sm:h-8 bg-primary-500 rounded-lg flex items-center justify-center">
+                <span className="text-white font-bold text-xs sm:text-sm">B13</span>
               </div>
               )}
-              <span className="text-lg font-bold">{siteConfig.title || 'B13 Factory - Garment & Advertising'}</span>
+              <span className="text-base sm:text-lg font-bold">{siteConfig.title || 'B13 Factory - Garment & Advertising'}</span>
             </Link>
-            <p className="text-neutral-300 text-sm mb-3 max-w-md">
+            <p className="text-neutral-300 text-xs sm:text-sm mb-3 max-w-md leading-relaxed">
               {siteConfig.description || 'Produsen garment dan advertising berkualitas tinggi untuk kebutuhan bisnis Anda'}
             </p>
-            <div className="flex items-center space-x-2 text-neutral-300 text-sm">
-              <Clock size={14} />
-              <span>{siteConfig?.business_hours?.hours || 'Buka Setiap Hari Pukul 09.00 - 17.00 WIB'}</span>
+            <div className="flex items-center space-x-2 text-neutral-300 text-xs sm:text-sm">
+              <Clock size={14} className="flex-shrink-0" />
+              <span className="leading-relaxed">{siteConfig?.business_hours?.hours || 'Buka Setiap Hari Pukul 09.00 - 17.00 WIB'}</span>
             </div>
           </div>
 
           {/* Contact Info */}
           <div>
-            <h3 className="font-semibold mb-3 text-base">Contact</h3>
-            <div className="space-y-2">
+            <h3 className="font-semibold mb-3 text-base sm:text-lg">Contact</h3>
+            <div className="space-y-2 sm:space-y-3">
               <div className="flex items-start space-x-2">
                 <MapPin size={14} className="mt-0.5 flex-shrink-0" />
-                <span className="text-neutral-300 text-sm">
+                <span className="text-neutral-300 text-xs sm:text-sm leading-relaxed">
                   {siteConfig.address || 'Jl. Arowana Perum Kebon Agung Indah, Jember, Indonesia'}
                 </span>
               </div>
               {siteConfig.contact_phone && (
                 <div className="flex items-center space-x-2">
-                  <Phone size={14} />
-                  <a href={`tel:${siteConfig.contact_phone}`} className="text-neutral-300 hover:text-white text-sm">
+                  <Phone size={14} className="flex-shrink-0" />
+                  <a href={`tel:${siteConfig.contact_phone}`} className="text-neutral-300 hover:text-white text-xs sm:text-sm transition-colors">
                     {siteConfig.contact_phone}
                   </a>
                 </div>
               )}
               <div className="flex items-center space-x-2">
-                <Mail size={14} />
-                <a href={`mailto:${siteConfig.contact_email}`} className="text-neutral-300 hover:text-white text-sm">
+                <Mail size={14} className="flex-shrink-0" />
+                <a href={`mailto:${siteConfig.contact_email}`} className="text-neutral-300 hover:text-white text-xs sm:text-sm transition-colors break-all">
                   {siteConfig.contact_email || 'info@b13factory.com'}
                 </a>
               </div>
@@ -139,11 +139,11 @@ export default function Footer() {
           </div>
         </div>
 
-        {/* Social Media - New Section */}
+        {/* Social Media - Mobile Optimized */}
         {siteConfig?.social_media && siteConfig.social_media.length > 0 && (
           <div className="border-t border-neutral-800 pt-6 pb-4">
-            <div className="flex justify-center items-center gap-4">
-              <span className="text-neutral-400 text-sm">Follow Us:</span>
+            <div className="flex flex-col sm:flex-row justify-center items-center gap-3 sm:gap-4">
+              <span className="text-neutral-400 text-xs sm:text-sm">Follow Us:</span>
               <div className="flex gap-3">
                 {siteConfig.social_media
                   .filter(social => social.display)
@@ -153,10 +153,10 @@ export default function Footer() {
                       href={social.url}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="w-10 h-10 bg-neutral-800 hover:bg-primary-600 rounded-full flex items-center justify-center transition-colors group"
+                      className="w-9 h-9 sm:w-10 sm:h-10 bg-neutral-800 hover:bg-primary-600 rounded-full flex items-center justify-center transition-colors group"
                       aria-label={social.platform}
                     >
-                      <span className="text-neutral-400 group-hover:text-white text-sm capitalize">
+                      <span className="text-neutral-400 group-hover:text-white text-sm sm:text-base">
                         {social.platform === 'whatsapp' && '💬'}
                         {social.platform === 'instagram' && '📷'}
                         {social.platform === 'facebook' && '👍'}

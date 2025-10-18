@@ -5,7 +5,11 @@ export default function Document() {
     <Html lang="id">
       <Head>
         {/* Favicon */}
-        <link rel="icon" href="/uploads/favicon.ico" />
+        {/* Multiple Favicon Formats for Better Compatibility */}
+        <link rel="icon" type="image/png" sizes="32x32" href="/uploads/logo1.png" />
+        <link rel="icon" type="image/png" sizes="16x16" href="/uploads/logo1.png" />
+        <link rel="apple-touch-icon" sizes="180x180" href="/uploads/apple-touch-icon.png" />
+        <link rel="shortcut icon" href="/uploads/favicon.ico" />
         
         {/* PWA Manifest */}
         <link rel="manifest" href="/site.webmanifest" />

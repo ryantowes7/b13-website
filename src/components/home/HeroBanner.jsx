@@ -188,12 +188,13 @@ export default function HeroBanner() {
 
       <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-transparent to-black/50" />
 
-      <div className="relative z-30 h-full flex items-center justify-center text-center text-white pt-16">
-        <div className="max-w-4xl mx-auto px-4">
-          <h1 className="text-5xl md:text-7xl font-bold mb-6">
+      {/* Hero Content - Mobile Optimized */}
+      <div className="relative z-30 h-full flex items-center justify-center text-center text-white pt-16 px-4">
+        <div className="max-w-4xl mx-auto">
+          <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-7xl font-bold mb-4 sm:mb-6 leading-tight">
             {currentSlideData.title}
           </h1>
-          <p className="text-xl md:text-2xl mb-8 leading-relaxed">
+          <p className="text-base sm:text-lg md:text-xl lg:text-2xl mb-6 sm:mb-8 leading-relaxed max-w-3xl mx-auto">
             {currentSlideData.description}
           </p>
           {currentSlideData.button_text && (
@@ -207,43 +208,55 @@ export default function HeroBanner() {
         </div>
       </div>
 
+      {/* Navigation Controls - Mobile Optimized */}
       {slides.length > 1 && (
-        <div className="absolute bottom-20 right-8 z-40 flex space-x-4">
+        <div className="absolute bottom-20 sm:bottom-24 right-4 sm:right-8 z-40 flex space-x-2 sm:space-x-4">
           <button
             onClick={prevSlide}
-            className="bg-white/20 hover:bg-white/30 backdrop-blur-sm rounded-full p-3 transition-all hover:scale-110 border border-white/30"
+            className="bg-white/20 hover:bg-white/30 backdrop-blur-sm rounded-full p-2 sm:p-3 transition-all hover:scale-110 border border-white/30"
+            aria-label="Previous slide"
           >
-            <ChevronLeft size={24} className="text-white" />
+            <ChevronLeft size={20} className="text-white sm:w-6 sm:h-6" />
           </button>
           <button
             onClick={nextSlide}
-            className="bg-white/20 hover:bg-white/30 backdrop-blur-sm rounded-full p-3 transition-all hover:scale-110 border border-white/30"
+            className="bg-white/20 hover:bg-white/30 backdrop-blur-sm rounded-full p-2 sm:p-3 transition-all hover:scale-110 border border-white/30"
+            aria-label="Next slide"
           >
-            <ChevronRight size={24} className="text-white" />
+            <ChevronRight size={20} className="text-white sm:w-6 sm:h-6" />
           </button>
         </div>
       )}
 
-      <div className="absolute bottom-0 left-0 right-0 bg-primary-600/90 backdrop-blur-sm py-3 overflow-hidden z-30">
-        <div className="animate-marquee whitespace-nowrap">
-          <span className="text-white font-semibold text-lg mx-4">
-            - {business_hours} --
+      {/* Marquee Banner - Improved Animation */}
+      <div className="absolute bottom-0 left-0 right-0 bg-primary-600/90 backdrop-blur-sm py-3 sm:py-4 overflow-hidden z-30">
+        <div className="flex animate-marquee whitespace-nowrap">
+          <span className="text-white font-semibold text-base sm:text-lg px-8">
+            ✦ {business_hours}
           </span>
-          <span className="text-white font-semibold text-lg mx-4">
-            - {business_hours} --
+          <span className="text-white font-semibold text-base sm:text-lg px-8">
+            ✦ {business_hours}
+          </span>
+          <span className="text-white font-semibold text-base sm:text-lg px-8">
+            ✦ {business_hours}
+          </span>
+          <span className="text-white font-semibold text-base sm:text-lg px-8">
+            ✦ {business_hours}
           </span>
         </div>
       </div>
 
+      {/* Slide Indicators - Mobile Optimized */}
       {slides.length > 1 && (
-        <div className="absolute bottom-16 left-1/2 transform -translate-x-1/2 z-40 flex space-x-2">
+        <div className="absolute bottom-16 sm:bottom-20 left-1/2 transform -translate-x-1/2 z-40 flex space-x-2">
           {slides.map((_, index) => (
             <button
               key={index}
               onClick={() => setCurrentSlide(index)}
-              className={`w-3 h-3 rounded-full transition-all ${
+              className={`w-2 h-2 sm:w-3 sm:h-3 rounded-full transition-all ${
                 index === safeCurrentSlide ? 'bg-white scale-125' : 'bg-white/50'
               }`}
+              aria-label={`Go to slide ${index + 1}`}
             />
           ))}
         </div>
