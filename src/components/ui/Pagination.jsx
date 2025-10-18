@@ -20,15 +20,15 @@ const Pagination = ({ currentPage, totalPages, onPageChange }) => {
   }
 
   return (
-    <div className="flex justify-center items-center space-x-2 mt-8">
+    <div className="flex justify-center items-center space-x-1 sm:space-x-2 mt-6 sm:mt-8">
       <Button
         variant="outline"
         onClick={() => onPageChange(currentPage - 1)}
         disabled={currentPage === 1}
-        className="px-3"
+        className="px-2 sm:px-3 text-xs sm:text-sm py-1.5 sm:py-2"
         aria-label="Halaman sebelumnya"
       >
-        <ChevronLeft size={16} />
+        <ChevronLeft size={14} className="sm:w-4 sm:h-4" />
       </Button>
 
       {startPage > 1 && (
@@ -36,11 +36,11 @@ const Pagination = ({ currentPage, totalPages, onPageChange }) => {
           <Button
             variant="outline"
             onClick={() => onPageChange(1)}
-            className="px-3"
+            className="px-2 sm:px-3 text-xs sm:text-sm py-1.5 sm:py-2"
           >
             1
           </Button>
-          {startPage > 2 && <span className="px-2">...</span>}
+          {startPage > 2 && <span className="px-1 sm:px-2 text-xs sm:text-sm">...</span>}
         </>
       )}
 
@@ -49,7 +49,7 @@ const Pagination = ({ currentPage, totalPages, onPageChange }) => {
           key={page}
           variant={currentPage === page ? "primary" : "outline"}
           onClick={() => onPageChange(page)}
-          className="px-3"
+          className="px-2 sm:px-3 text-xs sm:text-sm py-1.5 sm:py-2"
           aria-label={`Halaman ${page}`}
           aria-current={currentPage === page ? 'page' : undefined}
         >
@@ -59,11 +59,11 @@ const Pagination = ({ currentPage, totalPages, onPageChange }) => {
 
       {endPage < totalPages && (
         <>
-          {endPage < totalPages - 1 && <span className="px-2">...</span>}
+          {endPage < totalPages - 1 && <span className="px-1 sm:px-2 text-xs sm:text-sm">...</span>}
           <Button
             variant="outline"
             onClick={() => onPageChange(totalPages)}
-            className="px-3"
+            className="px-2 sm:px-3 text-xs sm:text-sm py-1.5 sm:py-2"
           >
             {totalPages}
           </Button>
@@ -74,10 +74,10 @@ const Pagination = ({ currentPage, totalPages, onPageChange }) => {
         variant="outline"
         onClick={() => onPageChange(currentPage + 1)}
         disabled={currentPage === totalPages}
-        className="px-3"
+        className="px-2 sm:px-3 text-xs sm:text-sm py-1.5 sm:py-2"
         aria-label="Halaman berikutnya"
       >
-        <ChevronRight size={16} />
+        <ChevronRight size={14} className="sm:w-4 sm:h-4" />
       </Button>
     </div>
   );

@@ -67,17 +67,17 @@ export default function Produk() {
         <Head>
           <title>Produk - B13 Factory</title>
         </Head>
-        <section className="bg-gradient-to-r from-blue-600 to-blue-700 text-white py-20">
-          <div className="container mx-auto px-6 text-center">
-            <h1 className="text-4xl md:text-5xl font-bold mb-4">Our Products</h1>
+        <section className="bg-gradient-to-r from-blue-600 to-blue-700 text-white py-12 sm:py-16 md:py-20">
+          <div className="container mx-auto px-4 sm:px-6 text-center">
+            <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-4">Our Products</h1>
           </div>
         </section>
-        <section className="py-16 bg-white">
-          <div className="container mx-auto px-6">
-            <div className="flex justify-center items-center py-20">
+        <section className="py-8 sm:py-12 md:py-16 bg-white">
+          <div className="container mx-auto px-4 sm:px-6">
+            <div className="flex justify-center items-center py-12 sm:py-16 md:py-20">
               <div className="text-center">
-                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
-                <p className="text-slate-600">Memuat produk...</p>
+                <div className="animate-spin rounded-full h-10 w-10 sm:h-12 sm:w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
+                <p className="text-sm sm:text-base text-slate-600">Memuat produk...</p>
               </div>
             </div>
           </div>
@@ -93,16 +93,16 @@ export default function Produk() {
         <Head>
           <title>Produk - B13 Factory</title>
         </Head>
-        <section className="bg-gradient-to-r from-blue-600 to-blue-700 text-white py-20">
-          <div className="container mx-auto px-6 text-center">
-            <h1 className="text-4xl md:text-5xl font-bold mb-4">Our Products</h1>
+        <section className="bg-gradient-to-r from-blue-600 to-blue-700 text-white py-12 sm:py-16 md:py-20">
+          <div className="container mx-auto px-4 sm:px-6 text-center">
+            <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-4">Our Products</h1>
           </div>
         </section>
-        <section className="py-16 bg-white">
-          <div className="container mx-auto px-6">
-            <div className="flex justify-center items-center py-20">
+        <section className="py-8 sm:py-12 md:py-16 bg-white">
+          <div className="container mx-auto px-4 sm:px-6">
+            <div className="flex justify-center items-center py-12 sm:py-16 md:py-20">
               <div className="text-center">
-                <p className="text-red-600 text-lg mb-4">{error}</p>
+                <p className="text-red-600 text-sm sm:text-base md:text-lg mb-4">{error}</p>
                 <Button 
                   onClick={() => window.location.reload()}
                   variant="primary"
@@ -127,31 +127,30 @@ export default function Produk() {
       {/* Dynamic Banner based on Category */}
       <ProductBanner category={currentCategory} />
 
-      <section className="py-16 bg-white">
-        <div className="container mx-auto px-6">
-          <div className="flex flex-col lg:flex-row gap-8">
-            {/* Sidebar Filter */}
-            <div className="lg:w-1/4">
+      <section className="py-8 sm:py-12 md:py-16 bg-white">
+        <div className="container mx-auto px-4 sm:px-6">
+          <div className="flex flex-col lg:flex-row gap-6 lg:gap-8">
+            {/* Sidebar Filter - Hidden on Mobile, Shown on Desktop */}
+            <div className="hidden lg:block lg:w-1/4">
               <div className="bg-slate-50 rounded-xl p-6 sticky top-24">
                 {/* Search Box */}
                 <div className="mb-6">
-                  <label htmlFor="search" className="sr-only">Cari produk</label>
+                  <label htmlFor="search-desktop" className="sr-only">Cari produk</label>
                   <div className="relative">
                     <Search size={20} className="absolute left-3 top-1/2 transform -translate-y-1/2 text-slate-400" />
                     <input
-                      id="search"
+                      id="search-desktop"
                       type="text"
                       placeholder="Cari produk..."
                       value={searchTerm}
                       onChange={(e) => setSearchTerm(e.target.value)}
-                      className="w-full pl-10 pr-4 py-3 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                      className="w-full pl-10 pr-4 py-3 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm"
                     />
                   </div>
                 </div>
 
-                {/* Category Filter - Minimized dengan Hover */}
+                {/* Category Filter - Desktop */}
                 <div className="mb-8">
-                  {/* Label Kategori */}
                   <h3 className="text-lg font-semibold mb-4 flex items-center text-slate-900">
                     <Filter size={20} className="mr-2 text-blue-600" />
                     Kategori
@@ -162,7 +161,6 @@ export default function Produk() {
                     onMouseEnter={handleMouseEnter}
                     onMouseLeave={handleMouseLeave}
                   >
-                    {/* Category Header - Always Visible */}
                     <div className="flex items-center justify-between bg-white border-2 border-slate-200 rounded-lg px-4 py-3 cursor-pointer hover:border-blue-500 transition-all">
                       <span className="font-medium text-slate-700">
                         {categories.find(c => c.id === selectedCategory)?.name || 'Semua Kategori'}
@@ -175,7 +173,6 @@ export default function Produk() {
                       />
                     </div>
 
-                    {/* Category Dropdown - Shows on Hover */}
                     <div 
                       className={`absolute top-full left-0 right-0 mt-2 bg-white border-2 border-slate-200 rounded-lg shadow-xl z-[100] transition-all duration-200 ${
                         isCategoryOpen 
@@ -201,8 +198,8 @@ export default function Produk() {
                         }`}
                       >
                         <div className="flex justify-between items-center">
-                          <span className="font-medium">{category.name}</span>
-                          <span className={`text-sm px-2 py-1 rounded-full ${
+                          <span className="font-medium text-sm">{category.name}</span>
+                          <span className={`text-xs px-2 py-1 rounded-full ${
                             selectedCategory === category.id
                               ? 'bg-white/20 text-white'
                               : 'bg-slate-100 text-slate-600'
@@ -223,9 +220,9 @@ export default function Produk() {
                   <Button 
                     href="/katalog/katalog-lengkap.pdf"
                     variant="outline"
-                    className="w-full justify-center"
+                    className="w-full justify-center text-sm"
                   >
-                    <Download size={20} className="mr-2" />
+                    <Download size={18} className="mr-2" />
                     Download Katalog Lengkap
                   </Button>
                 </div>
@@ -233,29 +230,99 @@ export default function Produk() {
             </div>
 
             {/* Product Grid */}
-            <div className="lg:w-3/4">
+            <div className="w-full lg:w-3/4">
+              {/* Mobile Filter Bar */}
+              <div className="lg:hidden mb-6 space-y-3">
+                {/* Kategori Label */}
+                <h3 className="text-base font-semibold text-slate-900 flex items-center">
+                  <Filter size={18} className="mr-2 text-blue-600" />
+                  Kategori
+                </h3>
+                
+                {/* Search + Category Dropdown Row */}
+                <div className="flex gap-2">
+                  {/* Search Box */}
+                  <div className="flex-1 relative">
+                    <Search size={16} className="absolute left-3 top-1/2 transform -translate-y-1/2 text-slate-400" />
+                    <input
+                      type="text"
+                      placeholder="Cari..."
+                      value={searchTerm}
+                      onChange={(e) => setSearchTerm(e.target.value)}
+                      className="w-full pl-9 pr-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
+                    />
+                  </div>
+
+                  {/* Category Dropdown Button */}
+                  <div className="relative">
+                    <button
+                      onClick={() => setIsCategoryOpen(!isCategoryOpen)}
+                      className="flex items-center gap-2 px-3 py-2 border-2 border-slate-300 rounded-lg bg-white hover:border-blue-500 transition-all whitespace-nowrap text-sm"
+                    >
+                      <Filter size={16} />
+                      <ChevronDown size={16} className={`transition-transform ${
+                        isCategoryOpen ? 'rotate-180' : ''
+                      }`} />
+                    </button>
+
+                    {/* Dropdown Menu */}
+                    {isCategoryOpen && (
+                      <div className="absolute right-0 top-full mt-2 w-56 bg-white border-2 border-slate-200 rounded-lg shadow-xl z-50">
+                        <div className="p-2 space-y-1 max-h-80 overflow-y-auto">
+                          {categories.map(category => (
+                            <button
+                              key={category.id}
+                              onClick={() => {
+                                setSelectedCategory(category.id);
+                                setIsCategoryOpen(false);
+                              }}
+                              className={`w-full text-left px-3 py-2 rounded-lg transition-all text-sm ${
+                                selectedCategory === category.id
+                                  ? 'bg-blue-500 text-white'
+                                  : 'hover:bg-blue-50 text-slate-700'
+                              }`}
+                            >
+                              <div className="flex justify-between items-center">
+                                <span className="font-medium">{category.name}</span>
+                                <span className={`text-xs px-2 py-0.5 rounded-full ${
+                                  selectedCategory === category.id
+                                    ? 'bg-white/20 text-white'
+                                    : 'bg-slate-100 text-slate-600'
+                                }`}>
+                                  {category.count}
+                                </span>
+                              </div>
+                            </button>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              </div>
+
               {/* Toolbar */}
-              <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-8">
+              <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 sm:gap-4 mb-6">
                 <div className="flex-1">
-                  <p className="text-neutral-600">
+                  <p className="text-xs sm:text-sm text-neutral-600">
                     Menampilkan {showingProducts} dari {totalProducts} produk
                     {searchTerm && (
-                      <span> untuk "<strong>{searchTerm}</strong>"</span>
+                      <span className="block sm:inline"> untuk "<strong>{searchTerm}</strong>"</span>
                     )}
                   </p>
                 </div>
                 
-                <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 w-full sm:w-auto">
+                <div className="flex flex-wrap items-center gap-2 sm:gap-3 w-full sm:w-auto">
                   {/* Sort Options */}
                   <div className="flex items-center gap-2">
-                    <label htmlFor="sort" className="text-sm text-neutral-600 whitespace-nowrap">
+                    <label htmlFor="sort" className="text-xs sm:text-sm text-neutral-600 whitespace-nowrap">
                       Urutkan:
                     </label>
                     <select
                       id="sort"
                       value={sortBy}
                       onChange={(e) => setSortBy(e.target.value)}
-                      className="border border-neutral-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary-500"
+                      className="border border-neutral-300 rounded-lg px-2 sm:px-3 py-1.5 sm:py-2 focus:outline-none focus:ring-2 focus:ring-primary-500 text-xs sm:text-sm"
                     >
                       {sortOptions.map(option => (
                         <option key={option.value} value={option.value}>
@@ -266,35 +333,44 @@ export default function Produk() {
                   </div>
 
                   {/* View Toggle */}
-                  <div className="flex bg-neutral-100 rounded-lg p-1">
+                  <div className="flex bg-neutral-100 rounded-lg p-0.5 sm:p-1">
                     <button
                       onClick={() => setViewMode('grid')}
-                      className={`p-2 rounded-md transition-all ${
+                      className={`p-1.5 sm:p-2 rounded-md transition-all ${
                         viewMode === 'grid' ? 'bg-white shadow-sm' : 'text-neutral-500'
                       }`}
                       aria-label="Tampilan grid"
                       aria-pressed={viewMode === 'grid'}
                     >
-                      <Grid size={20} />
+                      <Grid size={16} className="sm:w-5 sm:h-5" />
                     </button>
                     <button
                       onClick={() => setViewMode('list')}
-                      className={`p-2 rounded-md transition-all ${
+                      className={`p-1.5 sm:p-2 rounded-md transition-all ${
                         viewMode === 'list' ? 'bg-white shadow-sm' : 'text-neutral-500'
                       }`}
                       aria-label="Tampilan list"
                       aria-pressed={viewMode === 'list'}
                     >
-                      <List size={20} />
+                      <List size={16} className="sm:w-5 sm:h-5" />
                     </button>
                   </div>
+
+                  {/* Download Katalog - Mobile */}
+                  <Button 
+                    href="/katalog/katalog-lengkap.pdf"
+                    variant="outline"
+                    className="lg:hidden px-2 sm:px-3 py-1.5 sm:py-2 text-xs sm:text-sm"
+                  >
+                    <Download size={14} className="sm:w-4 sm:h-4" />
+                  </Button>
                 </div>
               </div>
 
               {/* Empty State */}
               {products.length === 0 && (
                 <div className="text-center py-12">
-                  <p className="text-neutral-600 text-lg mb-4">Tidak ada produk yang ditemukan</p>
+                  <p className="text-neutral-600 text-sm sm:text-base md:text-lg mb-4">Tidak ada produk yang ditemukan</p>
                   <Button 
                     onClick={() => {
                       setSelectedCategory('all');
@@ -302,6 +378,7 @@ export default function Produk() {
                       setSortBy('name');
                     }}
                     variant="primary"
+                    className="text-sm"
                   >
                     Reset Filter
                   </Button>
@@ -310,7 +387,7 @@ export default function Produk() {
 
               {/* Product Grid/List */}
               {viewMode === 'grid' ? (
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4 md:gap-6">
                   {products.map(product => (
                     <ProductCard 
                       key={product.id} 
@@ -320,7 +397,7 @@ export default function Produk() {
                   ))}
                 </div>
               ) : (
-                <div className="space-y-4">
+                <div className="space-y-3 sm:space-y-4">
                   {products.map(product => (
                     <ProductCard 
                       key={product.id} 

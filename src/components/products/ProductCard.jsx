@@ -4,12 +4,12 @@ import Button from '@/components/ui/Button';
 const ProductCard = ({ product, viewMode = 'grid' }) => {
   if (viewMode === 'list') {
     return (
-      <div className="bg-white rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 p-6">
-        <div className="flex flex-col md:flex-row gap-6">
-          <div className="md:w-48 h-48 bg-gradient-to-br from-primary-100 to-secondary-100 rounded-lg flex items-center justify-center relative">
+      <div className="bg-white rounded-lg sm:rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 p-3 sm:p-4 md:p-6">
+        <div className="flex flex-col md:flex-row gap-3 sm:gap-4 md:gap-6">
+          <div className="w-full md:w-40 lg:w-48 h-32 sm:h-40 md:h-48 bg-gradient-to-br from-primary-100 to-secondary-100 rounded-lg flex items-center justify-center relative flex-shrink-0">
             {product.stockType && (
               <div className="absolute top-2 right-2">
-                <span className={`px-2 py-1 rounded-full text-xs font-medium ${
+                <span className={`px-2 py-0.5 sm:py-1 rounded-full text-xs font-medium ${
                   product.stockType === 'ready' 
                     ? 'bg-green-100 text-green-700' 
                     : 'bg-blue-100 text-blue-700'
@@ -18,106 +18,106 @@ const ProductCard = ({ product, viewMode = 'grid' }) => {
                 </span>
               </div>
             )}
-            <div className="text-center text-neutral-600">
-              <p>Product Image</p>
+            <div className="text-center text-neutral-600 px-2">
+              <p className="text-xs sm:text-sm">Product Image</p>
             </div>
           </div>
           <div className="flex-1">
-            <h3 className="text-2xl font-semibold mb-2 text-neutral-900">
+            <h3 className="text-lg sm:text-xl md:text-2xl font-semibold mb-1 sm:mb-2 text-neutral-900 line-clamp-2">
               {product.name}
             </h3>
-            <p className="text-neutral-600 mb-4">
+            <p className="text-xs sm:text-sm text-neutral-600 mb-2 sm:mb-3 md:mb-4 line-clamp-2">
               {product.description}
             </p>
-            <div className="flex flex-wrap gap-4 items-center">
-              <div className="flex items-center gap-2">
-                <span className="text-2xl font-bold text-primary-600">
+            <div className="flex flex-wrap gap-2 sm:gap-3 md:gap-4 items-center mb-3">
+              <div className="flex items-center gap-1 sm:gap-2">
+                <span className="text-lg sm:text-xl md:text-2xl font-bold text-primary-600">
                   Rp {product.price.toLocaleString('id-ID')}
                 </span>
                 {product.originalPrice && (
-                  <span className="text-sm text-neutral-500 line-through">
+                  <span className="text-xs sm:text-sm text-neutral-500 line-through">
                     Rp {product.originalPrice.toLocaleString('id-ID')}
                   </span>
                 )}
               </div>
-              <span className="bg-primary-100 text-primary-600 px-3 py-1 rounded-full text-sm capitalize">
+              <span className="bg-primary-100 text-primary-600 px-2 sm:px-3 py-0.5 sm:py-1 rounded-full text-xs capitalize">
                 {product.category}
               </span>
-              <span className="text-sm text-neutral-600">
+              <span className="text-xs text-neutral-600">
                 Min. Order: {product.minOrder} pcs
               </span>
             </div>
-          </div>
-          <div className="flex flex-col space-y-2">
-            <Button href={`/produk/${product.slug}`} variant="primary">
-              Detail
-            </Button>
-            <Button href="/contact-us" variant="outline">
-              Konsultasi
-            </Button>
-            {product.katalog && (
-              <Button 
-                href={product.katalog}
-                variant="outline"
-                size="sm"
-              >
-                <Download size={16} className="mr-2" />
-                Katalog
+            <div className="flex flex-wrap gap-2">
+              <Button href={`/produk/${product.slug}`} variant="primary" className="text-xs sm:text-sm px-3 sm:px-4 py-1.5 sm:py-2">
+                Detail
               </Button>
-            )}
+              <Button href="/contact-us" variant="outline" className="text-xs sm:text-sm px-3 sm:px-4 py-1.5 sm:py-2">
+                Konsultasi
+              </Button>
+              {product.katalog && (
+                <Button 
+                  href={product.katalog}
+                  variant="outline"
+                  className="text-xs sm:text-sm px-2 sm:px-3 py-1.5 sm:py-2"
+                >
+                  <Download size={14} className="mr-1 sm:mr-2" />
+                  Katalog
+                </Button>
+              )}
+            </div>
           </div>
         </div>
       </div>
     );
   }
 
-  // Grid View
+  // Grid View - Mobile Optimized
   return (
-    <div className="bg-white rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 card-hover">
-      <div className="aspect-square bg-gradient-to-br from-primary-100 to-secondary-100 rounded-t-xl flex items-center justify-center relative">
+    <div className="bg-white rounded-lg sm:rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 card-hover">
+      <div className="aspect-square bg-gradient-to-br from-primary-100 to-secondary-100 rounded-t-lg sm:rounded-t-xl flex items-center justify-center relative">
         {product.stockType && (
-          <div className="absolute top-3 right-3">
-            <span className={`px-3 py-1 rounded-full text-xs font-medium ${
+          <div className="absolute top-2 right-2">
+            <span className={`px-2 py-0.5 sm:py-1 rounded-full text-[10px] sm:text-xs font-medium ${
               product.stockType === 'ready' 
                 ? 'bg-green-500 text-white' 
                 : 'bg-blue-500 text-white'
             }`}>
-              {product.stockType === 'ready' ? 'Ready Stock' : 'By Order'}
+              {product.stockType === 'ready' ? 'Ready' : 'Order'}
             </span>
           </div>
         )}
-        <div className="text-center text-neutral-600">
-          <p>Product Image</p>
-          <p className="text-sm">{product.name}</p>
+        <div className="text-center text-neutral-600 px-2">
+          <p className="text-[10px] sm:text-xs">Product Image</p>
+          <p className="text-[9px] sm:text-[11px] mt-1 line-clamp-2">{product.name}</p>
         </div>
       </div>
-      <div className="p-6">
-        <h3 className="text-xl font-semibold mb-2 text-neutral-900">
+      <div className="p-3 sm:p-4 md:p-6">
+        <h3 className="text-sm sm:text-base md:text-xl font-semibold mb-1 sm:mb-2 text-neutral-900 line-clamp-2 leading-snug">
           {product.name}
         </h3>
-        <p className="text-neutral-600 mb-4 line-clamp-2">
+        <p className="text-[11px] sm:text-xs md:text-sm text-neutral-600 mb-2 sm:mb-3 md:mb-4 line-clamp-2">
           {product.description}
         </p>
-        <div className="flex justify-between items-center mb-4">
-          <div>
-            <span className="text-2xl font-bold text-primary-600 block">
+        <div className="flex justify-between items-start mb-2 sm:mb-3 md:mb-4 gap-2">
+          <div className="flex-1">
+            <span className="text-sm sm:text-lg md:text-2xl font-bold text-primary-600 block">
               Rp {product.price.toLocaleString('id-ID')}
             </span>
             {product.originalPrice && (
-              <span className="text-sm text-neutral-500 line-through">
+              <span className="text-[10px] sm:text-xs text-neutral-500 line-through">
                 Rp {product.originalPrice.toLocaleString('id-ID')}
               </span>
             )}
           </div>
-          <span className="bg-primary-100 text-primary-600 px-3 py-1 rounded-full text-sm capitalize">
+          <span className="bg-primary-100 text-primary-600 px-2 py-0.5 sm:px-3 sm:py-1 rounded-full text-[10px] sm:text-xs capitalize flex-shrink-0">
             {product.category}
           </span>
         </div>
-        <div className="flex space-x-2">
+        <div className="flex gap-1 sm:gap-2">
           <Button 
             href={`/produk/${product.slug}`} 
             variant="primary" 
-            className="flex-1"
+            className="flex-1 text-[11px] sm:text-xs md:text-sm px-2 sm:px-3 py-1.5 sm:py-2 justify-center"
           >
             Detail
           </Button>
@@ -125,10 +125,10 @@ const ProductCard = ({ product, viewMode = 'grid' }) => {
             <Button 
               href={product.katalog}
               variant="outline"
-              className="px-3"
+              className="px-2 sm:px-3 py-1.5 sm:py-2"
               aria-label={`Download katalog ${product.name}`}
             >
-              <Download size={18} />
+              <Download size={14} className="sm:w-4 sm:h-4" />
             </Button>
           )}
         </div>
