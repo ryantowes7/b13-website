@@ -27,36 +27,48 @@ export default function FeaturedProducts() {
         setIsLoading(false);
       }
     };
-    
+
     loadProducts();
   }, []);
 
-  // Auto-play carousel - infinite loop
-  useEffect(() => {
-    if (carouselProducts.length > 1) {
-      intervalRef.current = setInterval(() => {
-        setCurrentIndex((prev) => (prev + 1) % carouselProducts.length);
-      }, 3500);
-    }
-
-    return () => {
-      if (intervalRef.current) {
-        clearInterval(intervalRef.current);
-      }
-    };
-  }, [carouselProducts.length]);
-
+  // --- PENTING: deklarasi derived variables harus di atas useEffect yang menggunakannya ---
   const featuredProduct = products.length > 0 ? products[0] : null;
   const secondProduct = products.length > 1 ? products[1] : null;
   // Di mobile, semua produk kecuali featured masuk carousel
   const carouselProducts = products.slice(1);
 
-  // Infinite scroll navigation
+  // Auto-play carousel - infinite loop
+  useEffect(() => {
+    // guard: jika tidak ada item, jangan set interval
+    if (!carouselProducts || carouselProducts.length <= 1) {
+      // pastikan tidak ada interval tertinggal
+      if (intervalRef.current) {
+        clearInterval(intervalRef.current);
+        intervalRef.current = null;
+      }
+      return;
+    }
+
+    intervalRef.current = setInterval(() => {
+      setCurrentIndex((prev) => (prev + 1) % carouselProducts.length);
+    }, 3500);
+
+    return () => {
+      if (intervalRef.current) {
+        clearInterval(intervalRef.current);
+        intervalRef.current = null;
+      }
+    };
+  }, [carouselProducts.length]);
+
+  // Infinite scroll navigation (guard terhadap length 0)
   const nextSlide = () => {
+    if (!carouselProducts || carouselProducts.length === 0) return;
     setCurrentIndex((prev) => (prev + 1) % carouselProducts.length);
   };
 
   const prevSlide = () => {
+    if (!carouselProducts || carouselProducts.length === 0) return;
     setCurrentIndex((prev) => (prev - 1 + carouselProducts.length) % carouselProducts.length);
   };
 
@@ -114,8 +126,8 @@ export default function FeaturedProducts() {
                     {/* Image Background */}
                     <div className="absolute inset-0">
                       {featuredProduct.image ? (
-                        <img 
-                          src={featuredProduct.image} 
+                        <img
+                          src={featuredProduct.image}
                           alt={featuredProduct.name}
                           className="w-full h-full object-contain bg-neutral-100 transform group-hover:scale-105 transition-transform duration-700"
                         />
@@ -125,7 +137,7 @@ export default function FeaturedProducts() {
                       {/* Gradient Overlay */}
                       <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent"></div>
                     </div>
-                    
+
                     {/* Badges - Top Corners - Mobile Optimized */}
                     <div className="absolute top-3 sm:top-4 lg:top-6 left-3 sm:left-4 lg:left-6 right-3 sm:right-4 lg:right-6 flex justify-between items-start gap-2">
                       {/* Category Badge */}
@@ -137,21 +149,21 @@ export default function FeaturedProducts() {
                       {/* Stock Type Badge */}
                       {getStockTypeBadge(featuredProduct.stockType)}
                     </div>
-                    
+
                     {/* Content - Bottom - Mobile Optimized */}
                     <div className="absolute bottom-0 left-0 right-0 p-4 sm:p-6 lg:p-8 xl:p-12">
                       {/* Product Name */}
                       <h3 className="text-2xl sm:text-3xl lg:text-4xl xl:text-5xl font-bold text-white mb-2 sm:mb-3 lg:mb-4 group-hover:text-primary-300 transition-colors leading-tight">
                         {featuredProduct.name || featuredProduct.title}
                       </h3>
-                      
+
                       {/* Description */}
                       {featuredProduct.description && (
                         <p className="text-white/90 text-xs sm:text-sm lg:text-base xl:text-lg mb-3 sm:mb-4 lg:mb-6 line-clamp-2 leading-relaxed">
                           {featuredProduct.description}
                         </p>
                       )}
-                      
+
                       {/* Detail Button */}
                       <div className="flex justify-end">
                         <span className="inline-flex items-center gap-2 text-white font-semibold text-xs sm:text-sm group-hover:gap-3 transition-all">
@@ -171,20 +183,20 @@ export default function FeaturedProducts() {
                 <Link href={`/produk/${secondProduct.slug}`} className="hidden lg:block lg:float-left lg:w-[34%] lg:pl-4 group">
                   <div className="relative h-[500px] rounded-3xl overflow-visible shadow-xl hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2">
                     <div className="absolute inset-0 rounded-3xl overflow-hidden">
-                    {/* Image Background */}
-                    <div className="absolute inset-0">
-                      {secondProduct.image ? (
-                        <img 
-                          src={secondProduct.image} 
-                          alt={secondProduct.name}
-                          className="w-full h-full object-contain bg-neutral-100 transform group-hover:scale-105 transition-transform duration-700"
-                        />
-                      ) : (
-                        <div className="w-full h-full bg-gradient-to-br from-secondary-100 to-primary-100"></div>
-                      )}
-                      {/* Gradient Overlay */}
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent"></div>
-                    </div>
+                      {/* Image Background */}
+                      <div className="absolute inset-0">
+                        {secondProduct.image ? (
+                          <img
+                            src={secondProduct.image}
+                            alt={secondProduct.name}
+                            className="w-full h-full object-contain bg-neutral-100 transform group-hover:scale-105 transition-transform duration-700"
+                          />
+                        ) : (
+                          <div className="w-full h-full bg-gradient-to-br from-secondary-100 to-primary-100"></div>
+                        )}
+                        {/* Gradient Overlay */}
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent"></div>
+                      </div>
                     </div>
 
                     {/* Badges - Top Corners */}
@@ -206,7 +218,7 @@ export default function FeaturedProducts() {
                         <h3 className="text-xl md:text-2xl font-bold text-white group-hover:text-primary-300 transition-colors line-clamp-2 flex-1 overflow-hidden text-ellipsis">
                           {secondProduct.name || secondProduct.title}
                         </h3>
-                        
+
                         {/* Detail Button - Cutting Edge Style (Keluar dari Card) */}
                         <div className="flex-shrink-0 relative -mr-4 -mb-4">
                           <span className="inline-flex items-center gap-2.5 px-6 py-3.5 rounded-full bg-teal-500 hover:bg-teal-600 text-white font-bold text-sm border-3 border-white shadow-[0_8px_30px_rgba(0,0,0,0.3)] hover:shadow-[0_12px_40px_rgba(0,0,0,0.4)] transform hover:scale-110 hover:-translate-y-1 transition-all duration-300">
@@ -229,37 +241,37 @@ export default function FeaturedProducts() {
             {carouselProducts.length > 0 && (
               <div className="relative">
                 <div className="overflow-hidden">
-                  <div 
+                  <div
                     className="flex gap-4 sm:gap-6 transition-transform duration-700 ease-in-out"
-                    style={{ 
-                      transform: `translateX(-${currentIndex * (100 / Math.min(carouselProducts.length, 4))}%)` 
+                    style={{
+                      transform: `translateX(-${currentIndex * (100 / Math.min(carouselProducts.length, 4))}%)`
                     }}
                   >
                     {/* Duplicate items for infinite effect */}
                     {[...carouselProducts, ...carouselProducts].map((product, index) => (
-                      <Link 
+                      <Link
                         href={`/produk/${product.slug}`}
                         key={`${product.slug}-${index}`}
                         className="flex-shrink-0 w-[85%] sm:w-[45%] md:w-[30%] lg:w-[23%] group"
                       >
                         <div className="relative h-[400px] rounded-2xl overflow-visible shadow-lg hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-3">
                           <div className="absolute inset-0 rounded-2xl overflow-hidden">
-                          {/* Image */}
-                          <div className="absolute inset-0">
-                            {product.image ? (
-                              <img 
-                                src={product.image} 
-                                alt={product.name}
-                                className="w-full h-full object-contain bg-neutral-100 transform group-hover:scale-105 transition-transform duration-700"
-                              />
-                            ) : (
-                              <div className="w-full h-full bg-gradient-to-br from-neutral-200 to-neutral-300"></div>
-                            )}
-                            {/* Gradient Overlay */}
-                            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent"></div>
+                            {/* Image */}
+                            <div className="absolute inset-0">
+                              {product.image ? (
+                                <img
+                                  src={product.image}
+                                  alt={product.name}
+                                  className="w-full h-full object-contain bg-neutral-100 transform group-hover:scale-105 transition-transform duration-700"
+                                />
+                              ) : (
+                                <div className="w-full h-full bg-gradient-to-br from-neutral-200 to-neutral-300"></div>
+                              )}
+                              {/* Gradient Overlay */}
+                              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent"></div>
+                            </div>
                           </div>
-                          </div>
-                          
+
                           {/* Badges - Top Corners */}
                           <div className="absolute top-4 left-4 right-4 flex justify-between items-start z-10">
                             {/* Category Badge - Kiri Atas */}
@@ -271,7 +283,7 @@ export default function FeaturedProducts() {
                             {/* Stock Type Badge - Kanan Atas */}
                             {getStockTypeBadge(product.stockType)}
                           </div>
-                          
+
                           {/* Content - Bottom */}
                           <div className="absolute bottom-0 left-0 right-0 p-5 z-10">
                             <div className="flex items-end justify-between gap-3">
@@ -279,7 +291,7 @@ export default function FeaturedProducts() {
                               <h4 className="text-lg font-bold text-white group-hover:text-primary-300 transition-colors line-clamp-2 flex-1 overflow-hidden text-ellipsis">
                                 {product.name || product.title}
                               </h4>
-                              
+
                               {/* Detail Button - Cutting Edge Style (Keluar dari Card) */}
                               <div className="flex-shrink-0 relative -mr-3 -mb-3">
                                 <span className="inline-flex items-center gap-2 px-5 py-3 rounded-full bg-teal-500 hover:bg-teal-600 text-white font-bold text-xs border-3 border-white shadow-[0_6px_25px_rgba(0,0,0,0.3)] hover:shadow-[0_10px_35px_rgba(0,0,0,0.4)] transform hover:scale-110 hover:-translate-y-1 transition-all duration-300">
