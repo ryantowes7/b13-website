@@ -228,18 +228,6 @@ collections:
             fields:
               - { label: "Success Message", name: "success_message", widget: "text", default: "Pesan berhasil dikirim! Kami akan menghubungi Anda segera." }
               - { label: "Button Text", name: "button_text", widget: "string", default: "Send Message" }
-
-  # ==================== PAGES ====================
-  - name: "pages"
-    label: "Pages"
-    folder: "content/pages"
-    create: true
-    slug: "{{slug}}"
-    fields:
-      - { label: "Title", name: "title", widget: "string" }
-      - { label: "Meta Description", name: "meta_description", widget: "text" }
-      - { label: "Featured Image", name: "featured_image", widget: "image", required: false }
-      - { label: "Body Content", name: "body", widget: "markdown" }
   
   # ==================== PRODUCT CATEGORIES ====================
   - name: "product_categories"
@@ -333,21 +321,6 @@ collections:
       - { label: "Testimonial", name: "testimonial", widget: "text", required: false }
       - { label: "Client Name", name: "client_name", widget: "string", required: false }
 
-  # ==================== SERVICES ====================
-  - name: "services"
-    label: "Services"
-    folder: "content/services"
-    create: true
-    slug: "{{slug}}"
-    fields:
-      - { label: "Service Name", name: "name", widget: "string" }
-      - { label: "Short Description", name: "short_description", widget: "text" }
-      - { label: "Icon", name: "icon", widget: "string" }
-      - { label: "Featured Image", name: "image", widget: "image" }
-      - { label: "Full Description", name: "description", widget: "markdown" }
-      - { label: "Features", name: "features", widget: "list", fields: [{label: "Feature", name: "item", widget: "string"}] }
-      - { label: "Price Starting From", name: "price_start", widget: "string", required: false }
-
       # ==================== ARTICLE CATEGORIES ====================
   - name: "article_categories"
     label: "Article Categories"
@@ -361,21 +334,6 @@ collections:
       - { label: "Description", name: "description", widget: "text" }
       - { label: "Color", name: "color", widget: "select", options: ["blue", "green", "red", "purple", "orange", "teal"], default: "blue", hint: "Color for category badge" }
       - { label: "Icon", name: "icon", widget: "string", required: false, hint: "Icon name from lucide-react" }
-
-  # ==================== TESTIMONIALS ====================
-  - name: "testimonials"
-    label: "Testimonials"
-    folder: "content/testimonials"
-    create: true
-    slug: "{{slug}}"
-    fields:
-      - { label: "Client Name", name: "client_name", widget: "string" }
-      - { label: "Company", name: "company", widget: "string", required: false }
-      - { label: "Position", name: "position", widget: "string", required: false }
-      - { label: "Client Photo", name: "photo", widget: "image", required: false }
-      - { label: "Testimonial Text", name: "testimonial", widget: "text" }
-      - { label: "Rating", name: "rating", widget: "number", min: 1, max: 5 }
-      - { label: "Project", name: "project", widget: "string", required: false }
 
   # ==================== BLOG / ARTICLES ====================
   - name: "blog"
@@ -396,21 +354,4 @@ collections:
       - { label: "Meta Title (SEO)", name: "meta_title", widget: "string", required: false }
       - { label: "Meta Description (SEO)", name: "meta_description", widget: "text", required: false }
 
-  # ==================== TEAM ====================
-  - name: "team"
-    label: "Team Members"
-    folder: "content/team"
-    create: true
-    slug: "{{slug}}"
-    fields:
-      - { label: "Name", name: "name", widget: "string" }
-      - { label: "Position", name: "position", widget: "string" }
-      - { label: "Photo", name: "photo", widget: "image" }
-      - { label: "Bio", name: "bio", widget: "text" }
-      - { label: "Email", name: "email", widget: "string", required: false }
-      - { label: "Phone", name: "phone", widget: "string", required: false }
-      - { label: "Social Media", name: "social", widget: "list", fields: [
-          { label: "Platform", name: "platform", widget: "select", options: ["facebook", "instagram", "twitter", "linkedin"] },
-          { label: "URL", name: "url", widget: "string" }
-        ], required: false 
-      }
+      

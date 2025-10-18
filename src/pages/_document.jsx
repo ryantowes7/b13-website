@@ -5,10 +5,7 @@ export default function Document() {
     <Html lang="id">
       <Head>
         {/* Favicon */}
-        <link rel="icon" href="/favicon.ico" />
-        <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
-        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
-        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+        <link rel="icon" href="/uploads/favicon.ico" />
         
         {/* PWA Manifest */}
         <link rel="manifest" href="/site.webmanifest" />
@@ -67,8 +64,8 @@ export default function Document() {
               "@type": "Organization",
               "name": "B13 Factory",
               "alternateName": "B13 Factory Garment & Advertising",
-              "url": "https://b13factory-garmentadv.netlify.app",
-              "logo": "https://b13factory-garmentadv.netlify.app/logo.png",
+              "url": process.env.NEXT_PUBLIC_SITE_URL,
+              "logo": `${process.env.NEXT_PUBLIC_SITE_URL}/logo.png`,
               "description": "Specialist dalam garment dan advertising. Jasa sablon, bordir, banner, dan berbagai kebutuhan promosi bisnis profesional.",
               "address": {
                 "@type": "PostalAddress",
