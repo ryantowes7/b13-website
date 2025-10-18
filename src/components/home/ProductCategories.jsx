@@ -110,30 +110,32 @@ export default function ProductCategories() {
 
   return (
     <section className="min-h-screen flex items-center bg-neutral-900">
-      <div className="container-custom section-padding">
-        <div className="text-center mb-16">
-          <h2 className="text-4xl md:text-5xl font-bold text-white mb-6">
+      <div className="container-custom section-padding px-4 sm:px-6 lg:px-8">
+        {/* Header - Mobile Optimized */}
+        <div className="text-center mb-8 sm:mb-12 lg:mb-16">
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white mb-4 sm:mb-6">
             {title}
           </h2>
-          <p className="text-xl text-neutral-300 max-w-2xl mx-auto">
+          <p className="text-base sm:text-lg lg:text-xl text-neutral-300 max-w-2xl mx-auto px-4">
             {description}
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
+        {/* Services Grid - Mobile Optimized */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8 mb-8 sm:mb-10 lg:mb-12">
           {services.map((service, index) => (
             <div 
               key={index}
-              className="group relative bg-neutral-800 rounded-2xl p-8 hover:bg-neutral-700 transition-all duration-500 hover:transform hover:-translate-y-2"
+              className="group relative bg-neutral-800 rounded-xl sm:rounded-2xl p-5 sm:p-6 lg:p-8 hover:bg-neutral-700 transition-all duration-500 hover:transform hover:-translate-y-2"
             >
-              {/* Gradient Accent */}
-              <div className={`absolute top-0 left-8 w-16 h-1 bg-gradient-to-r ${getColorClasses(service.color)} rounded-full`} />
+              {/* Gradient Accent - Mobile Optimized */}
+              <div className={`absolute top-0 left-4 sm:left-6 lg:left-8 w-12 sm:w-14 lg:w-16 h-1 bg-gradient-to-r ${getColorClasses(service.color)} rounded-full`} />
               
-              <div className="mb-6">
-                <h3 className="text-2xl font-bold text-white mb-4">
+              <div className="mb-4 sm:mb-5 lg:mb-6">
+                <h3 className="text-lg sm:text-xl lg:text-2xl font-bold text-white mb-2 sm:mb-3 lg:mb-4">
                   {service.title}
                 </h3>
-                <p className="text-neutral-300 leading-relaxed">
+                <p className="text-neutral-300 text-sm sm:text-base leading-relaxed">
                   {service.description}
                 </p>
               </div>
@@ -141,7 +143,7 @@ export default function ProductCategories() {
               <Button 
                 href="/produk" 
                 variant="outline"
-                className="w-full border-neutral-600 text-white hover:bg-white hover:text-neutral-900"
+                className="w-full border-neutral-600 text-white hover:bg-white hover:text-neutral-900 text-sm sm:text-base py-2 sm:py-3"
               >
                 Explore {service.title}
               </Button>
@@ -149,8 +151,9 @@ export default function ProductCategories() {
           ))}
         </div>
 
+        {/* CTA Button - Mobile Optimized */}
         <div className="text-center">
-          <Button href="/produk" variant="primary" className="text-lg px-8 py-4">
+          <Button href="/produk" variant="primary" className="text-base sm:text-lg px-6 sm:px-8 py-3 sm:py-4">
             Lihat Semua Layanan
           </Button>
         </div>

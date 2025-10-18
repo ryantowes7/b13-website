@@ -89,14 +89,14 @@ export default function FeaturedProducts() {
   }
 
   return (
-    <section className="min-h-screen flex items-center bg-gradient-to-b from-white to-neutral-50 py-20">
+    <section className="min-h-screen flex items-center bg-gradient-to-b from-white to-neutral-50 py-12 sm:py-16 lg:py-20">
       <div className="w-full max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Header */}
-        <div className="text-center mb-16">
-          <h2 className="text-5xl md:text-6xl font-bold text-neutral-900 mb-4">
+        {/* Header - Mobile Optimized */}
+        <div className="text-center mb-8 sm:mb-12 lg:mb-16">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-neutral-900 mb-3 sm:mb-4">
             Product Updates
           </h2>
-          <p className="text-neutral-600 text-lg max-w-2xl mx-auto">
+          <p className="text-neutral-600 text-sm sm:text-base lg:text-lg max-w-2xl mx-auto px-4">
             Discover our latest collection of premium products
           </p>
         </div>
@@ -107,12 +107,12 @@ export default function FeaturedProducts() {
           </div>
         ) : (
           <>
-            {/* Featured Section - Featured Product + 1 Product */}
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-16">
-              {/* Featured Product - Besar */}
+            {/* Featured Section - Mobile Optimized */}
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8 mb-8 sm:mb-12 lg:mb-16">
+              {/* Featured Product - Mobile Responsive */}
               {featuredProduct && (
                 <Link href={`/produk/${featuredProduct.slug}`} className="lg:col-span-2 group">
-                  <div className="relative h-[500px] rounded-3xl overflow-hidden shadow-2xl hover:shadow-3xl transition-all duration-500 transform hover:-translate-y-2">
+                  <div className="relative h-[350px] sm:h-[400px] lg:h-[500px] rounded-2xl sm:rounded-3xl overflow-hidden shadow-xl sm:shadow-2xl hover:shadow-3xl transition-all duration-500 transform hover:-translate-y-2">
                     {/* Image Background */}
                     <div className="absolute inset-0">
                       {featuredProduct.image ? (
@@ -128,37 +128,37 @@ export default function FeaturedProducts() {
                       <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent"></div>
                     </div>
                     
-                    {/* Badges - Top Corners */}
-                    <div className="absolute top-6 left-6 right-6 flex justify-between items-start">
-                      {/* Category Badge - Kiri Atas */}
+                    {/* Badges - Top Corners - Mobile Optimized */}
+                    <div className="absolute top-3 sm:top-4 lg:top-6 left-3 sm:left-4 lg:left-6 right-3 sm:right-4 lg:right-6 flex justify-between items-start gap-2">
+                      {/* Category Badge */}
                       {featuredProduct.category && (
-                        <span className="inline-flex items-center px-4 py-2 rounded-xl text-sm font-bold bg-primary-500/90 backdrop-blur-md text-white capitalize shadow-lg">
+                        <span className="inline-flex items-center px-2 sm:px-3 lg:px-4 py-1 sm:py-1.5 lg:py-2 rounded-lg sm:rounded-xl text-xs sm:text-sm font-bold bg-primary-500/90 backdrop-blur-md text-white capitalize shadow-lg">
                           {featuredProduct.category}
                         </span>
                       )}
-                      {/* Stock Type Badge - Kanan Atas */}
+                      {/* Stock Type Badge */}
                       {getStockTypeBadge(featuredProduct.stockType)}
                     </div>
                     
-                    {/* Content - Bottom */}
-                    <div className="absolute bottom-0 left-0 right-0 p-8 md:p-12">
+                    {/* Content - Bottom - Mobile Optimized */}
+                    <div className="absolute bottom-0 left-0 right-0 p-4 sm:p-6 lg:p-8 xl:p-12">
                       {/* Product Name */}
-                      <h3 className="text-4xl md:text-5xl font-bold text-white mb-4 group-hover:text-primary-300 transition-colors">
+                      <h3 className="text-2xl sm:text-3xl lg:text-4xl xl:text-5xl font-bold text-white mb-2 sm:mb-3 lg:mb-4 group-hover:text-primary-300 transition-colors leading-tight">
                         {featuredProduct.name || featuredProduct.title}
                       </h3>
                       
                       {/* Description */}
                       {featuredProduct.description && (
-                        <p className="text-white/90 text-base md:text-lg mb-6 line-clamp-2">
+                        <p className="text-white/90 text-xs sm:text-sm lg:text-base xl:text-lg mb-3 sm:mb-4 lg:mb-6 line-clamp-2 leading-relaxed">
                           {featuredProduct.description}
                         </p>
                       )}
                       
-                      {/* Detail Button - Kanan Bawah */}
+                      {/* Detail Button */}
                       <div className="flex justify-end">
-                        <span className="inline-flex items-center gap-2 text-white font-semibold text-sm group-hover:gap-3 transition-all">
+                        <span className="inline-flex items-center gap-2 text-white font-semibold text-xs sm:text-sm group-hover:gap-3 transition-all">
                           Detail
-                          <svg className="w-4 h-4 transform group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <svg className="w-3 h-3 sm:w-4 sm:h-4 transform group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                           </svg>
                         </span>
@@ -168,10 +168,10 @@ export default function FeaturedProducts() {
                 </Link>
               )}
 
-              {/* Second Product */}
+              {/* Second Product - Mobile Optimized */}
               {secondProduct && (
                 <Link href={`/produk/${secondProduct.slug}`} className="group">
-                  <div className="relative h-[500px] rounded-3xl overflow-visible shadow-xl hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2">
+                  <div className="relative h-[350px] sm:h-[400px] lg:h-[500px] rounded-2xl sm:rounded-3xl overflow-visible shadow-lg sm:shadow-xl hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2">
                     <div className="absolute inset-0 rounded-3xl overflow-hidden">
                     {/* Image Background */}
                     <div className="absolute inset-0">
