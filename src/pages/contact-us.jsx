@@ -390,20 +390,25 @@ export default function ContactUs() {
           <div className="py-12">
             <h2 className="text-3xl font-bold text-center mb-8 text-neutral-900">Our Location</h2>
             <div className="bg-white rounded-2xl shadow-lg overflow-hidden">
-              <div className="aspect-video bg-gradient-to-br from-primary-100 to-secondary-100 flex items-center justify-center">
-                <div className="text-center">
-                  <MapPin size={48} className="text-primary-600 mx-auto mb-4" />
-                  <p className="text-xl font-semibold text-neutral-700">Google Maps</p>
-                  <p className="text-neutral-600 mt-2">JL. Arowana, Perum Kebon Agung Indah, Jember</p>
-                  <Button 
-                    href="https://maps.google.com" 
-                    variant="outline" 
-                    className="mt-4"
-                  >
-                    Open in Google Maps
-                  </Button>
-                </div>
-              </div>
+              {contactData?.contact_info?.address?.google_maps_embed ? (
+                <div 
+                  dangerouslySetInnerHTML={{ 
+                    __html: contactData.contact_info.address.google_maps_embed 
+                  }}
+                  className="w-full"
+                  style={{ minHeight: '450px' }}
+                />
+              ) : (
+                <iframe
+                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d515.1352122348118!2d113.67513863764486!3d-8.15694555937482!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2dd695aacafb6b9f%3A0x5c31177bd50779d8!2sB13%20Sablon%20%26%20Advertising!5e1!3m2!1sid!2sid!4v1760713233502!5m2!1sid!2sid"
+                  width="100%"
+                  height="450"
+                  style={{ border: 0 }}
+                  allowFullScreen=""
+                  loading="lazy"
+                  referrerPolicy="no-referrer-when-downgrade"
+                />
+              )}
             </div>
           </div>
         </div>

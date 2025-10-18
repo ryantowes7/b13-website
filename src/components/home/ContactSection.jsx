@@ -13,14 +13,33 @@ export default function ContactSection() {
     const loadContactData = async () => {
       try {
         setIsLoading(true);
-        const res = await fetch('/api/content/site-config');
         
-        if (res.ok) {
-          const data = await res.json();
-          setContactData(data);
-        } else {
-          throw new Error('Failed to fetch site config');
+        // Fetch both site config and contact data for maps
+        const [siteRes, contactRes] = await Promise.all([
+          fetch('/api/content/site-config'),
+          fetch('/api/content/contact')
+        ]);
+        
+        let siteData = {};
+        let mapsEmbed = null;
+        
+        if (siteRes.ok) {
+          siteData = await siteRes.json();
         }
+        
+        // Get maps embed from contact data if available
+        if (contactRes.ok) {
+          const contactResult = await contactRes.json();
+          if (contactResult.success && contactResult.contact?.contact_info?.address?.google_maps_embed) {
+            mapsEmbed = contactResult.contact.contact_info.address.google_maps_embed;
+          }
+        }
+        
+        setContactData({
+          ...siteData,
+          google_maps_embed: mapsEmbed
+        });
+        
       } catch (error) {
         console.error('Error loading contact data:', error);
         // Fallback to default data
@@ -30,7 +49,8 @@ export default function ContactSection() {
           contact_phone: '+62 812-3456-7890',
           business_hours: {
             hours: 'Setiap Hari: 09.00 - 17.00 WIB'
-          }
+          },
+          google_maps_embed: null
         });
       } finally {
         setIsLoading(false);
@@ -163,17 +183,28 @@ export default function ContactSection() {
 
           {/* Map & Contact Form */}
           <div className="space-y-8">
-            {/* Google Maps Placeholder */}
+            {/* Google Maps Embed */}
             <div className="bg-white rounded-2xl overflow-hidden shadow-2xl">
-              <div className="aspect-video bg-gradient-to-br from-primary-100 to-secondary-100 flex items-center justify-center">
-                <div className="text-center">
-                  <MapPin size={48} className="text-primary-500 mx-auto mb-4" />
-                  <p className="text-neutral-700 font-medium">Google Maps Embed</p>
-                  <p className="text-neutral-500 text-sm mt-2 px-4">
-                    {contactData?.address || 'JL. Arowana, Perum Kebon Agung Indah, Jember'}
-                  </p>
-                </div>
-              </div>
+              {contactData?.google_maps_embed ? (
+                <div 
+                  dangerouslySetInnerHTML={{ 
+                    __html: contactData.google_maps_embed 
+                  }}
+                  className="w-full"
+                  style={{ minHeight: '450px' }}
+                />
+                ) : (
+                <iframe
+                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d515.1352122348118!2d113.67513863764486!3d-8.15694555937482!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2dd695aacafb6b9f%3A0x5c31177bd50779d8!2sB13%20Sablon%20%26%20Advertising!5e1!3m2!1sid!2sid!4v1760713233502!5m2!1sid!2sid"
+                  width="100%"
+                  height="450"
+                  style={{ border: 0 }}
+                  allowFullScreen=""
+                  loading="lazy"
+                  referrerPolicy="no-referrer-when-downgrade"
+                  className="w-full aspect-video"
+                />
+              )}
             </div>
 
             {/* Quick Contact Card */}

@@ -15,7 +15,6 @@ services:
     description: Bordir presisi tinggi untuk logo perusahaan dengan hasil yang rapi dan profesional
   - icon: printer
     title: Printing & Banner
-<<<<<<< HEAD
     description: Cetak banner, spanduk, dan material advertising lainnya dengan kualitas terbaik
   - icon: gift
     title: Merchandise
@@ -25,12 +24,3 @@ portfolio_stats:
   happy_clients: "50+"
   years_experience: "5+"
 ---
-=======
-    description: Cetak banner, spanduk, dan material advertising lainnya dengan
-      kualitas terbaik
-portfolio_stats:
-  projects_completed: 150+
-  happy_clients: 50+
-  years_experience: 5+
----
->>>>>>> ca334170756882b637b4aa01749143e340c422ec
