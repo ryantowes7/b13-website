@@ -1,17 +1,4 @@
 // website/src/data/products.js
-// Default categories structure
-export const defaultCategories = [
-  { id: 'all', name: 'Semua Produk' },
-  { id: 'kaos', name: 'Kaos' },
-  { id: 'polo', name: 'Polo' },
-  { id: 'kemeja', name: 'Kemeja' },
-  { id: 'jaket', name: 'Jaket' },
-  { id: 'topi', name: 'Topi' },
-  { id: 'bordir', name: 'Bordir' },
-  { id: 'banner', name: 'Banner & Spanduk' },
-  { id: 'merchandise', name: 'Merchandise' },
-];
-
 // Helper to calculate categories with counts from products
 export const calculateCategories = (products) => {
   const categoryCounts = {};
