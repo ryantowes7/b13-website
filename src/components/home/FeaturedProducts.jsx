@@ -31,16 +31,12 @@ export default function FeaturedProducts() {
     loadProducts();
   }, []);
 
-  // Auto-play carousel
+  // Auto-play carousel - infinite loop
   useEffect(() => {
-    if (products.length > 3) {
+    if (carouselProducts.length > 1) {
       intervalRef.current = setInterval(() => {
-        setCurrentIndex((prev) => {
-          const maxIndex = carouselProducts.length - 4;
-          if (maxIndex <= 0) return 0;
-          return (prev + 1) % (maxIndex + 1);
-        });
-      }, 3000);
+        setCurrentIndex((prev) => (prev + 1) % carouselProducts.length);
+      }, 3500);
     }
 
     return () => {
@@ -48,18 +44,20 @@ export default function FeaturedProducts() {
         clearInterval(intervalRef.current);
       }
     };
-  }, [products.length]);
+  }, [carouselProducts.length]);
 
   const featuredProduct = products.length > 0 ? products[0] : null;
   const secondProduct = products.length > 1 ? products[1] : null;
-  const carouselProducts = products.slice(2);
+  // Di mobile, semua produk kecuali featured masuk carousel
+  const carouselProducts = products.slice(1);
 
+  // Infinite scroll navigation
   const nextSlide = () => {
-    setCurrentIndex((prev) => (prev + 1) % (carouselProducts.length - 2));
+    setCurrentIndex((prev) => (prev + 1) % carouselProducts.length);
   };
 
   const prevSlide = () => {
-    setCurrentIndex((prev) => (prev - 1 + (carouselProducts.length - 2)) % (carouselProducts.length - 2));
+    setCurrentIndex((prev) => (prev - 1 + carouselProducts.length) % carouselProducts.length);
   };
 
   const getStockTypeBadge = (stockType) => {
@@ -107,11 +105,11 @@ export default function FeaturedProducts() {
           </div>
         ) : (
           <>
-            {/* Featured Section - Mobile Optimized */}
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8 mb-8 sm:mb-12 lg:mb-16">
-              {/* Featured Product - Mobile Responsive */}
+            {/* Featured Section - Mobile: Only Featured, Desktop: Featured + Second */}
+            <div className="mb-8 sm:mb-12 lg:mb-16">
+              {/* Featured Product - Full Width di Mobile, 2/3 di Desktop */}
               {featuredProduct && (
-                <Link href={`/produk/${featuredProduct.slug}`} className="lg:col-span-2 group">
+                <Link href={`/produk/${featuredProduct.slug}`} className="block lg:float-left lg:w-[66%] lg:pr-4 mb-4 lg:mb-0 group">
                   <div className="relative h-[350px] sm:h-[400px] lg:h-[500px] rounded-2xl sm:rounded-3xl overflow-hidden shadow-xl sm:shadow-2xl hover:shadow-3xl transition-all duration-500 transform hover:-translate-y-2">
                     {/* Image Background */}
                     <div className="absolute inset-0">
@@ -168,10 +166,10 @@ export default function FeaturedProducts() {
                 </Link>
               )}
 
-              {/* Second Product - Mobile Optimized */}
+              {/* Second Product - Hanya tampil di Desktop */}
               {secondProduct && (
-                <Link href={`/produk/${secondProduct.slug}`} className="group">
-                  <div className="relative h-[350px] sm:h-[400px] lg:h-[500px] rounded-2xl sm:rounded-3xl overflow-visible shadow-lg sm:shadow-xl hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2">
+                <Link href={`/produk/${secondProduct.slug}`} className="hidden lg:block lg:float-left lg:w-[34%] lg:pl-4 group">
+                  <div className="relative h-[500px] rounded-3xl overflow-visible shadow-xl hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2">
                     <div className="absolute inset-0 rounded-3xl overflow-hidden">
                     {/* Image Background */}
                     <div className="absolute inset-0">
@@ -224,22 +222,25 @@ export default function FeaturedProducts() {
                   </div>
                 </Link>
               )}
+              <div className="clear-both"></div>
             </div>
 
-            {/* Carousel Section */}
+            {/* Carousel Section - Infinite Loop */}
             {carouselProducts.length > 0 && (
               <div className="relative">
                 <div className="overflow-hidden">
                   <div 
-                    className="flex gap-6 transition-transform duration-700 ease-in-out"
-                    style={{ transform: `translateX(-${currentIndex * (100 / 4)}%)` }}
+                    className="flex gap-4 sm:gap-6 transition-transform duration-700 ease-in-out"
+                    style={{ 
+                      transform: `translateX(-${currentIndex * (100 / Math.min(carouselProducts.length, 4))}%)` 
+                    }}
                   >
-                    {carouselProducts.map((product, index) => (
+                    {/* Duplicate items for infinite effect */}
+                    {[...carouselProducts, ...carouselProducts].map((product, index) => (
                       <Link 
                         href={`/produk/${product.slug}`}
-                        key={product.slug || index} 
-                        className="flex-shrink-0 w-full sm:w-1/2 lg:w-1/4 group"
-                        style={{ minWidth: 'calc(25% - 18px)' }}
+                        key={`${product.slug}-${index}`}
+                        className="flex-shrink-0 w-[85%] sm:w-[45%] md:w-[30%] lg:w-[23%] group"
                       >
                         <div className="relative h-[400px] rounded-2xl overflow-visible shadow-lg hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-3">
                           <div className="absolute inset-0 rounded-2xl overflow-hidden">
@@ -297,35 +298,35 @@ export default function FeaturedProducts() {
                   </div>
                 </div>
 
-                {/* Navigation Buttons */}
-                {carouselProducts.length > 4 && (
+                {/* Navigation Buttons - Always show for infinite scroll */}
+                {carouselProducts.length > 1 && (
                   <>
                     <button
                       onClick={prevSlide}
-                      className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-4 bg-white shadow-2xl rounded-full p-4 hover:bg-primary-500 hover:text-white transition-all duration-300 transform hover:scale-110 z-10"
+                      className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-2 sm:-translate-x-4 bg-white shadow-xl sm:shadow-2xl rounded-full p-2 sm:p-3 lg:p-4 hover:bg-primary-500 hover:text-white transition-all duration-300 transform hover:scale-110 z-10"
                       aria-label="Previous"
                     >
-                      <ChevronLeft size={28} strokeWidth={2.5} />
+                      <ChevronLeft size={20} className="sm:w-6 sm:h-6 lg:w-7 lg:h-7" strokeWidth={2.5} />
                     </button>
                     <button
                       onClick={nextSlide}
-                      className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-4 bg-white shadow-2xl rounded-full p-4 hover:bg-primary-500 hover:text-white transition-all duration-300 transform hover:scale-110 z-10"
+                      className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-2 sm:translate-x-4 bg-white shadow-xl sm:shadow-2xl rounded-full p-2 sm:p-3 lg:p-4 hover:bg-primary-500 hover:text-white transition-all duration-300 transform hover:scale-110 z-10"
                       aria-label="Next"
                     >
-                      <ChevronRight size={28} strokeWidth={2.5} />
+                      <ChevronRight size={20} className="sm:w-6 sm:h-6 lg:w-7 lg:h-7" strokeWidth={2.5} />
                     </button>
                   </>
                 )}
 
-                {/* Dots Indicator */}
-                {carouselProducts.length > 4 && (
-                  <div className="flex justify-center gap-2 mt-8">
-                    {Array.from({ length: Math.ceil(carouselProducts.length / 4) }).map((_, idx) => (
+                {/* Dots Indicator - Show current position */}
+                {carouselProducts.length > 1 && (
+                  <div className="flex justify-center gap-2 mt-6 sm:mt-8">
+                    {carouselProducts.map((_, idx) => (
                       <button
                         key={idx}
                         onClick={() => setCurrentIndex(idx)}
                         className={`h-2 rounded-full transition-all duration-300 ${
-                          currentIndex === idx ? 'w-8 bg-primary-500' : 'w-2 bg-neutral-300 hover:bg-neutral-400'
+                          currentIndex % carouselProducts.length === idx ? 'w-6 sm:w-8 bg-primary-500' : 'w-2 bg-neutral-300 hover:bg-neutral-400'
                         }`}
                         aria-label={`Go to slide ${idx + 1}`}
                       />

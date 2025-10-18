@@ -112,49 +112,49 @@ export default function ContactSection() {
                 </div>
               )}
 
-              {/* Email */}
+              {/* Email - Mobile Optimized */}
               {contactData?.contact_email && (
-                <div className="flex items-start space-x-6 group">
+                <div className="flex items-start space-x-3 sm:space-x-4 lg:space-x-6 group">
                   <div className="flex-shrink-0">
-                    <div className="w-16 h-16 bg-secondary-500/20 rounded-2xl flex items-center justify-center group-hover:bg-secondary-500/30 transition-colors">
-                      <Mail size={32} className="text-secondary-400" />
+                    <div className="w-10 h-10 sm:w-12 sm:h-12 lg:w-16 lg:h-16 bg-secondary-500/20 rounded-lg sm:rounded-xl lg:rounded-2xl flex items-center justify-center group-hover:bg-secondary-500/30 transition-colors">
+                      <Mail size={18} className="text-secondary-400 sm:w-6 sm:h-6 lg:w-8 lg:h-8" />
                     </div>
                   </div>
-                  <div>
-                    <h3 className="text-xl font-semibold text-white mb-2">Email Us</h3>
-                    <p className="text-neutral-300 text-lg">{contactData.contact_email}</p>
+                  <div className="flex-1 min-w-0">
+                    <h3 className="text-sm sm:text-base lg:text-xl font-semibold text-white mb-1 sm:mb-2">Email Us</h3>
+                    <p className="text-neutral-300 text-xs sm:text-sm lg:text-lg break-all">{contactData.contact_email}</p>
                   </div>
                 </div>
               )}
 
-              {/* Business Hours */}
+              {/* Business Hours - Mobile Optimized */}
               {contactData?.business_hours && (
-                <div className="flex items-start space-x-6 group">
+                <div className="flex items-start space-x-3 sm:space-x-4 lg:space-x-6 group">
                   <div className="flex-shrink-0">
-                    <div className="w-16 h-16 bg-accent-500/20 rounded-2xl flex items-center justify-center group-hover:bg-accent-500/30 transition-colors">
-                      <Clock size={32} className="text-accent-400" />
+                    <div className="w-10 h-10 sm:w-12 sm:h-12 lg:w-16 lg:h-16 bg-accent-500/20 rounded-lg sm:rounded-xl lg:rounded-2xl flex items-center justify-center group-hover:bg-accent-500/30 transition-colors">
+                      <Clock size={18} className="text-accent-400 sm:w-6 sm:h-6 lg:w-8 lg:h-8" />
                     </div>
                   </div>
-                  <div>
-                    <h3 className="text-xl font-semibold text-white mb-2">Business Hours</h3>
-                    <p className="text-neutral-300 text-lg">
+                  <div className="flex-1 min-w-0">
+                    <h3 className="text-sm sm:text-base lg:text-xl font-semibold text-white mb-1 sm:mb-2">Business Hours</h3>
+                    <p className="text-neutral-300 text-xs sm:text-sm lg:text-lg leading-relaxed">
                       {contactData.business_hours.hours || contactData.business_hours}
                     </p>
                   </div>
                 </div>
               )}
 
-              {/* Quick Contact */}
+              {/* Quick Contact - Mobile Optimized */}
               {contactData?.contact_phone && (
-                <div className="flex items-start space-x-6 group">
+                <div className="flex items-start space-x-3 sm:space-x-4 lg:space-x-6 group">
                   <div className="flex-shrink-0">
-                    <div className="w-16 h-16 bg-primary-500/20 rounded-2xl flex items-center justify-center group-hover:bg-primary-500/30 transition-colors">
-                      <MessageCircle size={32} className="text-primary-400" />
+                    <div className="w-10 h-10 sm:w-12 sm:h-12 lg:w-16 lg:h-16 bg-primary-500/20 rounded-lg sm:rounded-xl lg:rounded-2xl flex items-center justify-center group-hover:bg-primary-500/30 transition-colors">
+                      <MessageCircle size={18} className="text-primary-400 sm:w-6 sm:h-6 lg:w-8 lg:h-8\" />
                     </div>
                   </div>
-                  <div>
-                    <h3 className="text-xl font-semibold text-white mb-2">Quick Response</h3>
-                    <p className="text-neutral-300 text-lg">
+                  <div className="flex-1 min-w-0">
+                    <h3 className="text-sm sm:text-base lg:text-xl font-semibold text-white mb-1 sm:mb-2">Quick Response</h3>
+                    <p className="text-neutral-300 text-xs sm:text-sm lg:text-lg">
                       WhatsApp: {contactData.contact_phone}
                     </p>
                   </div>

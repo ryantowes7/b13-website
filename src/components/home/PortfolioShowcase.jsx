@@ -71,58 +71,58 @@ export default function PortfolioShowcase() {
       {/* Background Pattern */}
       <div className="absolute inset-0 bg-gradient-to-br from-primary-50/20 to-secondary-50/20" />
       
-      <div className="container-custom section-padding relative z-10">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center mb-16">
-          {/* Header Section */}
+      <div className="container-custom section-padding px-4 sm:px-6 lg:px-8 relative z-10">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 sm:gap-10 lg:gap-12 items-center mb-8 sm:mb-12 lg:mb-16">
+          {/* Header Section - Mobile Optimized */}
           <div>
-            <h2 className="text-4xl md:text-5xl font-bold text-neutral-900 mb-6">
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-neutral-900 mb-4 sm:mb-6">
               Our Portfolio
             </h2>
-            <p className="text-xl text-neutral-600 mb-8 leading-relaxed">
+            <p className="text-base sm:text-lg lg:text-xl text-neutral-600 mb-6 sm:mb-8 leading-relaxed">
               Lihat project-project yang telah kami kerjakan untuk berbagai klien dari berbagai industri. 
               Setiap project dikerjakan dengan standar kualitas tertinggi.
             </p>
             
-            <div className="flex flex-wrap gap-4">
-              <Button href="/portofolio" variant="primary" className="text-lg px-8 py-4 group">
+            <div className="flex flex-col sm:flex-row flex-wrap gap-3 sm:gap-4">
+              <Button href="/portofolio" variant="primary" className="text-sm sm:text-base lg:text-lg px-6 sm:px-8 py-3 sm:py-4 group w-full sm:w-auto">
                 Explore Portfolio
-                <ChevronRight size={20} className="ml-2 group-hover:translate-x-1 transition-transform" />
+                <ChevronRight size={18} className="ml-2 group-hover:translate-x-1 transition-transform sm:w-5 sm:h-5" />
               </Button>
               
-              <Button href="/contact-us" variant="outline" className="text-lg px-8 py-4 border-2">
+              <Button href="/contact-us" variant="outline" className="text-sm sm:text-base lg:text-lg px-6 sm:px-8 py-3 sm:py-4 border-2 w-full sm:w-auto">
                 Start Your Project
               </Button>
             </div>
           </div>
 
-          {/* Stats - Centered vertically with left content */}
+          {/* Stats - Mobile Optimized */}
           {portfolioStats && (
-            <div className="grid grid-cols-3 gap-8">
+            <div className="grid grid-cols-3 gap-4 sm:gap-6 lg:gap-8">
             <div className="text-center">
-              <div className="text-4xl md:text-5xl font-bold text-primary-600 mb-2">{portfolioStats.projects_completed}</div>
-              <div className="text-neutral-600 text-sm">Projects Completed</div>
+              <div className="text-2xl sm:text-3xl lg:text-4xl xl:text-5xl font-bold text-primary-600 mb-1 sm:mb-2">{portfolioStats.projects_completed}</div>
+              <div className="text-neutral-600 text-xs sm:text-sm leading-tight">Projects Completed</div>
             </div>
             <div className="text-center">
-              <div className="text-4xl md:text-5xl font-bold text-accent-500 mb-2">{portfolioStats.happy_clients}</div>
-              <div className="text-neutral-600 text-sm">Happy Clients</div>
+              <div className="text-2xl sm:text-3xl lg:text-4xl xl:text-5xl font-bold text-accent-500 mb-1 sm:mb-2">{portfolioStats.happy_clients}</div>
+              <div className="text-neutral-600 text-xs sm:text-sm leading-tight">Happy Clients</div>
             </div>
             <div className="text-center">
-              <div className="text-4xl md:text-5xl font-bold text-primary-500 mb-2">{portfolioStats.years_experience}</div>
-              <div className="text-neutral-600 text-sm">Years Experience</div>
+              <div className="text-2xl sm:text-3xl lg:text-4xl xl:text-5xl font-bold text-primary-500 mb-1 sm:mb-2">{portfolioStats.years_experience}</div>
+              <div className="text-neutral-600 text-xs sm:text-sm leading-tight">Years Experience</div>
             </div>
           </div>
           )}
         </div>
 
-        {/* Portfolio Grid - Redesigned */}
+        {/* Portfolio Grid - Mobile Optimized */}
         {portfolioItems.length === 0 ? (
           <div className="text-center py-12">
-            <p className="text-neutral-500 text-lg">Belum ada portfolio yang tersedia</p>
+            <p className="text-neutral-500 text-base sm:text-lg">Belum ada portfolio yang tersedia</p>
           </div>
         ) : (
-        <div className="mb-12">
-          {/* Grid Layout - 3 columns */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div className="mb-8 sm:mb-10 lg:mb-12">
+          {/* Grid Layout - Responsive */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8">
             {portfolioItems.slice(0, 6).map((item, index) => (
               <a
               key={item.slug || index}
@@ -150,12 +150,12 @@ export default function PortfolioShowcase() {
                 </div>
                 
                 
-                {/* Content - Clean & Minimalist */}
-                <div className="p-6">
+                {/* Content - Mobile Optimized */}
+                <div className="p-4 sm:p-5 lg:p-6">
                   {/* Date & Category Badge */}
-                  <div className="flex items-center gap-3 mb-3">
-                    <span className="text-sm text-neutral-500">
-                      {item.date ? new Date(item.date).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' }) : '2024'}
+                  <div className="flex items-center gap-2 sm:gap-3 mb-2 sm:mb-3 flex-wrap">
+                    <span className="text-xs sm:text-sm text-neutral-500">
+                      {item.date ? new Date(item.date).toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' }) : '2024'}
                     </span>
                     {item.category && (
                       <>
@@ -168,28 +168,28 @@ export default function PortfolioShowcase() {
                   </div>
 
                   {/* Title */}
-                  <h3 className="text-xl font-bold text-neutral-900 mb-3 group-hover:text-primary-600 transition-colors line-clamp-2">
+                  <h3 className="text-base sm:text-lg lg:text-xl font-bold text-neutral-900 mb-2 sm:mb-3 group-hover:text-primary-600 transition-colors line-clamp-2">
                     {item.name}
                   </h3>
 
                   {/* Description */}
-                  <p className="text-neutral-600 text-sm leading-relaxed mb-4 line-clamp-2">
+                  <p className="text-neutral-600 text-xs sm:text-sm leading-relaxed mb-3 sm:mb-4 line-clamp-2">
                     {item.description}
                   </p>
 
                   {/* Client Info */}
                   {item.client && (
-                    <div className="flex items-center gap-2 text-sm text-neutral-500">
+                    <div className="flex items-center gap-2 text-xs sm:text-sm text-neutral-500 mb-3">
                       <span className="font-medium">Client:</span>
-                      <span>{item.client}</span>
+                      <span className="truncate">{item.client}</span>
                     </div>
                   )}
 
                   {/* Read More Link */}
-                  <div className="mt-4 pt-4 border-t border-neutral-100">
-                    <span className="text-primary-600 text-sm font-medium inline-flex items-center group-hover:gap-2 transition-all">
+                  <div className="mt-3 sm:mt-4 pt-3 sm:pt-4 border-t border-neutral-100">
+                    <span className="text-primary-600 text-xs sm:text-sm font-medium inline-flex items-center group-hover:gap-2 transition-all">
                       Read more
-                      <ChevronRight size={16} className="opacity-0 -ml-4 group-hover:opacity-100 group-hover:ml-0 transition-all" />
+                      <ChevronRight size={14} className="opacity-0 -ml-4 group-hover:opacity-100 group-hover:ml-0 transition-all sm:w-4 sm:h-4" />
                     </span>
                   </div>
                 </div>
@@ -199,15 +199,15 @@ export default function PortfolioShowcase() {
         </div>
         )}
 
-        {/* View All Button */}
+        {/* View All Button - Mobile Optimized */}
         <div className="text-center">
           <Button 
             href="/portofolio" 
             variant="outline"
-            className="border-2 border-primary-500 text-primary-500 hover:bg-primary-500 hover:text-white text-lg px-8 py-4 group"
+            className="border-2 border-primary-500 text-primary-500 hover:bg-primary-500 hover:text-white text-sm sm:text-base lg:text-lg px-6 sm:px-8 py-3 sm:py-4 group w-full sm:w-auto"
           >
             View All Projects
-            <ChevronRight size={20} className="ml-2 group-hover:translate-x-1 transition-transform" />
+            <ChevronRight size={18} className="ml-2 group-hover:translate-x-1 transition-transform sm:w-5 sm:h-5" />
           </Button>
         </div>
       </div>
