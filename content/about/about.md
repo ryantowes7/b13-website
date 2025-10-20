@@ -21,14 +21,10 @@ company_stats:
   happy_clients: 100+
 mission:
   title: Mission
-  description: >-
-    - Mengutamakan kualitas dan ketepatan waktu dalam setiap proses produksi.
-
-    - Memberikan layanan personal yang memahami kebutuhan setiap klien.
-
-    - Terus berinovasi mengikuti tren industri kreatif dan fashion.
-
-    - Membangun kemitraan jangka panjang dengan seluruh pelanggan dan mitra usaha.
+  description: Mengutamakan kualitas dan ketepatan waktu dalam setiap proses
+    produksi. Memberikan layanan personal yang memahami kebutuhan setiap klien.
+    Terus berinovasi mengikuti tren industri kreatif dan fashion. Membangun
+    kemitraan jangka panjang dengan seluruh pelanggan dan mitra usaha.
 vision:
   title: Vision
   description: Menjadi perusahaan garmen dan advertising terpercaya yang
