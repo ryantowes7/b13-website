@@ -1,11 +1,10 @@
 ---
 hero_banners:
-  - image: /uploads/hero-bg.jpg
-    title: B13 Factory - Garment & Advertising
-    subtitle: Produsen garment dan advertising berkualitas tinggi dengan pengalaman
-      lebih dari 10 tahun melayani berbagai bisnis di Indonesia
-    button_text: Lihat Produk Kami
-    button_link: /produk
+  - image: /uploads/wallhome.png
+    title: " "
+    subtitle: " "
+    button_text: ""
+    button_link: ""
 services_title: Layanan Kami
 services:
   - icon: shirt
