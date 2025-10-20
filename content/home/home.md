@@ -21,6 +21,6 @@ services:
       kualitas terbaik
 portfolio_stats:
   projects_completed: 150+
-  happy_clients: 50+
-  years_experience: 5+
+  happy_clients: 100+
+  years_experience: 15+
 ---
