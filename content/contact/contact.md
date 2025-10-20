@@ -23,10 +23,10 @@ contact_info:
     response_time: Response within 24 hours
   whatsapp:
     title: WhatsApp
-    number: +62 812-3456-7890
-    display_number: +62 812-3456-7890
+    number: +62 812-3403-6663
+    display_number: +62 812-3403-6663
     message: Fast response
-    link: https://wa.me/6281234567890
+    link: https://wa.me/6281234036663
 business_hours:
   title: Business Hours
   schedule:
