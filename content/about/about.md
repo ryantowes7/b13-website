@@ -5,29 +5,34 @@ banner_subtitle: Specialist dalam garment dan advertising dengan pengalaman
   lebih dari 5 tahun. Kami berkomitmen memberikan solusi terbaik untuk kebutuhan
   bisnis Anda.
 company_title: Garment & Advertising Specialist
-company_description: >
-  **B13 Factory** telah berdiri sejak 2019 dan telah dipercaya oleh berbagai
-  klien dari berbagai industri untuk memenuhi kebutuhan garment dan advertising
-  mereka.
+company_description: >-
+  Sejak berdiri pada tahun 2015, **B13 Factory** telah menjadi mitra terpercaya
+  dalam industri "Garment dan Advertising" di Indonesia. Kami hadir dengan
+  semangat kreativitas dan kualitas untuk menghadirkan solusi terbaik di bidang
+  konfeksi pakaian, sablon, bordir, hingga layanan percetakan dan branding
+  usaha.
 
 
-  Kami mengkhususkan diri dalam jasa sablon, bordir, dan berbagai produk advertising seperti banner, spanduk, dan merchandise promosi.
-
-
-  Dengan tim yang profesional dan berpengalaman, kami siap membantu mewujudkan ide dan konsep Anda menjadi produk yang berkualitas dan bernilai.
+  Berawal dari sebuah workshop kecil, kini B13 Factory berkembang menjadi perusahaan yang mampu menangani berbagai kebutuhan produksi untuk individu, komunitas, instansi, hingga perusahaan besar. Kami percaya bahwa setiap produk bukan sekadar barang, tetapi identitas dan representasi kualitas yang membawa cerita serta kepercayaan dari setiap klien.
 company_image: /uploads/logo.png
 company_stats:
-  years_experience: 5+
+  years_experience: 15+
   projects_completed: 150+
-  happy_clients: 50+
+  happy_clients: 100+
 mission:
   title: Mission
-  description: Memberikan solusi garment dan advertising terbaik dengan kualitas
-    premium dan harga kompetitif untuk mendukung kesuksesan bisnis klien.
+  description: >-
+    - Mengutamakan kualitas dan ketepatan waktu dalam setiap proses produksi.
+
+    - Memberikan layanan personal yang memahami kebutuhan setiap klien.
+
+    - Terus berinovasi mengikuti tren industri kreatif dan fashion.
+
+    - Membangun kemitraan jangka panjang dengan seluruh pelanggan dan mitra usaha.
 vision:
   title: Vision
-  description: Menjadi partner terpercaya dalam industri garment dan advertising
-    di Indonesia dengan inovasi terus-menerus dan layanan profesional.
+  description: Menjadi perusahaan garmen dan advertising terpercaya yang
+    menghadirkan produk berkualitas dengan pelayanan profesional dan inovatif.
 values:
   title: Values
   description: Integritas, kualitas, dan kepuasan pelanggan adalah nilai utama
@@ -35,8 +40,8 @@ values:
 team_sections:
   - name: Management Team
     role: Professional & Experienced
-    description: Tim management yang berpengalaman lebih dari 5 tahun dalam industri
-      garment dan advertising.
+    description: Tim management yang berpengalaman lebih dari 15 tahun dalam
+      industri garment dan advertising.
   - name: Production Team
     role: Skilled Craftsmen
     description: Tim produksi yang ahli dalam berbagai teknik sablon, bordir, dan
