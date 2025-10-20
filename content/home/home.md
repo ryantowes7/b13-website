@@ -9,20 +9,8 @@ services_title: Layanan Kami
 services:
   - icon: shirt
     title: Garment & Konveksi
-    description: >-
-      Produksi kaos, jaket, dan seragam dengan bahan berkualitas dan sablon yang
-      tahan lama
-
-
-      	Kaos Sablon/Bordir
-
-      	Kemeja
-
-      	Jaket
-
-      	Topi
-
-      	Lainnya
+    description: Produksi kaos, jaket, kemeja, topi dan produk lainnya dengan bahan
+      berkualitas dan sablon yang tahan lama
   - icon: needle
     title: Bordir Komputer
     description: >+
