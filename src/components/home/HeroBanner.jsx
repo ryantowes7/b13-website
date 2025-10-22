@@ -60,7 +60,7 @@ const formatMarkdown = (text) => {
   let inList = false;
   let currentParagraph = [];
   
-  lines.forEach((line) => {
+  lines.forEach((line, index) => {
     const trimmedLine = line.trim();
     
     // Check if it's a list item
