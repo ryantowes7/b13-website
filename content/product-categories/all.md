@@ -6,7 +6,7 @@ description: Jelajahi seluruh koleksi produk garment dan advertising berkualitas
 banners:
   - image: /uploads/banner-products-1.jpg
     title: Produk Garment Berkualitas
-    subtitle: TemukanberbagaiprodukuntukkebutuhanbisnisAnda
+    subtitle: Temukan berbagai produk untuk kebutuhan bisnis Anda
     text_position:
       horizontal: left
       vertical: center
