@@ -1,10 +1,16 @@
 ---
 hero_banners:
-  - image: /uploads/wallhome.png
+  - image: /uploads/hero_home1.jpeg
     title: " "
     subtitle: " "
     button_text: ""
     button_link: ""
+    text_position:
+      horizontal: center
+      vertical: center
+      text_align: center
+      title_size: large
+      subtitle_size: medium
 services_title: Layanan Kami
 services:
   - icon: shirt
