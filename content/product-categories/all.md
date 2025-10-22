@@ -4,7 +4,7 @@ slug: all
 description: Jelajahi seluruh koleksi produk garment dan advertising berkualitas
   dari B13 Factory
 banners:
-  - image: /uploads/hero_product1.jpeg
+  - image: /uploads/hero_product1.webp
     title: Produk Garment Berkualitas
     subtitle: Temukan berbagai produk untuk kebutuhan bisnis Anda
     text_position:
