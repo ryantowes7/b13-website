@@ -85,9 +85,20 @@ collections:
             fields:
               - { label: "Banner Image", name: "image", widget: "image", hint: "Gambar banner (recommended: 1920x1080px)" }
               - { label: "Banner Title", name: "title", widget: "string", hint: "Judul utama banner" }
-              - { label: "Banner Subtitle", name: "subtitle", widget: "text", hint: "Deskripsi/subtitle banner" }
+              - { label: "Banner Subtitle", name: "subtitle", widget: "markdown", hint: "Deskripsi/subtitle banner. Mendukung paragraf, bullet points, bold, italic, dll." }
               - { label: "Button Text", name: "button_text", widget: "string", required: false, hint: "Text tombol CTA (opsional)" }
               - { label: "Button Link", name: "button_link", widget: "string", required: false, hint: "Link tujuan tombol (contoh: /produk)" }
+              - label: "Text Position Settings"
+                name: "text_position"
+                widget: "object"
+                required: false
+                hint: "Kontrol posisi dan ukuran teks banner"
+                fields:
+                  - { label: "Horizontal Alignment", name: "horizontal", widget: "select", options: ["left", "center", "right"], default: "center", hint: "Posisi horizontal teks" }
+                  - { label: "Vertical Alignment", name: "vertical", widget: "select", options: ["top", "center", "bottom"], default: "center", hint: "Posisi vertikal teks" }
+                  - { label: "Text Alignment", name: "text_align", widget: "select", options: ["left", "center", "right"], default: "center", hint: "Alignment teks (left/center/right)" }
+                  - { label: "Title Font Size", name: "title_size", widget: "select", options: ["small", "medium", "large", "extra-large"], default: "large", hint: "Ukuran font judul" }
+                  - { label: "Subtitle Font Size", name: "subtitle_size", widget: "select", options: ["small", "medium", "large"], default: "medium", hint: "Ukuran font subtitle" }
           - { label: "Services Section Title", name: "services_title", widget: "string", default: "Layanan Kami", hint: "Judul untuk section layanan/services" }
           - label: "Services"
             name: "services"
@@ -96,7 +107,7 @@ collections:
             fields:
               - { label: "Service Icon", name: "icon", widget: "string", hint: "Nama icon dari lucide-react (contoh: shirt, printer, gift, scissors)" }
               - { label: "Service Title", name: "title", widget: "string", hint: "Nama layanan" }
-              - { label: "Service Description", name: "description", widget: "text", hint: "Deskripsi singkat layanan" }
+              - { label: "Service Description", name: "description", widget: "markdown", hint: "Deskripsi singkat layanan. Mendukung paragraf, bullet points, bold, italic, dll." }
           - label: "Portfolio Stats"
             name: "portfolio_stats"
             widget: "object"
@@ -119,7 +130,18 @@ collections:
         fields:
           - { label: "Banner Image", name: "banner_image", widget: "image", hint: "Banner image untuk halaman About Us (single image)" }
           - { label: "Banner Title", name: "banner_title", widget: "string", default: "About B13 Factory" }
-          - { label: "Banner Subtitle", name: "banner_subtitle", widget: "text", default: "Specialist dalam garment dan advertising dengan pengalaman lebih dari 5 tahun" }
+          - { label: "Banner Subtitle", name: "banner_subtitle", widget: "markdown", default: "Specialist dalam garment dan advertising dengan pengalaman lebih dari 5 tahun", hint: "Mendukung paragraf, bullet points, bold, italic, dll." }
+          - label: "Banner Text Position Settings"
+            name: "banner_text_position"
+            widget: "object"
+            required: false
+            hint: "Kontrol posisi dan ukuran teks banner"
+            fields:
+              - { label: "Horizontal Alignment", name: "horizontal", widget: "select", options: ["left", "center", "right"], default: "left", hint: "Posisi horizontal teks" }
+              - { label: "Vertical Alignment", name: "vertical", widget: "select", options: ["top", "center", "bottom"], default: "center", hint: "Posisi vertikal teks" }
+              - { label: "Text Alignment", name: "text_align", widget: "select", options: ["left", "center", "right"], default: "left", hint: "Alignment teks (left/center/right)" }
+              - { label: "Title Font Size", name: "title_size", widget: "select", options: ["small", "medium", "large", "extra-large"], default: "large", hint: "Ukuran font judul" }
+              - { label: "Subtitle Font Size", name: "subtitle_size", widget: "select", options: ["small", "medium", "large"], default: "medium", hint: "Ukuran font subtitle" }
           - { label: "Company Title", name: "company_title", widget: "string", default: "Garment & Advertising Specialist" }
           - { label: "Company Description", name: "company_description", widget: "markdown", hint: "Deskripsi lengkap tentang perusahaan" }
           - { label: "Company Image", name: "company_image", widget: "image", required: false, hint: "Gambar untuk section Company Overview" }
@@ -178,7 +200,18 @@ collections:
         fields:
           - { label: "Banner Image", name: "banner_image", widget: "image", hint: "Banner image untuk halaman Contact Us" }
           - { label: "Banner Title", name: "banner_title", widget: "string", default: "Contact Us" }
-          - { label: "Banner Subtitle", name: "banner_subtitle", widget: "text", default: "Siap membantu kebutuhan garment dan advertising Anda. Hubungi kami untuk konsultasi gratis." }
+          - { label: "Banner Subtitle", name: "banner_subtitle", widget: "markdown", default: "Siap membantu kebutuhan garment dan advertising Anda. Hubungi kami untuk konsultasi gratis.", hint: "Mendukung paragraf, bullet points, bold, italic, dll." }
+          - label: "Banner Text Position Settings"
+            name: "banner_text_position"
+            widget: "object"
+            required: false
+            hint: "Kontrol posisi dan ukuran teks banner"
+            fields:
+              - { label: "Horizontal Alignment", name: "horizontal", widget: "select", options: ["left", "center", "right"], default: "left", hint: "Posisi horizontal teks" }
+              - { label: "Vertical Alignment", name: "vertical", widget: "select", options: ["top", "center", "bottom"], default: "center", hint: "Posisi vertikal teks" }
+              - { label: "Text Alignment", name: "text_align", widget: "select", options: ["left", "center", "right"], default: "left", hint: "Alignment teks (left/center/right)" }
+              - { label: "Title Font Size", name: "title_size", widget: "select", options: ["small", "medium", "large", "extra-large"], default: "large", hint: "Ukuran font judul" }
+              - { label: "Subtitle Font Size", name: "subtitle_size", widget: "select", options: ["small", "medium", "large"], default: "medium", hint: "Ukuran font subtitle" }
           - { label: "Page Title", name: "page_title", widget: "string", default: "Hubungi Kami" }
           - { label: "Page Description", name: "page_description", widget: "text", default: "Tim B13 Factory siap membantu Anda. Isi form atau hubungi kami melalui kontak yang tersedia." }
           - label: "Contact Information"
@@ -241,12 +274,25 @@ collections:
       - { label: "Category Name", name: "name", widget: "string" }
       - { label: "Slug", name: "slug", widget: "string", hint: "URL-friendly name (e.g., 'kaos', 'bordir', 'all' untuk Semua Produk)", pattern: ["^[a-z0-9-]+$", "Must be lowercase letters, numbers, and hyphens only"] }
       - { label: "Description", name: "description", widget: "text", hint: "Deskripsi singkat category" }
-      - { label: "Banner Images", name: "banners", widget: "list", hint: "Upload banner(s). Category 'Semua Produk' dapat memiliki beberapa banner yang akan berganti otomatis.", fields: [
-          { label: "Banner Image", name: "image", widget: "image" },
-          { label: "Banner Title (Optional)", name: "title", widget: "string", required: false },
-          { label: "Banner Subtitle (Optional)", name: "subtitle", widget: "string", required: false }
-        ] 
-      }
+      - label: "Banner Images"
+        name: "banners"
+        widget: "list"
+        hint: "Upload banner(s). Category 'Semua Produk' dapat memiliki beberapa banner yang akan berganti otomatis."
+        fields:
+          - { label: "Banner Image", name: "image", widget: "image" }
+          - { label: "Banner Title (Optional)", name: "title", widget: "string", required: false }
+          - { label: "Banner Subtitle (Optional)", name: "subtitle", widget: "markdown", required: false, hint: "Mendukung paragraf, bullet points, bold, italic, dll." }
+          - label: "Text Position Settings"
+            name: "text_position"
+            widget: "object"
+            required: false
+            hint: "Kontrol posisi dan ukuran teks banner"
+            fields:
+              - { label: "Horizontal Alignment", name: "horizontal", widget: "select", options: ["left", "center", "right"], default: "left", hint: "Posisi horizontal teks" }
+              - { label: "Vertical Alignment", name: "vertical", widget: "select", options: ["top", "center", "bottom"], default: "center", hint: "Posisi vertikal teks" }
+              - { label: "Text Alignment", name: "text_align", widget: "select", options: ["left", "center", "right"], default: "left", hint: "Alignment teks (left/center/right)" }
+              - { label: "Title Font Size", name: "title_size", widget: "select", options: ["small", "medium", "large", "extra-large"], default: "large", hint: "Ukuran font judul" }
+              - { label: "Subtitle Font Size", name: "subtitle_size", widget: "select", options: ["small", "medium", "large"], default: "medium", hint: "Ukuran font subtitle" }
       - { label: "Color Theme", name: "color", widget: "select", options: ["blue", "green", "red", "purple", "orange", "teal", "slate"], default: "blue", hint: "Color theme for category" }
       - { label: "Icon", name: "icon", widget: "string", required: false, hint: "Icon name from lucide-react" }
       - { label: "Is Default (All Products)", name: "is_default", widget: "boolean", default: false, hint: "Set to true ONLY for 'Semua Produk' category" }
@@ -264,7 +310,7 @@ collections:
       - { label: "Original Price", name: "originalPrice", widget: "string", required: false }
       - { label: "Featured Image", name: "image", widget: "image" }
       - { label: "Gallery Images", name: "images", widget: "list", fields: [{label: "Image", name: "url", widget: "image"}], required: false }
-      - { label: "Description", name: "description", widget: "text" }
+      - { label: "Description", name: "description", widget: "markdown", hint: "Deskripsi produk. Mendukung paragraf, bullet points, bold, italic, dll." }
       - { label: "Features", name: "features", widget: "list", fields: [{label: "Feature", name: "item", widget: "string"}], required: false }
       - { label: "Katalog File", name: "katalog", widget: "file", required: false }
       - { label: "Tags", name: "tags", widget: "list", fields: [{label: "Tag", name: "item", widget: "string"}], required: false }
@@ -293,12 +339,25 @@ collections:
       - { label: "Category Name", name: "name", widget: "string" }
       - { label: "Slug", name: "slug", widget: "string", hint: "URL-friendly name (e.g., 'garment', 'bordir', 'all' untuk Semua Portfolio)", pattern: ["^[a-z0-9-]+$", "Must be lowercase letters, numbers, and hyphens only"] }
       - { label: "Description", name: "description", widget: "text", hint: "Deskripsi singkat category" }
-      - { label: "Banner Images", name: "banners", widget: "list", hint: "Upload banner(s). Category 'Semua Portfolio' dapat memiliki beberapa banner yang akan berganti otomatis.", fields: [
-          { label: "Banner Image", name: "image", widget: "image" },
-          { label: "Banner Title (Optional)", name: "title", widget: "string", required: false },
-          { label: "Banner Subtitle (Optional)", name: "subtitle", widget: "string", required: false }
-        ] 
-      }
+      - label: "Banner Images"
+        name: "banners"
+        widget: "list"
+        hint: "Upload banner(s). Category 'Semua Portfolio' dapat memiliki beberapa banner yang akan berganti otomatis."
+        fields:
+          - { label: "Banner Image", name: "image", widget: "image" }
+          - { label: "Banner Title (Optional)", name: "title", widget: "string", required: false }
+          - { label: "Banner Subtitle (Optional)", name: "subtitle", widget: "markdown", required: false, hint: "Mendukung paragraf, bullet points, bold, italic, dll." }
+          - label: "Text Position Settings"
+            name: "text_position"
+            widget: "object"
+            required: false
+            hint: "Kontrol posisi dan ukuran teks banner"
+            fields:
+              - { label: "Horizontal Alignment", name: "horizontal", widget: "select", options: ["left", "center", "right"], default: "left", hint: "Posisi horizontal teks" }
+              - { label: "Vertical Alignment", name: "vertical", widget: "select", options: ["top", "center", "bottom"], default: "center", hint: "Posisi vertikal teks" }
+              - { label: "Text Alignment", name: "text_align", widget: "select", options: ["left", "center", "right"], default: "left", hint: "Alignment teks (left/center/right)" }
+              - { label: "Title Font Size", name: "title_size", widget: "select", options: ["small", "medium", "large", "extra-large"], default: "large", hint: "Ukuran font judul" }
+              - { label: "Subtitle Font Size", name: "subtitle_size", widget: "select", options: ["small", "medium", "large"], default: "medium", hint: "Ukuran font subtitle" }
       - { label: "Color Theme", name: "color", widget: "select", options: ["blue", "green", "red", "purple", "orange", "teal", "slate"], default: "blue", hint: "Color theme for category" }
       - { label: "Icon", name: "icon", widget: "string", required: false, hint: "Icon name from lucide-react" }
       - { label: "Is Default (All Portfolio)", name: "is_default", widget: "boolean", default: false, hint: "Set to true ONLY for 'Semua Portfolio' category" }
@@ -316,7 +375,7 @@ collections:
       - { label: "Project Date", name: "date", widget: "datetime" }
       - { label: "Featured Image", name: "image", widget: "image" }
       - { label: "Project Gallery", name: "gallery", widget: "list", fields: [{label: "Image", name: "url", widget: "image"}] }
-      - { label: "Description", name: "description", widget: "text" }
+      - { label: "Description", name: "description", widget: "markdown", hint: "Deskripsi project. Mendukung paragraf, bullet points, bold, italic, dll." }
       - { label: "Project Details", name: "details", widget: "markdown" }
       - { label: "Testimonial", name: "testimonial", widget: "text", required: false }
       - { label: "Client Name", name: "client_name", widget: "string", required: false }

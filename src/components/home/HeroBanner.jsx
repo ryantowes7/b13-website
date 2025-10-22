@@ -3,6 +3,94 @@ import { useState, useEffect, useCallback } from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import Button from '@/components/ui/Button';
 
+
+// Utility functions for dynamic positioning and styling
+const getVerticalAlignment = (vertical) => {
+  switch (vertical) {
+    case 'top': return 'items-start';
+    case 'bottom': return 'items-end';
+    case 'center':
+    default: return 'items-center';
+  }
+};
+
+const getHorizontalAlignment = (horizontal) => {
+  switch (horizontal) {
+    case 'left': return 'justify-start';
+    case 'right': return 'justify-end';
+    case 'center':
+    default: return 'justify-center';
+  }
+};
+
+const getTextAlignment = (textAlign) => {
+  switch (textAlign) {
+    case 'left': return 'text-left';
+    case 'right': return 'text-right';
+    case 'center':
+    default: return 'text-center mx-auto';
+  }
+};
+
+const getTitleSize = (size) => {
+  switch (size) {
+    case 'small': return 'text-2xl sm:text-3xl md:text-4xl';
+    case 'medium': return 'text-3xl sm:text-4xl md:text-5xl';
+    case 'large': return 'text-4xl sm:text-5xl md:text-6xl lg:text-7xl';
+    case 'extra-large': return 'text-5xl sm:text-6xl md:text-7xl lg:text-8xl';
+    default: return 'text-3xl sm:text-4xl md:text-5xl lg:text-7xl';
+  }
+};
+
+const getSubtitleSize = (size) => {
+  switch (size) {
+    case 'small': return 'text-sm sm:text-base md:text-lg';
+    case 'medium': return 'text-base sm:text-lg md:text-xl';
+    case 'large': return 'text-lg sm:text-xl md:text-2xl lg:text-3xl';
+    default: return 'text-base sm:text-lg md:text-xl lg:text-2xl';
+  }
+};
+
+const formatMarkdown = (text) => {
+  if (!text) return '';
+  
+  let html = text;
+  
+  // Bold: **text**
+  html = html.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
+  
+  // Italic: *text*
+  html = html.replace(/\*(.+?)\*/g, '<em>$1</em>');
+  
+  // Line breaks
+  html = html.replace(/ /g, '<br />');
+  
+  // Bullet lists
+  const lines = html.split('<br />');
+  let inList = false;
+  const processed = lines.map(line => {
+    if (line.trim().match(/^[-*]\s/)) {
+      const content = line.trim().replace(/^[-*]\s/, '');
+      if (!inList) {
+        inList = true;
+        return '<ul class=\"list-disc list-inside\"><li>' + content + '</li>';
+      }
+      return '<li>' + content + '</li>';
+    } else {
+      if (inList) {
+        inList = false;
+        return '</ul>' + line;
+      }
+      return line;
+    }
+  });
+  
+  if (inList) processed.push('</ul>');
+  
+  return processed.join('<br />');
+};
+
+
 export default function HeroBanner() {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [isHovering, setIsHovering] = useState(false);
@@ -188,15 +276,16 @@ export default function HeroBanner() {
 
       <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-transparent to-black/50" />
 
-      {/* Hero Content - Mobile Optimized */}
-      <div className="relative z-30 h-full flex items-center justify-center text-center text-white pt-16 px-4">
-        <div className="max-w-4xl mx-auto">
-          <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-7xl font-bold mb-4 sm:mb-6 leading-tight">
+      {/* Hero Content - Mobile Optimized with Dynamic Positioning */}
+      <div className={`relative z-30 h-full flex px-4 pt-16 ${getVerticalAlignment(currentSlideData.text_position?.vertical)} ${getHorizontalAlignment(currentSlideData.text_position?.horizontal)}`}>
+        <div className={`max-w-4xl ${getTextAlignment(currentSlideData.text_position?.text_align)}`}>
+          <h1 className={`font-bold mb-4 sm:mb-6 leading-tight text-white ${getTitleSize(currentSlideData.text_position?.title_size)}`}>
             {currentSlideData.title}
           </h1>
-          <p className="text-base sm:text-lg md:text-xl lg:text-2xl mb-6 sm:mb-8 leading-relaxed max-w-3xl mx-auto">
-            {currentSlideData.description}
-          </p>
+          <div 
+            className={`mb-6 sm:mb-8 leading-relaxed max-w-3xl text-white prose prose-invert ${getSubtitleSize(currentSlideData.text_position?.subtitle_size)}`}
+            dangerouslySetInnerHTML={{ __html: formatMarkdown(currentSlideData.description) }}
+          />
           {currentSlideData.button_text && (
             <Button 
               href={currentSlideData.button_link}
