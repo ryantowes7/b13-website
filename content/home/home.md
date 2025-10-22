@@ -3,8 +3,8 @@ hero_banners:
   - image: /uploads/home_hero1b.jpeg
     title: " "
     subtitle: " "
-    button_text: Explore
-    button_link: /produk
+    button_text: ""
+    button_link: ""
     text_position:
       horizontal: center
       vertical: center
