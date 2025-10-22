@@ -54,65 +54,40 @@ const getSubtitleSize = (size) => {
 const formatMarkdown = (text) => {
   if (!text) return '';
   
-  // Split by lines
-  const lines = text.split('\n');
-  let result = [];
-  let inList = false;
-  let currentParagraph = [];
+  let html = text;
   
-  lines.forEach((line, index) => {
-    const trimmedLine = line.trim();
-    
-    // Check if it's a list item
-    if (trimmedLine.match(/^[-*]\s/)) {
-      // Close paragraph if exists
-      if (currentParagraph.length > 0) {
-        result.push('<p>' + currentParagraph.join(' ') + '</p>');
-        currentParagraph = [];
-      }
-      
-      // Start list if not already in one
+  // Bold: **text**
+  html = html.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
+  
+  // Italic: *text*
+  html = html.replace(/\*(.+?)\*/g, '<em>$1</em>');
+  
+  // Line breaks
+  html = html.replace(/\n/g, '<br />');
+  
+  // Bullet lists
+  const lines = html.split('<br />');
+  let inList = false;
+  const processed = lines.map(line => {
+    if (line.trim().match(/^[-*]\s/)) {
+      const content = line.trim().replace(/^[-*]\s/, '');
       if (!inList) {
-        result.push('<ul class=\"list-disc list-inside ml-4\">');
         inList = true;
+        return '<ul class=\"list-disc list-inside\"><li>' + content + '</li>';
       }
-      
-      const content = trimmedLine.replace(/^[-*]\s/, '');
-      result.push('<li>' + content + '</li>');
-    } else if (trimmedLine === '') {
-      // Empty line - close paragraph or list
-      if (inList) {
-        result.push('</ul>');
-        inList = false;
-      } else if (currentParagraph.length > 0) {
-        result.push('<p>' + currentParagraph.join(' ') + '</p>');
-        currentParagraph = [];
-      }
+      return '<li>' + content + '</li>';
     } else {
-      // Regular text line
       if (inList) {
-        result.push('</ul>');
         inList = false;
+        return '</ul>' + line;
       }
-      currentParagraph.push(trimmedLine);
+      return line;
     }
   });
   
-  // Close any remaining paragraph or list
-  if (inList) {
-    result.push('</ul>');
-  }
-  if (currentParagraph.length > 0) {
-    result.push('<p>' + currentParagraph.join(' ') + '</p>');
-  }
+  if (inList) processed.push('</ul>');
   
-  let html = result.join('');
-  
-  // Apply text formatting
-  html = html.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
-  html = html.replace(/\*(.+?)\*/g, '<em>$1</em>');
-  
-  return html;
+  return processed.join('<br />');
 };
 
 
@@ -308,7 +283,7 @@ export default function HeroBanner() {
             {currentSlideData.title}
           </h1>
           <div 
-            className={`mb-6 sm:mb-8 leading-relaxed max-w-3xl text-white ${getSubtitleSize(currentSlideData.text_position?.subtitle_size)}`}
+            className={`mb-6 sm:mb-8 leading-relaxed max-w-3xl text-white prose prose-invert ${getSubtitleSize(currentSlideData.text_position?.subtitle_size)}`}
             dangerouslySetInnerHTML={{ __html: formatMarkdown(currentSlideData.description) }}
           />
           {currentSlideData.button_text && (

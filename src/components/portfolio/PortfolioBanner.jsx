@@ -60,7 +60,7 @@ const formatMarkdown = (text) => {
   html = html.replace(/\*(.+?)\*/g, '<em>$1</em>');
   
   // Line breaks
-  html = html.replace(/ /g, '<br />');
+  html = html.replace(/\n/g, '<br />');
   
   // Bullet lists
   const lines = html.split('<br />');
