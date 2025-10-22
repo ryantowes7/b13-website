@@ -50,31 +50,31 @@ const getSubtitleSize = (size) => {
 
 const formatMarkdown = (text) => {
   if (!text) return '';
-  
-  // Split by lines
-  const lines = text.split('');
+
+  // Split by newline (per line), not by character
+  const lines = text.split('\n');
   let result = [];
   let inList = false;
   let currentParagraph = [];
-  
-  lines.forEach((line, index) => {
+
+  lines.forEach((line) => {
     const trimmedLine = line.trim();
-    
-    // Check if it's a list item
-    if (trimmedLine.match(/^[-*]\s/)) {
+
+    // Check if it's a list item (unordered)
+    if (trimmedLine.match(/^[-*]\s+/)) {
       // Close paragraph if exists
       if (currentParagraph.length > 0) {
         result.push('<p>' + currentParagraph.join(' ') + '</p>');
         currentParagraph = [];
       }
-      
+
       // Start list if not already in one
       if (!inList) {
-        result.push('<ul class=\"list-disc list-inside ml-4\">');
+        result.push('<ul class="list-disc list-inside ml-4">');
         inList = true;
       }
-      
-      const content = trimmedLine.replace(/^[-*]\s/, '');
+
+      const content = trimmedLine.replace(/^[-*]\s+/, '');
       result.push('<li>' + content + '</li>');
     } else if (trimmedLine === '') {
       // Empty line - close paragraph or list
@@ -94,7 +94,7 @@ const formatMarkdown = (text) => {
       currentParagraph.push(trimmedLine);
     }
   });
-  
+
   // Close any remaining paragraph or list
   if (inList) {
     result.push('</ul>');
@@ -102,13 +102,13 @@ const formatMarkdown = (text) => {
   if (currentParagraph.length > 0) {
     result.push('<p>' + currentParagraph.join(' ') + '</p>');
   }
-  
+
   let html = result.join('');
-  
-  // Apply text formatting
+
+  // Apply text formatting (bold/italic)
   html = html.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
   html = html.replace(/\*(.+?)\*/g, '<em>$1</em>');
-  
+
   return html;
 };
 
@@ -197,6 +197,7 @@ export default function ProductBanner({ category }) {
                 {banner.title || category.name}
               </h1>
               <div 
+                // jika line-height terlalu besar, ganti leading-relaxed -> leading-normal / leading-snug
                 className={`text-white/90 leading-relaxed ${getSubtitleSize(banner.text_position?.subtitle_size)}`}
                 dangerouslySetInnerHTML={{ __html: formatMarkdown(banner.subtitle || category.description) }}
               />
