@@ -1,6 +1,6 @@
 ---
 hero_banners:
-  - image: /uploads/hero_home1.jpeg
+  - image: /uploads/home_hero1b.jpeg
     title: " "
     subtitle: " "
     button_text: ""
