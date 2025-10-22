@@ -8,11 +8,11 @@ banners:
     title: Produk Garment Berkualitas
     subtitle: Temukan berbagai produk untuk kebutuhan bisnis Anda
     text_position:
-      horizontal: left
-      vertical: bottom
-      text_align: left
+      horizontal: center
+      vertical: center
+      text_align: center
       title_size: medium
-      subtitle_size: medium
+      subtitle_size: large
 color: blue
 icon: Package
 is_default: true
