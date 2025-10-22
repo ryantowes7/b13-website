@@ -9,7 +9,7 @@ banners:
     subtitle: Temukan berbagai produk untuk kebutuhan bisnis Anda
     text_position:
       horizontal: left
-      vertical: center
+      vertical: bottom
       text_align: left
       title_size: medium
       subtitle_size: medium
