@@ -55,12 +55,12 @@ const formatMarkdown = (text) => {
   if (!text) return '';
   
   // Split by lines
-  const lines = text.split('');
+  const lines = text.split('\n');
   let result = [];
   let inList = false;
   let currentParagraph = [];
   
-  lines.forEach((line, index) => {
+  lines.forEach((line) => {
     const trimmedLine = line.trim();
     
     // Check if it's a list item
