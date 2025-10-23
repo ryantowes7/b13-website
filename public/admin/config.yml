@@ -337,7 +337,15 @@ collections:
       - { label: "Category", name: "category", widget: "relation", collection: "product_categories", search_fields: ["name"], value_field: "slug", display_fields: ["name"], hint: "Pilih category dari daftar yang tersedia" }
       - { label: "Price", name: "price", widget: "string" }
       - { label: "Original Price", name: "originalPrice", widget: "string", required: false }
-      - { label: "Featured Image (Card & Detail Page)", name: "image", widget: "image", hint: "GAMBAR UTAMA PRODUK - Digunakan untuk: 1) Thumbnail card di halaman list produk, 2) Gambar utama di halaman detail produk, 3) Gambar pertama di gallery detail. Recommended: 800x800px atau 1200x900px" }
+      - label: "📸 Product Images (3 Gambar Berbeda)"
+        name: "images_section"
+        widget: "object"
+        collapsed: false
+        hint: "PENTING: Upload 3 gambar terpisah untuk kebutuhan berbeda. Jangan gunakan gambar yang sama!"
+        fields:
+          - { label: "🏠 Gambar untuk Card Homepage", name: "home_image", widget: "image", required: false, hint: "GAMBAR 1: Untuk card produk di HOMEPAGE (section Featured Products). Recommended: 800x1000px (portrait/4:5)" }
+          - { label: "📋 Gambar untuk Card List Produk", name: "card_image", widget: "image", hint: "GAMBAR 2: Untuk card produk di HALAMAN LIST PRODUK (/produk). Ini yang muncul saat browsing semua produk. Recommended: 800x1000px (portrait/4:5)" }
+          - { label: "🖼️ Gambar Utama Detail Produk", name: "detail_image", widget: "image", hint: "GAMBAR 3: Gambar UTAMA di HALAMAN DETAIL produk. Gambar besar yang pertama muncul. Recommended: 1200x900px (landscape/4:3)" }
       - { label: "Additional Gallery Images", name: "images", widget: "list", fields: [{label: "Image", name: "url", widget: "image", hint: "Gambar tambahan untuk gallery di halaman detail produk (akan ditampilkan sebagai thumbnail)"}], required: false, hint: "Upload gambar tambahan untuk ditampilkan di gallery halaman detail produk. Gambar-gambar ini akan muncul sebagai thumbnail di bawah gambar utama." }
       - { label: "Description", name: "description", widget: "markdown", hint: "Deskripsi produk. Mendukung paragraf, bullet points, bold, italic, dll." }
       - { label: "Features", name: "features", widget: "list", fields: [{label: "Feature", name: "item", widget: "string"}], required: false }

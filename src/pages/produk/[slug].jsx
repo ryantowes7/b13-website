@@ -85,7 +85,12 @@ export default function ProductDetail() {
             category: foundProduct.category || 'kaos',
             price: parsePrice(foundProduct.price),
             originalPrice: parsePrice(foundProduct.originalPrice),
-            image: foundProduct.image || '/uploads/placeholder.jpg',
+            // Support for new separated image fields
+            home_image: foundProduct.images_section?.home_image || foundProduct.home_image || foundProduct.image || '/uploads/placeholder.jpg',
+            card_image: foundProduct.images_section?.card_image || foundProduct.card_image || foundProduct.image || '/uploads/placeholder.jpg',
+            detail_image: foundProduct.images_section?.detail_image || foundProduct.detail_image || foundProduct.image || '/uploads/placeholder.jpg',
+            // Use detail_image as main image for detail page
+            image: foundProduct.images_section?.detail_image || foundProduct.detail_image || foundProduct.image || '/uploads/placeholder.jpg',
             images: parseImages(foundProduct.images),
             description: foundProduct.description || '',
             features: parseArray(foundProduct.features),

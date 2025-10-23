@@ -90,7 +90,12 @@ export const useProducts = () => {
             category: product.category || 'kaos',
             price: parsePrice(product.price),
             originalPrice: parsePrice(product.originalPrice),
-            image: product.image || '/uploads/placeholder.jpg',
+            // Support for new separated image fields
+            home_image: product.images_section?.home_image || product.home_image || product.image || '/uploads/placeholder.jpg',
+            card_image: product.images_section?.card_image || product.card_image || product.image || '/uploads/placeholder.jpg',
+            detail_image: product.images_section?.detail_image || product.detail_image || product.image || '/uploads/placeholder.jpg',
+            // Keep old image field for backward compatibility
+            image: product.image || product.images_section?.detail_image || '/uploads/placeholder.jpg',
             images: parseImages(product.images),
             description: product.description || '',
             features: parseArray(product.features),

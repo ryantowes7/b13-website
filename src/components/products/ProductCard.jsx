@@ -6,7 +6,7 @@ const ProductCard = ({ product, viewMode = 'grid' }) => {
     return (
       <div className="bg-white rounded-lg sm:rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 p-3 sm:p-4 md:p-6">
         <div className="flex flex-col md:flex-row gap-3 sm:gap-4 md:gap-6">
-          <div className="w-full md:w-40 lg:w-48 h-32 sm:h-40 md:h-48 bg-gradient-to-br from-primary-100 to-secondary-100 rounded-lg overflow-hidden relative flex-shrink-0">
+          <div className="w-full md:w-48 lg:w-56 bg-gradient-to-br from-primary-100 to-secondary-100 rounded-lg overflow-hidden relative flex-shrink-0" style={{ aspectRatio: '4/5' }}>
         {product.stockType && (
           <div className="absolute top-2 right-2 z-10">
                 <span className={`px-2 py-0.5 sm:py-1 rounded-full text-xs font-medium ${
@@ -18,9 +18,9 @@ const ProductCard = ({ product, viewMode = 'grid' }) => {
                 </span>
               </div>
             )}
-            {product.image ? (
+            {product.card_image || product.image ? (
           <img 
-            src={product.image} 
+            src={product.card_image || product.image} 
             alt={product.name}
             className="w-full h-full object-cover"
             onError={(e) => {
@@ -86,7 +86,7 @@ const ProductCard = ({ product, viewMode = 'grid' }) => {
   // Grid View - Mobile Optimized
   return (
     <div className="bg-white rounded-lg sm:rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 card-hover">
-      <div className="aspect-square bg-gradient-to-br from-primary-100 to-secondary-100 rounded-t-lg sm:rounded-t-xl overflow-hidden relative">
+      <div className="bg-gradient-to-br from-primary-100 to-secondary-100 rounded-t-lg sm:rounded-t-xl overflow-hidden relative" style={{ aspectRatio: '4/5' }}>
         {product.stockType && (
           <div className="absolute top-2 right-2 z-10">
             <span className={`px-2 py-0.5 sm:py-1 rounded-full text-[10px] sm:text-xs font-medium ${
@@ -98,9 +98,9 @@ const ProductCard = ({ product, viewMode = 'grid' }) => {
             </span>
           </div>
         )}
-        {product.image ? (
+        {product.card_image || product.image ? (
           <img 
-            src={product.image} 
+            src={product.card_image || product.image} 
             alt={product.name}
             className="w-full h-full object-cover"
             onError={(e) => {
