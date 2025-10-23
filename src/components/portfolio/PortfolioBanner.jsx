@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { markdownToHtml } from '@/components/lib/clientMarkdown';
 
 // Utility functions for dynamic positioning and styling
 const getVerticalAlignment = (vertical) => {
@@ -48,44 +49,6 @@ const getSubtitleSize = (size) => {
   }
 };
 
-const formatMarkdown = (text) => {
-  if (!text) return '';
-  
-  let html = text;
-  
-  // Bold: **text**
-  html = html.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
-  
-  // Italic: *text*
-  html = html.replace(/\*(.+?)\*/g, '<em>$1</em>');
-  
-  // Line breaks
-  html = html.replace(/\n/g, '<br />');
-  
-  // Bullet lists
-  const lines = html.split('<br />');
-  let inList = false;
-  const processed = lines.map(line => {
-    if (line.trim().match(/^[-*]\s/)) {
-      const content = line.trim().replace(/^[-*]\s/, '');
-      if (!inList) {
-        inList = true;
-        return '<ul class=\"list-disc list-inside\"><li>' + content + '</li>';
-      }
-      return '<li>' + content + '</li>';
-    } else {
-      if (inList) {
-        inList = false;
-        return '</ul>' + line;
-      }
-      return line;
-    }
-  });
-  
-  if (inList) processed.push('</ul>');
-  
-  return processed.join('<br />');
-};
 
 export default function PortfolioBanner({ category }) {
   const [currentBannerIndex, setCurrentBannerIndex] = useState(0);
@@ -173,7 +136,7 @@ export default function PortfolioBanner({ category }) {
               </h1>
               <div 
                 className={`text-white/90 leading-relaxed prose prose-invert ${getSubtitleSize(banner.text_position?.subtitle_size)}`}
-                dangerouslySetInnerHTML={{ __html: formatMarkdown(banner.subtitle || category.description) }}
+                dangerouslySetInnerHTML={{ __html: markdownToHtml(banner.subtitle || category.description) }}
               />
             </div>
           </div>

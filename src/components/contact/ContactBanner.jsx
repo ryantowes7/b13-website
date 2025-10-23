@@ -1,4 +1,6 @@
 // Utility functions for dynamic positioning and styling
+import { markdownToHtml } from '@/components/lib/clientMarkdown';
+
 const getVerticalAlignment = (vertical) => {
   switch (vertical) {
     case 'top': return 'items-start pt-20';
@@ -45,44 +47,6 @@ const getSubtitleSize = (size) => {
   }
 };
 
-const formatMarkdown = (text) => {
-  if (!text) return '';
-  
-  let html = text;
-  
-  // Bold: **text**
-  html = html.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
-  
-  // Italic: *text*
-  html = html.replace(/\*(.+?)\*/g, '<em>$1</em>');
-  
-  // Line breaks
-  html = html.replace(/\n/g, '<br />');
-  
-  // Bullet lists
-  const lines = html.split('<br />');
-  let inList = false;
-  const processed = lines.map(line => {
-    if (line.trim().match(/^[-*]\s/)) {
-      const content = line.trim().replace(/^[-*]\s/, '');
-      if (!inList) {
-        inList = true;
-        return '<ul class=\"list-disc list-inside\"><li>' + content + '</li>';
-      }
-      return '<li>' + content + '</li>';
-    } else {
-      if (inList) {
-        inList = false;
-        return '</ul>' + line;
-      }
-      return line;
-    }
-  });
-  
-  if (inList) processed.push('</ul>');
-  
-  return processed.join('<br />');
-};
 
 export default function ContactBanner({ banner }) {
   // Fallback jika tidak ada banner data
@@ -123,7 +87,7 @@ export default function ContactBanner({ banner }) {
           </h1>
           <div 
             className={`text-white/90 leading-relaxed prose prose-invert ${getSubtitleSize(textPos.subtitle_size)}`}
-            dangerouslySetInnerHTML={{ __html: formatMarkdown(banner.banner_subtitle || 'Siap membantu kebutuhan garment dan advertising Anda. Hubungi kami untuk konsultasi gratis.') }}
+            dangerouslySetInnerHTML={{ __html: markdownToHtml(banner.banner_subtitle || 'Siap membantu kebutuhan garment dan advertising Anda. Hubungi kami untuk konsultasi gratis.') }}
           />
         </div>
       </div>
