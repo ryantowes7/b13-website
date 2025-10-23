@@ -30,29 +30,32 @@ services:
       - B﻿ordir Komputer
   - icon: needle
     title: Percetakan
-    description: |-
-      M﻿elayani berbagai jenis desain cetak dan kebutuhan promosi bisnis lainnya
+    description: >-
+      M﻿elayani berbagai jenis desain cetak dan kebutuhan promosi bisnis
+      lainnya 
 
-      C﻿etak Banner\
-      S﻿tiker\
-      S﻿panduk\
-      L﻿ayanan Desain lainnya
+      - C﻿etak Banner 
+
+      - S﻿tiker 
+
+      - S﻿panduk 
+
+      - L﻿ayanan Desain lainnya
   - icon: printer
     title: Merchandise
     description: >-
       M﻿emberikan solusi kreatif dengan menciptakan produk promosi yang unik dan
-      berkelas
+      berkelas 
 
+      - T﻿umbler 
 
-      T﻿umbler\
+      - M﻿ug 
 
-      M﻿ug\
+      - P﻿in 
 
-      P﻿in\
+      - Topi Custom 
 
-      Topi Custom\
-
-      P﻿roduk Lainnya
+      - P﻿roduk Lainnya 
 portfolio_stats:
   projects_completed: 150+
   happy_clients: 100+
