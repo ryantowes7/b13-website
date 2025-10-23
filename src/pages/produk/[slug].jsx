@@ -183,33 +183,33 @@ export default function ProductDetail() {
         <meta name="description" content={product.description} />
       </Head>
 
-      <section className="section-padding bg-white">
+      <section className="section-padding bg-white pt-20 sm:pt-24">
         <div className="container-custom">
           {/* Breadcrumb */}
-          <nav className="mb-8 text-sm">
+          <nav className="mb-6 sm:mb-8 text-xs sm:text-sm">
             <ol className="flex items-center space-x-2 text-neutral-600">
               <li><Link href="/" className="hover:text-primary-600">Home</Link></li>
               <li>/</li>
               <li><Link href="/produk" className="hover:text-primary-600">Produk</Link></li>
               <li>/</li>
-              <li className="text-primary-600 font-medium">{product.name}</li>
+              <li className="text-primary-600 font-medium truncate max-w-[150px] sm:max-w-none">{product.name}</li>
             </ol>
           </nav>
 
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 mb-16">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8 lg:gap-12 mb-12 sm:mb-16">
             {/* Product Images */}
             <div>
               {/* Main Image */}
-              <div className="bg-neutral-50 rounded-2xl overflow-hidden mb-4 aspect-square flex items-center justify-center relative group">
+              <div className="bg-neutral-50 rounded-xl sm:rounded-2xl overflow-hidden mb-3 sm:mb-4 relative group" style={{ aspectRatio: '4/3', minHeight: '280px' }}>
                 {currentImage ? (
                   <img 
                     src={currentImage} 
                     alt={product.name}
-                    className="w-full h-full object-cover"
+                    className="w-full h-full object-contain p-2 sm:p-4"
                   />
                 ) : (
-                  <div className="text-neutral-400 text-center">
-                    <p>Product Image</p>
+                  <div className="w-full h-full flex items-center justify-center text-neutral-400 text-center">
+                    <p className="text-sm sm:text-base">Product Image</p>
                   </div>
                 )}
                 
@@ -218,27 +218,27 @@ export default function ProductDetail() {
                   <>
                     <button
                       onClick={() => setSelectedImage((prev) => (prev - 1 + allImages.length) % allImages.length)}
-                      className="absolute left-4 top-1/2 transform -translate-y-1/2 bg-white/80 hover:bg-white rounded-full p-2 shadow-lg opacity-0 group-hover:opacity-100 transition-opacity"
+                      className="absolute left-2 sm:left-4 top-1/2 transform -translate-y-1/2 bg-white/80 hover:bg-white rounded-full p-1.5 sm:p-2 shadow-lg opacity-0 group-hover:opacity-100 transition-opacity"
                     >
-                      <ChevronLeft size={24} />
+                      <ChevronLeft size={20} className="sm:w-6 sm:h-6" />
                     </button>
                     <button
                       onClick={() => setSelectedImage((prev) => (prev + 1) % allImages.length)}
-                      className="absolute right-4 top-1/2 transform -translate-y-1/2 bg-white/80 hover:bg-white rounded-full p-2 shadow-lg opacity-0 group-hover:opacity-100 transition-opacity"
+                      className="absolute right-2 sm:right-4 top-1/2 transform -translate-y-1/2 bg-white/80 hover:bg-white rounded-full p-1.5 sm:p-2 shadow-lg opacity-0 group-hover:opacity-100 transition-opacity"
                     >
-                      <ChevronRight size={24} />
+                      <ChevronRight size={20} className="sm:w-6 sm:h-6" />
                     </button>
                   </>
                 )}
                 
                 {/* Stock Badge */}
-                <div className="absolute top-4 right-4">
+                <div className="absolute top-2 sm:top-4 right-2 sm:right-4">
                   {product.inStock ? (
-                    <span className="bg-green-500 text-white px-3 py-1 rounded-full text-sm font-medium">
+                    <span className="bg-green-500 text-white px-2 sm:px-3 py-0.5 sm:py-1 rounded-full text-xs sm:text-sm font-medium">
                       In Stock
                     </span>
                   ) : (
-                    <span className="bg-red-500 text-white px-3 py-1 rounded-full text-sm font-medium">
+                    <span className="bg-red-500 text-white px-2 sm:px-3 py-0.5 sm:py-1 rounded-full text-xs sm:text-sm font-medium">
                       Out of Stock
                     </span>
                   )}
@@ -246,8 +246,8 @@ export default function ProductDetail() {
 
                 {/* Discount Badge */}
                 {discountPercentage > 0 && (
-                  <div className="absolute top-4 left-4">
-                    <span className="bg-red-500 text-white px-3 py-1 rounded-full text-sm font-bold">
+                  <div className="absolute top-2 sm:top-4 left-2 sm:left-4">
+                    <span className="bg-red-500 text-white px-2 sm:px-3 py-0.5 sm:py-1 rounded-full text-xs sm:text-sm font-bold">
                       -{discountPercentage}%
                     </span>
                   </div>
@@ -256,16 +256,17 @@ export default function ProductDetail() {
 
               {/* Thumbnail Images */}
               {allImages.length > 1 && (
-                <div className="grid grid-cols-5 gap-2">
+                <div className="grid grid-cols-4 sm:grid-cols-5 gap-1.5 sm:gap-2">
                   {allImages.map((img, index) => (
                     <button
                       key={index}
                       onClick={() => setSelectedImage(index)}
-                      className={`aspect-square rounded-lg overflow-hidden border-2 transition-all ${
+                      className={`rounded-md sm:rounded-lg overflow-hidden border-2 transition-all ${
                         selectedImage === index
                           ? 'border-primary-500 scale-95'
                           : 'border-transparent hover:border-neutral-300'
                       }`}
+                      style={{ aspectRatio: '1/1' }}
                     >
                       <img 
                         src={img} 
@@ -280,7 +281,7 @@ export default function ProductDetail() {
 
             {/* Product Info */}
             <div>
-              <h1 className="text-3xl md:text-4xl font-bold text-neutral-900 mb-4">
+              <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-neutral-900 mb-3 sm:mb-4">
                 {product.name}
               </h1>
 

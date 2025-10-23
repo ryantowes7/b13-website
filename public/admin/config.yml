@@ -83,7 +83,7 @@ collections:
             widget: "list"
             hint: "Slider banner untuk hero section. Bisa tambahkan beberapa banner yang akan berganti otomatis."
             fields:
-              - { label: "Banner Image", name: "image", widget: "image", hint: "Gambar banner (recommended: 1920x1080px)" }
+              - { label: "Banner Image", name: "image", widget: "image", hint: "Gambar banner untuk homepage hero section (recommended: 1920x1080px). Gambar ini akan muncul sebagai background banner utama di halaman depan." }
               - { label: "Banner Title", name: "title", widget: "string", hint: "Judul utama banner" }
               - { label: "Banner Subtitle", name: "subtitle", widget: "markdown", hint: "Deskripsi/subtitle banner. Mendukung paragraf, bullet points, bold, italic, dll." }
               - { label: "Button Text", name: "button_text", widget: "string", required: false, hint: "Text tombol CTA (opsional)" }
@@ -99,6 +99,35 @@ collections:
                   - { label: "Text Alignment", name: "text_align", widget: "select", options: ["left", "center", "right"], default: "center", hint: "Alignment teks (left/center/right)" }
                   - { label: "Title Font Size", name: "title_size", widget: "select", options: ["small", "medium", "large", "extra-large"], default: "large", hint: "Ukuran font judul" }
                   - { label: "Subtitle Font Size", name: "subtitle_size", widget: "select", options: ["small", "medium", "large"], default: "medium", hint: "Ukuran font subtitle" }
+          - label: "Featured Products Section"
+            name: "featured_products_section"
+            widget: "object"
+            hint: "Bagian untuk menampilkan produk unggulan di homepage"
+            fields:
+              - { label: "Section Title", name: "title", widget: "string", default: "Produk Unggulan", hint: "Judul section produk unggulan" }
+              - { label: "Section Subtitle", name: "subtitle", widget: "text", required: false, hint: "Deskripsi singkat section (opsional)" }
+              - label: "Featured Products"
+                name: "products"
+                widget: "list"
+                hint: "Pilih produk yang akan ditampilkan sebagai produk unggulan (maksimal 6 produk)"
+                max: 6
+                fields:
+                  - { label: "Product", name: "product_slug", widget: "relation", collection: "products", search_fields: ["name"], value_field: "{{slug}}", display_fields: ["name"], hint: "Pilih produk dari daftar" }
+          - label: "Product Carousel Section"
+            name: "product_carousel"
+            widget: "object"
+            required: false
+            hint: "Carousel produk yang akan berganti otomatis di homepage"
+            fields:
+              - { label: "Section Title", name: "title", widget: "string", default: "Produk Terbaru", hint: "Judul section carousel" }
+              - { label: "Section Subtitle", name: "subtitle", widget: "text", required: false, hint: "Deskripsi singkat section (opsional)" }
+              - label: "Carousel Products"
+                name: "products"
+                widget: "list"
+                hint: "Pilih produk untuk carousel (maksimal 10 produk)"
+                max: 10
+                fields:
+                  - { label: "Product", name: "product_slug", widget: "relation", collection: "products", search_fields: ["name"], value_field: "{{slug}}", display_fields: ["name"], hint: "Pilih produk dari daftar" }
           - { label: "Services Section Title", name: "services_title", widget: "string", default: "Layanan Kami", hint: "Judul untuk section layanan/services" }
           - label: "Services"
             name: "services"
@@ -277,9 +306,9 @@ collections:
       - label: "Banner Images"
         name: "banners"
         widget: "list"
-        hint: "Upload banner(s). Category 'Semua Produk' dapat memiliki beberapa banner yang akan berganti otomatis."
+        hint: "BANNER UNTUK HALAMAN KATEGORI PRODUK - Upload banner(s) yang akan muncul di bagian atas halaman produk ketika kategori ini dipilih. Category 'Semua Produk' dapat memiliki beberapa banner yang akan berganti otomatis."
         fields:
-          - { label: "Banner Image", name: "image", widget: "image" }
+          - { label: "Banner Image", name: "image", widget: "image", hint: "Gambar banner kategori (recommended: 1920x600px). Akan ditampilkan di bagian atas halaman produk." }
           - { label: "Banner Title (Optional)", name: "title", widget: "string", required: false }
           - { label: "Banner Subtitle (Optional)", name: "subtitle", widget: "markdown", required: false, hint: "Mendukung paragraf, bullet points, bold, italic, dll." }
           - label: "Text Position Settings"
@@ -308,8 +337,8 @@ collections:
       - { label: "Category", name: "category", widget: "relation", collection: "product_categories", search_fields: ["name"], value_field: "slug", display_fields: ["name"], hint: "Pilih category dari daftar yang tersedia" }
       - { label: "Price", name: "price", widget: "string" }
       - { label: "Original Price", name: "originalPrice", widget: "string", required: false }
-      - { label: "Featured Image", name: "image", widget: "image" }
-      - { label: "Gallery Images", name: "images", widget: "list", fields: [{label: "Image", name: "url", widget: "image"}], required: false }
+      - { label: "Featured Image (Card & Detail Page)", name: "image", widget: "image", hint: "GAMBAR UTAMA PRODUK - Digunakan untuk: 1) Thumbnail card di halaman list produk, 2) Gambar utama di halaman detail produk, 3) Gambar pertama di gallery detail. Recommended: 800x800px atau 1200x900px" }
+      - { label: "Additional Gallery Images", name: "images", widget: "list", fields: [{label: "Image", name: "url", widget: "image", hint: "Gambar tambahan untuk gallery di halaman detail produk (akan ditampilkan sebagai thumbnail)"}], required: false, hint: "Upload gambar tambahan untuk ditampilkan di gallery halaman detail produk. Gambar-gambar ini akan muncul sebagai thumbnail di bawah gambar utama." }
       - { label: "Description", name: "description", widget: "markdown", hint: "Deskripsi produk. Mendukung paragraf, bullet points, bold, italic, dll." }
       - { label: "Features", name: "features", widget: "list", fields: [{label: "Feature", name: "item", widget: "string"}], required: false }
       - { label: "Katalog File", name: "katalog", widget: "file", required: false }

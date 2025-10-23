@@ -6,9 +6,9 @@ const ProductCard = ({ product, viewMode = 'grid' }) => {
     return (
       <div className="bg-white rounded-lg sm:rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 p-3 sm:p-4 md:p-6">
         <div className="flex flex-col md:flex-row gap-3 sm:gap-4 md:gap-6">
-          <div className="w-full md:w-40 lg:w-48 h-32 sm:h-40 md:h-48 bg-gradient-to-br from-primary-100 to-secondary-100 rounded-lg flex items-center justify-center relative flex-shrink-0">
-            {product.stockType && (
-              <div className="absolute top-2 right-2">
+          <div className="w-full md:w-40 lg:w-48 h-32 sm:h-40 md:h-48 bg-gradient-to-br from-primary-100 to-secondary-100 rounded-lg overflow-hidden relative flex-shrink-0">
+        {product.stockType && (
+          <div className="absolute top-2 right-2 z-10">
                 <span className={`px-2 py-0.5 sm:py-1 rounded-full text-xs font-medium ${
                   product.stockType === 'ready' 
                     ? 'bg-green-100 text-green-700' 
@@ -18,9 +18,21 @@ const ProductCard = ({ product, viewMode = 'grid' }) => {
                 </span>
               </div>
             )}
-            <div className="text-center text-neutral-600 px-2">
-              <p className="text-xs sm:text-sm">Product Image</p>
-            </div>
+            {product.image ? (
+          <img 
+            src={product.image} 
+            alt={product.name}
+            className="w-full h-full object-cover"
+            onError={(e) => {
+              e.target.onerror = null;
+              e.target.src = '/uploads/placeholder.jpg';
+            }}
+          />
+        ) : (
+          <div className="w-full h-full flex items-center justify-center text-center text-neutral-600 px-2">
+            <p className="text-xs sm:text-sm">No Image</p>
+          </div>
+        )}
           </div>
           <div className="flex-1">
             <h3 className="text-lg sm:text-xl md:text-2xl font-semibold mb-1 sm:mb-2 text-neutral-900 line-clamp-2">
@@ -74,9 +86,9 @@ const ProductCard = ({ product, viewMode = 'grid' }) => {
   // Grid View - Mobile Optimized
   return (
     <div className="bg-white rounded-lg sm:rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 card-hover">
-      <div className="aspect-square bg-gradient-to-br from-primary-100 to-secondary-100 rounded-t-lg sm:rounded-t-xl flex items-center justify-center relative">
+      <div className="aspect-square bg-gradient-to-br from-primary-100 to-secondary-100 rounded-t-lg sm:rounded-t-xl overflow-hidden relative">
         {product.stockType && (
-          <div className="absolute top-2 right-2">
+          <div className="absolute top-2 right-2 z-10">
             <span className={`px-2 py-0.5 sm:py-1 rounded-full text-[10px] sm:text-xs font-medium ${
               product.stockType === 'ready' 
                 ? 'bg-green-500 text-white' 
@@ -86,10 +98,24 @@ const ProductCard = ({ product, viewMode = 'grid' }) => {
             </span>
           </div>
         )}
-        <div className="text-center text-neutral-600 px-2">
-          <p className="text-[10px] sm:text-xs">Product Image</p>
-          <p className="text-[9px] sm:text-[11px] mt-1 line-clamp-2">{product.name}</p>
-        </div>
+        {product.image ? (
+          <img 
+            src={product.image} 
+            alt={product.name}
+            className="w-full h-full object-cover"
+            onError={(e) => {
+              e.target.onerror = null;
+              e.target.src = '/uploads/placeholder.jpg';
+            }}
+          />
+        ) : (
+          <div className="w-full h-full flex items-center justify-center text-center text-neutral-600 px-2">
+            <div>
+              <p className="text-[10px] sm:text-xs">No Image</p>
+              <p className="text-[9px] sm:text-[11px] mt-1 line-clamp-2">{product.name}</p>
+            </div>
+          </div>
+        )}
       </div>
       <div className="p-3 sm:p-4 md:p-6">
         <h3 className="text-sm sm:text-base md:text-xl font-semibold mb-1 sm:mb-2 text-neutral-900 line-clamp-2 leading-snug">

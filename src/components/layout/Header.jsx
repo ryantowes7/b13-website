@@ -13,6 +13,12 @@ export default function Header() {
   const router = useRouter();
   const isHomePage = router.pathname === '/';
 
+  // Check if current page is a product detail page (dynamic route)
+  const isProductDetailPage = router.pathname.startsWith('/produk/') && router.pathname !== '/produk';
+  const isPortfolioDetailPage = router.pathname.startsWith('/portofolio/') && router.pathname !== '/portofolio';
+  const isArtikelDetailPage = router.pathname.startsWith('/artikel/') && router.pathname !== '/artikel';
+  const isDetailPage = isProductDetailPage || isPortfolioDetailPage || isArtikelDetailPage;
+
   // Load site config dari CMS
   useEffect(() => {
     const loadSiteConfig = async () => {
@@ -53,8 +59,13 @@ export default function Header() {
     ? [...siteConfig.header_navigation].sort((a, b) => a.order - b.order)
     : defaultNavigation;
 
-  // Background style berdasarkan kondisi - transparent untuk semua halaman saat di top
+  // Background style berdasarkan kondisi - solid untuk detail pages, transparent untuk pages dengan banner
   const getHeaderBackground = () => {
+    // Detail pages always have solid background
+    if (isDetailPage) {
+      return 'bg-white shadow-sm';
+    }
+    // Other pages: transparent when at top, solid when scrolled
     return isScrolled 
       ? 'bg-white/95 backdrop-blur-md shadow-sm' 
       : 'bg-transparent';
@@ -62,6 +73,11 @@ export default function Header() {
 
   // Text color berdasarkan kondisi
   const getTextColor = () => {
+    // Detail pages always have dark text
+    if (isDetailPage) {
+      return 'text-neutral-900';
+    }
+    // Other pages: white when at top, dark when scrolled
     if (!isScrolled) {
       return 'text-white';
     } else {
@@ -70,6 +86,11 @@ export default function Header() {
   };
 
   const getLinkColor = () => {
+    // Detail pages always have dark text with hover
+    if (isDetailPage) {
+      return 'text-neutral-700 hover:text-primary-500';
+    }
+    // Other pages: white when at top, dark when scrolled
     if (!isScrolled) {
       return 'text-white/90 hover:text-white';
     } else {
@@ -95,7 +116,7 @@ export default function Header() {
               </div>
             ) : (
             <div className={`w-8 h-8 sm:w-9 sm:h-9 rounded-lg flex items-center justify-center transition-colors ${
-              !isScrolled ? 'bg-white/20' : 'bg-primary-500'
+              !isScrolled && !isDetailPage ? 'bg-white/20' : 'bg-primary-500'
             }`}>
               <span className="text-white font-bold text-sm sm:text-base">B13</span>
             </div>
@@ -131,7 +152,7 @@ export default function Header() {
         {/* Mobile Navigation - Improved */}
         {isMenuOpen && (
           <div className={`md:hidden py-4 border-t transition-colors ${
-            !isScrolled ? 'border-white/20' : 'border-neutral-200'
+            !isScrolled && !isDetailPage ? 'border-white/20' : 'border-neutral-200'
           }`}>
             <div className="flex flex-col space-y-3">
               {navigation.map((item) => (
