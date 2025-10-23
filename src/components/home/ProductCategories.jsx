@@ -1,7 +1,7 @@
 // website/src/components/home/ProductCategories.jsx
 import { useState, useEffect } from 'react';
 import Button from '@/components/ui/Button';
-import { markdownToHtml } from '@/lib/clientMarkdown';
+import { markdownToHtml } from '../../lib/clientMarkdown';
 
 export default function ProductCategories() {
   const [servicesData, setServicesData] = useState(null);

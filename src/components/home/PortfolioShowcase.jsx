@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import Button from '@/components/ui/Button';
 import { ChevronRight, Plus } from 'lucide-react';
-import { markdownToHtml } from '@/lib/clientMarkdown';
+import { markdownToHtml } from '../../lib/clientMarkdown';
 
 export default function PortfolioShowcase() {
   const [portfolioItems, setPortfolioItems] = useState([]);

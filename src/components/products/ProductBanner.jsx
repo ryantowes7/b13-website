@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
-import { markdownToHtml } from '@/lib/clientMarkdown';
+import { markdownToHtml } from '../../lib/clientMarkdown';
 
 // Utility functions for dynamic positioning and styling
 const getVerticalAlignment = (vertical) => {
