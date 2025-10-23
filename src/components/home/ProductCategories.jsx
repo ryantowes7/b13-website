@@ -133,11 +133,11 @@ export default function ProductCategories() {
               <div className={`absolute top-0 left-4 sm:left-6 lg:left-8 w-12 sm:w-14 lg:w-16 h-1 bg-gradient-to-r ${getColorClasses(service.color)} rounded-full`} />
               
               <div className="mb-4 sm:mb-5 lg:mb-6">
-                <h3 className="text-lg sm:text-xl lg:text-2xl font-bold text-white mb-3 sm:mb-4 lg:mb-5">
+                <h3 className="text-lg sm:text-xl lg:text-2xl font-bold text-white mb-2 sm:mb-3">
                   {service.title}
                 </h3>
                 <div 
-                  className="text-neutral-300 text-sm sm:text-base leading-relaxed prose prose-invert max-w-none prose-p:mb-4 prose-p:leading-relaxed prose-ul:my-4 prose-ul:space-y-2 prose-li:my-2 prose-li:leading-relaxed prose-strong:text-white prose-em:text-neutral-200"
+                  className="text-neutral-300 text-sm sm:text-base leading-normal prose prose-invert max-w-none prose-p:mb-2 prose-p:leading-normal prose-ul:my-2 prose-ul:space-y-1 prose-li:my-0.5 prose-li:leading-normal prose-strong:text-white prose-em:text-neutral-200"
                   dangerouslySetInnerHTML={{ __html: markdownToHtml(service.description) }}
                 />
               </div>
