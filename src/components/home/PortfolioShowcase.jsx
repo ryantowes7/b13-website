@@ -175,7 +175,7 @@ export default function PortfolioShowcase() {
 
                   {/* Description */}
                   <div 
-                    className="text-neutral-600 text-xs sm:text-sm leading-relaxed mb-3 sm:mb-4 line-clamp-2 prose prose-sm max-w-none prose-p:mb-1 prose-ul:my-1 prose-li:my-0"
+                    className="text-neutral-600 text-sm sm:text-base leading-relaxed mb-3 sm:mb-4 line-clamp-3 prose prose-base max-w-none prose-p:mb-3 prose-p:leading-relaxed prose-ul:my-3 prose-ul:space-y-1.5 prose-li:my-1.5 prose-li:leading-relaxed"
                     dangerouslySetInnerHTML={{ __html: markdownToHtml(item.description || '') }}
                   />
 

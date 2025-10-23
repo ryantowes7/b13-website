@@ -134,7 +134,7 @@ export default function ProductBanner({ category }) {
                 {banner.title || category.name}
               </h1>
               <div 
-                className={`text-white/90 leading-relaxed prose prose-invert ${getSubtitleSize(banner.text_position?.subtitle_size)}`}
+                className={`text-white/90 leading-relaxed prose prose-invert max-w-none prose-p:mb-4 prose-p:leading-relaxed prose-ul:my-4 prose-ul:space-y-2 prose-li:my-2 prose-li:leading-relaxed ${getSubtitleSize(banner.text_position?.subtitle_size)}`}
                 dangerouslySetInnerHTML={{ __html: markdownToHtml(banner.subtitle || category.description) }}
               />
             </div>

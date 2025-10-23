@@ -86,7 +86,7 @@ export default function AboutBanner({ banner }) {
             {banner.banner_title || 'About B13 Factory'}
           </h1>
           <div 
-            className={`text-white/90 leading-relaxed prose prose-invert ${getSubtitleSize(textPos.subtitle_size)}`}
+            className={`text-white/90 leading-relaxed prose prose-invert max-w-none prose-p:mb-4 prose-p:leading-relaxed prose-ul:my-4 prose-ul:space-y-2 prose-li:my-2 prose-li:leading-relaxed ${getSubtitleSize(textPos.subtitle_size)}`}
             dangerouslySetInnerHTML={{ __html: markdownToHtml(banner.banner_subtitle || 'Specialist dalam garment dan advertising dengan pengalaman lebih dari 5 tahun') }}
           />
         </div>
