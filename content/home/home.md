@@ -1,8 +1,8 @@
 ---
 hero_banners:
   - image: /uploads/home_hero1b.webp
-    title: " "
-    subtitle: " "
+    title: "  "
+    subtitle: " ﻿"
     button_text: ""
     button_link: ""
     text_position:
@@ -14,19 +14,44 @@ hero_banners:
 services_title: Layanan Kami
 services:
   - icon: shirt
-    title: Garment & Konveksi
-    description: Produksi kaos, jaket, kemeja, topi dan produk lainnya dengan bahan
-      berkualitas dan sablon yang tahan lama
-  - icon: needle
-    title: Bordir Komputer
-    description: >+
-      Bordir presisi tinggi untuk logo perusahaan dengan hasil yang rapi dan
-      profesional
+    title: Sablon & Bordir
+    description: >-
+      Produksi dengan bahan berkualitas, desain presisi dengan teknik modern,
+      hasil rapi dan tahan lama.
 
+
+      * K﻿aos
+
+      * K﻿emeja
+
+      * P﻿olo
+
+      * J﻿aket
+
+      * B﻿ordir Komputer
+  - icon: needle
+    title: Advertising dan Percetakan
+    description: |-
+      M﻿elayani berbagai jenis desain cetak dan kebutuhan promosi bisnis lainnya
+
+      * C﻿etak Banner
+      * S﻿tiker
+      * S﻿panduk
+      * L﻿ayanan Desain
   - icon: printer
-    title: Printing & Banner
-    description: Cetak banner, spanduk, dan material advertising lainnya dengan
-      kualitas terbaik
+    title: Merchandise
+    description: >-
+      M﻿emberikan solusi kreatif dengan menciptakan produk promosi yang unik dan
+      berkelas
+
+
+      * T﻿umbler
+
+      * M﻿ug
+
+      * P﻿in
+
+      * d﻿an produk Costum lainnya
 portfolio_stats:
   projects_completed: 150+
   happy_clients: 100+
