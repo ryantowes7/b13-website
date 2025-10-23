@@ -19,13 +19,13 @@ services:
       Produksi dengan bahan berkualitas, desain presisi dengan teknik modern,
       hasil rapi dan tahan lama.
 
-      - K﻿aos 
+      - K﻿aos/Polo 
 
       - K﻿emeja 
 
-      - P﻿olo  
+      - Jersey 
 
-      - J﻿aket  
+      - J﻿aket 
 
       - B﻿ordir Komputer
   - icon: needle
@@ -39,6 +39,8 @@ services:
       - S﻿tiker 
 
       - S﻿panduk 
+
+      -﻿ Umbul-umbul 
 
       - L﻿ayanan Desain lainnya
   - icon: printer
