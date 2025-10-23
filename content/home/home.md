@@ -20,24 +20,24 @@ services:
       hasil rapi dan tahan lama.
 
 
-      * K﻿aos
+      K﻿aos\
 
-      * K﻿emeja
+      K﻿emeja\
 
-      * P﻿olo
+      P﻿olo\
 
-      * J﻿aket
+      J﻿aket\
 
-      * B﻿ordir Komputer
+      B﻿ordir Komputer
   - icon: needle
-    title: Advertising dan Percetakan
+    title: Percetakan
     description: |-
       M﻿elayani berbagai jenis desain cetak dan kebutuhan promosi bisnis lainnya
 
-      * C﻿etak Banner
-      * S﻿tiker
-      * S﻿panduk
-      * L﻿ayanan Desain
+      C﻿etak Banner\
+      S﻿tiker\
+      S﻿panduk\
+      L﻿ayanan Desain lainnya
   - icon: printer
     title: Merchandise
     description: >-
@@ -45,13 +45,15 @@ services:
       berkelas
 
 
-      * T﻿umbler
+      T﻿umbler\
 
-      * M﻿ug
+      M﻿ug\
 
-      * P﻿in
+      P﻿in\
 
-      * d﻿an produk Costum lainnya
+      Topi Custom\
+
+      P﻿roduk Lainnya
 portfolio_stats:
   projects_completed: 150+
   happy_clients: 100+
