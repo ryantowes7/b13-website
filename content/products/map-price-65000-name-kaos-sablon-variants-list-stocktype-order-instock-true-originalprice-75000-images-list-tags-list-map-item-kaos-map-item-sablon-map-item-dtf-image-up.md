@@ -1,0 +1,22 @@
+---
+name: Kaos Sablon
+category: kaos
+price: "65000"
+originalPrice: "75000"
+image: /uploads/sablon.webp
+images: []
+description: Kami menyediakan kaos sablon dengan kualitas bahan premium.
+features:
+  - item: Cotton Combed Premium
+  - item: Warna tidak mudah luntur
+  - item: Jahitan rapi dan kuat
+  - item: Sablon presisi dan tahan lama
+tags:
+  - item: Kaos
+  - item: Sablon
+  - item: DTF
+inStock: true
+minOrder: 12
+stockType: order
+variants: []
+---
