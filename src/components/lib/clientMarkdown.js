@@ -44,23 +44,23 @@ export function markdownToHtml(markdown) {
     
     if (unorderedMatch) {
       if (!inList) {
-        processedLines.push('<ul class="list-disc list-inside space-y-2 ml-5 leading-relaxed">');
+        processedLines.push('<ul class="list-disc list-inside space-y-1 ml-4 leading-normal">');
         inList = true;
         listType = 'ul';
       } else if (listType !== 'ul') {
         processedLines.push('</ol>');
-        processedLines.push('<ul class="list-disc list-inside space-y-2 ml-5 leading-relaxed">');
+        processedLines.push('<ul class="list-disc list-inside space-y-1 ml-4 leading-normal">');
         listType = 'ul';
       }
       processedLines.push(`<li>${unorderedMatch[1]}</li>`);
     } else if (orderedMatch) {
       if (!inList) {
-        processedLines.push('<ol class="list-decimal list-inside space-y-2 ml-5 leading-relaxed">');
+        processedLines.push('<ol class="list-decimal list-inside space-y-1 ml-4 leading-normal">');
         inList = true;
         listType = 'ol';
       } else if (listType !== 'ol') {
         processedLines.push('</ul>');
-        processedLines.push('<ol class="list-decimal list-inside space-y-2 ml-5 leading-relaxed">');
+        processedLines.push('<ol class="list-decimal list-inside space-y-1 ml-4 leading-normal">');
         listType = 'ol';
       }
       processedLines.push(`<li>${orderedMatch[2]}</li>`);
@@ -92,7 +92,7 @@ export function markdownToHtml(markdown) {
       return trimmed;
     }
     
-    return `<p class="mb-4 leading-relaxed">${trimmed}</p>`;
+    return `<p class="mb-2 leading-normal">${trimmed}</p>`;
   });
   
   html = processedBlocks.join('\n');
@@ -127,9 +127,9 @@ export function applyTextAlignment(html, alignment = 'left') {
 export function getMarkdownStyles() {
   return {
     wrapper: 'prose prose-neutral max-w-none',
-    heading: 'font-bold mb-3',
-    paragraph: 'mb-4 leading-relaxed',
-    list: 'space-y-2 ml-5',
+    heading: 'font-bold mb-2',
+    paragraph: 'mb-2 leading-normal',
+    list: 'space-y-1 ml-4',
     link: 'text-primary-600 hover:underline'
   };
 }
