@@ -1,7 +1,6 @@
 // website/src/components/home/ProductCategories.jsx
 import { useState, useEffect } from 'react';
 import Button from '@/components/ui/Button';
-import { markdownToHtml } from '../../lib/clientMarkdown';
 
 export default function ProductCategories() {
   const [servicesData, setServicesData] = useState(null);
@@ -136,10 +135,9 @@ export default function ProductCategories() {
                 <h3 className="text-lg sm:text-xl lg:text-2xl font-bold text-white mb-2 sm:mb-3 lg:mb-4">
                   {service.title}
                 </h3>
-                <div 
-                  className="text-neutral-300 text-sm sm:text-base leading-relaxed prose prose-invert max-w-none prose-p:mb-2 prose-ul:my-2 prose-li:my-1 prose-strong:text-white prose-em:text-neutral-200"
-                  dangerouslySetInnerHTML={{ __html: markdownToHtml(service.description) }}
-                />
+                <p className="text-neutral-300 text-sm sm:text-base leading-relaxed">
+                  {service.description}
+                </p>
               </div>
 
               <Button 
