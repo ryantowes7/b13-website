@@ -21,7 +21,7 @@ export default function App({ Component, pageProps }) {
         {/* Dynamic Favicon from CMS - akan override default dari _document.jsx */}
         {siteConfig?.favicon && (
           <>
-            <link rel="icon" type="image/webp" href={siteConfig.favicon} key="favicon-main" />
+            <link rel="icon" href={siteConfig.favicon} key="favicon-main" />
             <link rel="icon" type="image/png" sizes="32x32" href={siteConfig.favicon} key="favicon-32" />
             <link rel="icon" type="image/png" sizes="16x16" href={siteConfig.favicon} key="favicon-16" />
             <link rel="apple-touch-icon" sizes="180x180" href={siteConfig.favicon} key="favicon-apple" />

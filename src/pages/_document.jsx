@@ -4,9 +4,13 @@ export default function Document() {
   return (
     <Html lang="id">
       <Head>
-        {/* Favicon akan di-load secara dinamis dari CMS di _app.jsx */}
+        {/* Favicon - Multiple formats untuk kompatibilitas semua browser */}
         {/* Default fallback favicon - akan di-override oleh _app.jsx dengan CMS config */}
         <link rel="icon" type="image/x-icon" href="/uploads/favicon.ico" />
+        <link rel="icon" type="image/png" sizes="16x16" href="/uploads/favicon.ico" />
+        <link rel="icon" type="image/png" sizes="32x32" href="/uploads/favicon.ico" />
+        <link rel="apple-touch-icon" sizes="180x180" href="/uploads/apple-touch-icon.png" />
+        <link rel="shortcut icon" href="/uploads/favicon.ico" />
         
         {/* PWA Manifest */}
         <link rel="manifest" href="/site.webmanifest" />

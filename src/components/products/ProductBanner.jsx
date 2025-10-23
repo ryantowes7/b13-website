@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { markdownToHtml } from '@/lib/clientMarkdown';
 
 // Utility functions for dynamic positioning and styling
 const getVerticalAlignment = (vertical) => {
@@ -173,7 +174,7 @@ export default function ProductBanner({ category }) {
               </h1>
               <div 
                 className={`text-white/90 leading-relaxed prose prose-invert ${getSubtitleSize(banner.text_position?.subtitle_size)}`}
-                dangerouslySetInnerHTML={{ __html: formatMarkdown(banner.subtitle || category.description) }}
+                dangerouslySetInnerHTML={{ __html: markdownToHtml(banner.subtitle || category.description) }}
               />
             </div>
           </div>

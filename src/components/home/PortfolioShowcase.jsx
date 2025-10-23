@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import Button from '@/components/ui/Button';
 import { ChevronRight, Plus } from 'lucide-react';
+import { markdownToHtml } from '@/lib/clientMarkdown';
 
 export default function PortfolioShowcase() {
   const [portfolioItems, setPortfolioItems] = useState([]);
@@ -173,9 +174,10 @@ export default function PortfolioShowcase() {
                   </h3>
 
                   {/* Description */}
-                  <p className="text-neutral-600 text-xs sm:text-sm leading-relaxed mb-3 sm:mb-4 line-clamp-2">
-                    {item.description}
-                  </p>
+                  <div 
+                    className="text-neutral-600 text-xs sm:text-sm leading-relaxed mb-3 sm:mb-4 line-clamp-2 prose prose-sm max-w-none prose-p:mb-1 prose-ul:my-1 prose-li:my-0"
+                    dangerouslySetInnerHTML={{ __html: markdownToHtml(item.description || '') }}
+                  />
 
                   {/* Client Info */}
                   {item.client && (
