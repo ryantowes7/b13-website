@@ -19,16 +19,15 @@ services:
       Produksi dengan bahan berkualitas, desain presisi dengan teknik modern,
       hasil rapi dan tahan lama.
 
+      - K﻿aos 
 
-      K﻿aos\
+      - K﻿emeja 
 
-      K﻿emeja\
+      - P﻿olo  
 
-      P﻿olo\
+      - J﻿aket  
 
-      J﻿aket\
-
-      B﻿ordir Komputer
+      - B﻿ordir Komputer
   - icon: needle
     title: Percetakan
     description: |-
