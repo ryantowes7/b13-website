@@ -19,39 +19,45 @@ services:
       Produksi dengan bahan berkualitas, desain presisi dengan teknik modern,
       hasil rapi dan tahan lama.
 
+      - K﻿aos/Polo 
 
-      * K﻿aos
+      - K﻿emeja 
 
-      * K﻿emeja
+      - Jersey 
 
-      * P﻿olo
+      - J﻿aket 
 
-      * J﻿aket
-
-      * B﻿ordir Komputer
+      - B﻿ordir Komputer
   - icon: needle
-    title: Advertising dan Percetakan
-    description: |-
-      M﻿elayani berbagai jenis desain cetak dan kebutuhan promosi bisnis lainnya
+    title: Percetakan
+    description: >-
+      M﻿elayani berbagai jenis desain cetak dan kebutuhan promosi bisnis
+      lainnya 
 
-      * C﻿etak Banner
-      * S﻿tiker
-      * S﻿panduk
-      * L﻿ayanan Desain
+      - C﻿etak Banner 
+
+      - S﻿tiker 
+
+      - S﻿panduk 
+
+      -﻿ Umbul-umbul 
+
+      - L﻿ayanan Desain lainnya
   - icon: printer
     title: Merchandise
     description: >-
       M﻿emberikan solusi kreatif dengan menciptakan produk promosi yang unik dan
-      berkelas
+      berkelas 
 
+      - T﻿umbler 
 
-      * T﻿umbler
+      - M﻿ug 
 
-      * M﻿ug
+      - P﻿in 
 
-      * P﻿in
+      - Topi Custom 
 
-      * d﻿an produk Costum lainnya
+      - P﻿roduk Lainnya 
 portfolio_stats:
   projects_completed: 150+
   happy_clients: 100+
