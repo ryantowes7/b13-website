@@ -1,9 +1,12 @@
 ---
 name: Kaos Wangkie/Polo Premium
-category: kaos
+category: polo
 price: "85000"
 originalPrice: "95000"
-image: /uploads/wangkie.webp
+images_section:
+  card_image: /uploads/wangkie.webp
+  detail_image: /uploads/wangkie.webp
+  home_image: /uploads/wangkie.webp
 description: Kaos polo bahan cotton pique berkualitas tinggi yang nyaman
   digunakan dan tahan lama. Dapat dipadukan dengan bordir komputer untuk
   mendapatkan hasil desain yang presisi.
@@ -16,7 +19,8 @@ tags:
   - item: wangkie
   - item: kaos krah
 inStock: true
-minOrder: 24
+minOrder: 12
 stockType: order
 variants: []
+image: /uploads/wangkie.webp
 ---
