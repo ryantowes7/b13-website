@@ -3,8 +3,11 @@ name: Kaos Sablon
 category: kaos
 price: "65000"
 originalPrice: "75000"
-image: /uploads/sablon.webp
-images: []
+images_section:
+  card_image: /uploads/sablon.webp
+  detail_image: /uploads/sablon.webp
+images:
+  - url: /uploads/produk1.jpg
 description: Kami menyediakan kaos sablon dengan kualitas bahan premium.
 features:
   - item: Cotton Combed Premium
@@ -16,7 +19,8 @@ tags:
   - item: Sablon
   - item: DTF
 inStock: true
-minOrder: 12
+minOrder: 7
 stockType: order
 variants: []
+image: /uploads/sablon.webp
 ---
