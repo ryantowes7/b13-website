@@ -21,7 +21,8 @@ tags:
 inStock: true
 minOrder: 12
 stockType: order
-homePosition: second
+homePosition: carousel
+homeOrder: 6
 variants: []
 image: /uploads/wangkie.webp
 ---
