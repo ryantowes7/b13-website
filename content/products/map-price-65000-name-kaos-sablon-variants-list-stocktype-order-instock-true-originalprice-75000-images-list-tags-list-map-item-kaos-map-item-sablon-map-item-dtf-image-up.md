@@ -20,6 +20,8 @@ tags:
 inStock: true
 minOrder: 6
 stockType: order
+homePosition: carousel
+homeOrder: 1
 variants: []
 image: /uploads/sablon.webp
 ---
