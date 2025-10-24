@@ -21,9 +21,32 @@ export default function handler(req, res) {
       const fileContents = fs.readFileSync(filePath, 'utf8');
       const { data, content } = matter(fileContents);
       
+      // Normalize image fields for better compatibility
+      // Extract images from images_section if they exist
+      let image = data.image; // Use existing image if present
+      let home_image = data.home_image;
+      let card_image = data.card_image;
+      let detail_image = data.detail_image;
+      
+      // If images_section exists, extract all image types
+      if (data.images_section) {
+        home_image = home_image || data.images_section.home_image;
+        card_image = card_image || data.images_section.card_image;
+        detail_image = detail_image || data.images_section.detail_image;
+      }
+      
+      // Set main image field with priority: existing image > home_image > card_image > detail_image
+      if (!image) {
+        image = home_image || card_image || detail_image;
+      }
+      
       return {
         slug,
         ...data,
+        image, // Main image for general use (especially featured products)
+        home_image, // For home page display
+        card_image, // For product list cards
+        detail_image, // For product detail page
         body: content
       };
     });
