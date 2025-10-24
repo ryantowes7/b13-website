@@ -3,7 +3,10 @@ name: Kaos Oblong
 category: kaos
 price: "34000"
 originalPrice: "40000"
-image: /uploads/produk1.jpg
+images_section:
+  home_image: /uploads/produk1.jpg
+  card_image: /uploads/produk1.jpg
+  detail_image: /uploads/produk1.jpg
 description: >-
   Kaos Oblong (Polos)
 
@@ -20,5 +23,8 @@ tags:
 inStock: true
 minOrder: 1
 stockType: order
+homePosition: carousel
+homeOrder: 3
 variants: []
+image: /uploads/produk1.jpg
 ---

@@ -23,5 +23,7 @@ tags:
 inStock: true
 minOrder: 24
 stockType: order
+homePosition: carousel
+homeOrder: 2
 variants: []
 ---

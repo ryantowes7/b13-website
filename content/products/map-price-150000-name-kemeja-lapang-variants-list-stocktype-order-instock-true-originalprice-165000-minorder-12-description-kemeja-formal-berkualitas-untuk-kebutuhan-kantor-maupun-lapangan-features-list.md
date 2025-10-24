@@ -16,5 +16,6 @@ features:
 inStock: true
 minOrder: 12
 stockType: order
+homePosition: featured
 variants: []
 ---
