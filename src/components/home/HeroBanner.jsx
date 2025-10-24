@@ -220,13 +220,16 @@ export default function HeroBanner() {
     return () => clearInterval(interval);
   }, [isLoading, heroData, isHovering, nextSlide]);
 
-  // Fade in/out effect for marquee text
+  // Sequential marquee animation
   useEffect(() => {
-    const fadeInterval = setInterval(() => {
-      setFadeVisible((prev) => !prev);
-    }, 3000); // Toggle every 3 seconds
+    // Reset animation by toggling state
+    const animationDuration = 8000; // Duration for one complete scroll
+    const restartInterval = setInterval(() => {
+      setFadeVisible(false);
+      setTimeout(() => setFadeVisible(true), 100);
+    }, animationDuration);
 
-    return () => clearInterval(fadeInterval);
+    return () => clearInterval(restartInterval);
   }, []);
 
   // Jangan render sampai data ready dan loading selesai
@@ -327,16 +330,16 @@ export default function HeroBanner() {
         </div>
       )}
 
-      {/* Marquee Banner - Fade In/Out Animation */}
+      {/* Marquee Banner - Sequential Scrolling Animation */}
       <div className="absolute bottom-0 left-0 right-0 bg-primary-600/90 backdrop-blur-sm py-3 sm:py-4 overflow-hidden z-30">
-        <div className="flex justify-center items-center px-[15%]">
-          <span 
-            className={`text-white font-semibold text-base sm:text-lg text-center transition-opacity duration-1000 ${
-              fadeVisible ? 'opacity-100' : 'opacity-0'
-            }`}
-          >
-            ✦ {business_hours}
-          </span>
+        <div className="relative w-full h-full">
+          {fadeVisible && (
+            <div className="absolute w-full animate-marquee-single whitespace-nowrap">
+              <span className="text-white font-semibold text-base sm:text-lg">
+                ✦ {business_hours}
+              </span>
+            </div>
+          )}
         </div>
       </div>
 
