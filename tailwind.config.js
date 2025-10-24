@@ -53,7 +53,7 @@ module.exports = {
       },
       animation: {
         'marquee': 'marquee 25s linear infinite',
-        'marquee-single': 'marqueeSingle 8s linear infinite',
+        'marquee-single': 'marqueeSingle 18s linear infinite',
         'fade-in': 'fadeIn 0.5s ease-in-out',
         'slide-up': 'slideUp 0.5s ease-out',
         'bounce-slow': 'bounce 2s infinite',
@@ -64,10 +64,10 @@ module.exports = {
           '100%': { transform: 'translateX(-100%)' },
         },
         marqueeSingle: {
-          '0%': { transform: 'translateX(115%)', opacity: '0' },
-          '5%': { opacity: '1' },
-          '95%': { opacity: '1' },
-          '100%': { transform: 'translateX(-115%)', opacity: '0' },
+          '0%': { transform: 'translateX(120%)', opacity: '0' },
+          '10%': { transform: 'translateX(20%)', opacity: '1' },
+          '90%': { transform: 'translateX(-20%)', opacity: '1' },
+          '100%': { transform: 'translateX(-120%)', opacity: '0' },
         },
         fadeIn: {
           '0%': { opacity: '0', transform: 'translateY(20px)' },

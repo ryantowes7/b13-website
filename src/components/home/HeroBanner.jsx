@@ -223,7 +223,7 @@ export default function HeroBanner() {
   // Sequential marquee animation
   useEffect(() => {
     // Reset animation by toggling state
-    const animationDuration = 8000; // Duration for one complete scroll
+    const animationDuration = 18000; // Duration for one complete scroll
     const restartInterval = setInterval(() => {
       setFadeVisible(false);
       setTimeout(() => setFadeVisible(true), 100);
@@ -331,11 +331,11 @@ export default function HeroBanner() {
       )}
 
       {/* Marquee Banner - Sequential Scrolling Animation */}
-      <div className="absolute bottom-0 left-0 right-0 bg-primary-600/90 backdrop-blur-sm py-3 sm:py-4 overflow-hidden z-30">
-        <div className="relative w-full h-full">
+      <div className="absolute bottom-0 left-0 right-0 bg-primary-600/90 backdrop-blur-sm py-4 sm:py-5 overflow-hidden z-30">
+        <div className="relative w-full flex items-center justify-center" style={{ minHeight: '2rem' }}>
           {fadeVisible && (
-            <div className="absolute w-full animate-marquee-single whitespace-nowrap">
-              <span className="text-white font-semibold text-base sm:text-lg">
+            <div className="absolute w-full flex items-center justify-center animate-marquee-single">
+              <span className="text-white font-semibold text-base sm:text-lg whitespace-nowrap">
                 ✦ {business_hours}
               </span>
             </div>
