@@ -97,6 +97,7 @@ export default function HeroBanner() {
   const [heroData, setHeroData] = useState(null);
   const [contactData, setContactData] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [fadeVisible, setFadeVisible] = useState(true);
 
   const defaultHeroData = {
     slides: [
@@ -219,6 +220,15 @@ export default function HeroBanner() {
     return () => clearInterval(interval);
   }, [isLoading, heroData, isHovering, nextSlide]);
 
+  // Fade in/out effect for marquee text
+  useEffect(() => {
+    const fadeInterval = setInterval(() => {
+      setFadeVisible((prev) => !prev);
+    }, 3000); // Toggle every 3 seconds
+
+    return () => clearInterval(fadeInterval);
+  }, []);
+
   // Jangan render sampai data ready dan loading selesai
   if (isLoading || !heroData || !contactData) {
     return (
@@ -317,19 +327,14 @@ export default function HeroBanner() {
         </div>
       )}
 
-      {/* Marquee Banner - Improved Animation */}
+      {/* Marquee Banner - Fade In/Out Animation */}
       <div className="absolute bottom-0 left-0 right-0 bg-primary-600/90 backdrop-blur-sm py-3 sm:py-4 overflow-hidden z-30">
-        <div className="flex animate-marquee whitespace-nowrap">
-          <span className="text-white font-semibold text-base sm:text-lg px-8">
-            ✦ {business_hours}
-          </span>
-          <span className="text-white font-semibold text-base sm:text-lg px-8">
-            ✦ {business_hours}
-          </span>
-          <span className="text-white font-semibold text-base sm:text-lg px-8">
-            ✦ {business_hours}
-          </span>
-          <span className="text-white font-semibold text-base sm:text-lg px-8">
+        <div className="flex justify-center items-center px-[15%]">
+          <span 
+            className={`text-white font-semibold text-base sm:text-lg text-center transition-opacity duration-1000 ${
+              fadeVisible ? 'opacity-100' : 'opacity-0'
+            }`}
+          >
             ✦ {business_hours}
           </span>
         </div>
