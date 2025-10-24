@@ -2,6 +2,7 @@
 import { useState, useEffect } from 'react';
 import Button from '@/components/ui/Button';
 import { markdownToHtml } from '@/components/lib/clientMarkdown';
+import { Check } from 'lucide-react';
 
 export default function ProductCategories() {
   const [servicesData, setServicesData] = useState(null);
@@ -70,6 +71,35 @@ export default function ProductCategories() {
     
     loadServices();
   }, []);
+
+  // Helper function to parse description and extract list items
+  const parseDescription = (description) => {
+    if (!description) return { text: '', items: [] };
+    
+    const lines = description.split('\n').map(line => line.trim()).filter(line => line);
+    const text = [];
+    const items = [];
+    
+    for (const line of lines) {
+      // Check if line starts with markdown bullet (-, *, +)
+      if (line.match(/^[-*+]\s+/)) {
+        // Extract item text (remove bullet marker)
+        const itemText = line.replace(/^[-*+]\s+/, '').trim();
+        if (itemText) {
+          items.push(itemText);
+        }
+      } else {
+        // It's a regular paragraph line
+        text.push(line);
+      }
+    }
+    
+    return {
+      text: text.join(' '),
+      items: items
+    };
+  };
+
   
   // Helper function untuk assign warna berdasarkan index
   const getColorByIndex = (index) => {
@@ -124,33 +154,58 @@ export default function ProductCategories() {
 
         {/* Services Grid - Mobile Optimized */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8 mb-8 sm:mb-10 lg:mb-12">
-          {services.map((service, index) => (
-            <div 
-              key={index}
-              className="group relative bg-neutral-800 rounded-xl sm:rounded-2xl p-5 sm:p-6 lg:p-8 hover:bg-neutral-700 transition-all duration-500 hover:transform hover:-translate-y-2"
-            >
-              {/* Gradient Accent - Mobile Optimized */}
-              <div className={`absolute top-0 left-4 sm:left-6 lg:left-8 w-12 sm:w-14 lg:w-16 h-1 bg-gradient-to-r ${getColorClasses(service.color)} rounded-full`} />
-              
-              <div className="mb-4 sm:mb-5 lg:mb-6">
-                <h3 className="text-lg sm:text-xl lg:text-2xl font-bold text-white mb-2 sm:mb-3">
-                  {service.title}
-                </h3>
-                <div 
-                  className="text-neutral-300 text-sm sm:text-base leading-normal prose prose-invert max-w-none prose-p:mb-2 prose-p:leading-normal prose-ul:my-2 prose-ul:space-y-1 prose-li:my-0.5 prose-li:leading-normal prose-strong:text-white prose-em:text-neutral-200"
-                  dangerouslySetInnerHTML={{ __html: markdownToHtml(service.description) }}
-                />
-              </div>
-
-              <Button 
-                href="/produk" 
-                variant="outline"
-                className="w-full border-neutral-600 text-white hover:bg-white hover:text-neutral-900 text-sm sm:text-base py-2 sm:py-3"
+          {services.map((service, index) => {
+            const { text, items } = parseDescription(service.description);
+            
+            return (
+              <div 
+                key={index}
+                className="group relative bg-neutral-800 rounded-xl sm:rounded-2xl p-5 sm:p-6 lg:p-8 hover:bg-neutral-700 transition-all duration-500 hover:transform hover:-translate-y-2"
               >
-                Explore {service.title}
-              </Button>
-            </div>
-          ))}
+                {/* Gradient Accent - Mobile Optimized */}
+                <div className={`absolute top-0 left-4 sm:left-6 lg:left-8 w-12 sm:w-14 lg:w-16 h-1 bg-gradient-to-r ${getColorClasses(service.color)} rounded-full`} />
+                
+                <div className="mb-4 sm:mb-5 lg:mb-6">
+                  <h3 className="text-lg sm:text-xl lg:text-2xl font-bold text-white mb-3 sm:mb-4">
+                    {service.title}
+                  </h3>
+                  
+                  {/* Description Text */}
+                  {text && (
+                    <p className="text-neutral-300 text-sm sm:text-base leading-relaxed mb-4">
+                      {text}
+                    </p>
+                  )}
+                  
+                  {/* Feature Items with Checkmarks */}
+                  {items.length > 0 && (
+                    <ul className="space-y-2 sm:space-y-2.5">
+                      {items.map((item, itemIndex) => (
+                        <li 
+                          key={itemIndex}
+                          className="flex items-start gap-2 sm:gap-2.5 text-neutral-300 text-sm sm:text-base"
+                        >
+                          <Check 
+                            className="w-4 h-4 sm:w-5 sm:h-5 text-green-500 flex-shrink-0 mt-0.5" 
+                            strokeWidth={3}
+                          />
+                          <span className="leading-snug">{item}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  )}
+                </div>
+
+                <Button 
+                  href="/produk" 
+                  variant="outline"
+                  className="w-full border-neutral-600 text-white hover:bg-white hover:text-neutral-900 text-sm sm:text-base py-2 sm:py-3"
+                >
+                  Explore {service.title}
+                </Button>
+              </div>
+            );
+          })}
         </div>
 
         {/* CTA Button - Mobile Optimized */}
