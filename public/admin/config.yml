@@ -354,6 +354,8 @@ collections:
       - { label: "In Stock", name: "inStock", widget: "boolean", default: true }
       - { label: "Minimum Order", name: "minOrder", widget: "number", default: 1 }
       - { label: "Stock Type", name: "stockType", widget: "select", options: ["ready", "order"], default: "order", hint: "Pilih 'ready' untuk Ready Stock atau 'order' untuk Made to Order" }
+      - { label: "Home Page Position", name: "homePosition", widget: "select", options: ["none", "featured", "second", "carousel"], default: "none", hint: "Pilih posisi tampilan di Home Page: 'featured' (utama besar), 'second' (kedua di desktop), 'carousel' (carousel), atau 'none' (tidak ditampilkan di home). Jika memilih 'featured' atau 'second' saat sudah ada produk lain, produk lama akan otomatis turun posisi." }
+      - { label: "Home Display Order", name: "homeOrder", widget: "number", default: 999, required: false, hint: "Urutan prioritas tampilan di home (angka lebih kecil = lebih prioritas). Digunakan untuk mengurutkan produk jika ada beberapa produk dengan posisi yang sama." }
       - label: "Variants (untuk Ready Stock)"
         name: "variants"
         widget: "list"
