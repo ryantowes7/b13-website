@@ -18,25 +18,44 @@ export default function Document() {
         <meta name="theme-color" content="#0066B3" />
         <meta name="msapplication-TileColor" content="#0066B3" />
         
-        {/* Preload Critical Fonts */}
+        {/* Optimized Font Loading - Defer non-critical fonts */}
         <link
-          rel="preload"
-          href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
-          as="style"
+          rel="preconnect"
+          href="https://fonts.googleapis.com"
+        />
+        <link
+          rel="preconnect"
+          href="https://fonts.gstatic.com"
+          crossOrigin="anonymous"
         />
         <link
           href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
           rel="stylesheet"
+          media="print"
+          onLoad="this.media='all'"
         />
+        <noscript>
+          <link
+            href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
+            rel="stylesheet"
+          />
+        </noscript>
         
         {/* Preload Critical CSS */}
         <style
           dangerouslySetInnerHTML={{
             __html: `
               /* Critical CSS untuk above-the-fold content */
+              * {
+                margin: 0;
+                padding: 0;
+                box-sizing: border-box;
+              }
               body {
                 margin: 0;
-                font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+                font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+                -webkit-font-smoothing: antialiased;
+                -moz-osx-font-smoothing: grayscale;
               }
               
               /* Hide scrollbar during initial load */
@@ -53,6 +72,8 @@ export default function Document() {
         {/* DNS Prefetch untuk external domains */}
         <link rel="dns-prefetch" href="//fonts.googleapis.com" />
         <link rel="dns-prefetch" href="//fonts.gstatic.com" />
+        <link rel="dns-prefetch" href="//maps.googleapis.com" />
+        <link rel="dns-prefetch" href="//maps.gstatic.com" />
         
         {/* Additional Meta Tags */}
         <meta name="apple-mobile-web-app-capable" content="yes" />

@@ -269,11 +269,22 @@ export default function HeroBanner() {
             className={`absolute inset-0 transition-opacity duration-1000 ${
               index === safeCurrentSlide ? 'opacity-100' : 'opacity-0'
             }`}
+            style={{ willChange: index === safeCurrentSlide ? 'opacity' : 'auto' }}
           >
             {slide.image ? (
-              <div 
-                className="w-full h-full bg-cover bg-center"
-                style={{ backgroundImage: `url(${slide.image})` }}
+              <img
+                src={slide.image}
+                alt={slide.title}
+                className="w-full h-full object-cover"
+                style={{ 
+                  position: 'absolute',
+                  top: 0,
+                  left: 0,
+                  width: '100%',
+                  height: '100%'
+                }}
+                fetchPriority={index === 0 ? 'high' : 'low'}
+                loading={index === 0 ? 'eager' : 'lazy'}
               />
             ) : (
               <div className="w-full h-full bg-gradient-to-br from-primary-600 to-primary-800 flex items-center justify-center">

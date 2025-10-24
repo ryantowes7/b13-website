@@ -109,7 +109,7 @@ export default function ProductCategories() {
 
   if (isLoading || !servicesData) {
     return (
-      <section className="min-h-screen flex items-center bg-neutral-900">
+      <section className="min-h-screen flex items-center bg-neutral-900" style={{ minHeight: '100vh' }}>
         <div className="container-custom section-padding text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-white mx-auto mb-4"></div>
           <p className="text-white">Loading Services...</p>

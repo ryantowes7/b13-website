@@ -134,7 +134,7 @@ export default function FeaturedProducts() {
 
   if (isLoading) {
     return (
-      <section className="min-h-screen flex items-center justify-center bg-gradient-to-b from-neutral-50 to-white">
+      <section className="min-h-screen flex items-center justify-center bg-gradient-to-b from-neutral-50 to-white" style={{ minHeight: '100vh' }}>
         <div className="text-center">
           <div className="animate-spin rounded-full h-16 w-16 border-b-4 border-primary-600 mx-auto mb-4"></div>
           <p className="text-neutral-600 text-lg font-medium">Loading products...</p>
@@ -168,14 +168,18 @@ export default function FeaturedProducts() {
               {featuredProduct && (
                 <Link href={`/produk/${featuredProduct.slug}`} className="block lg:float-left lg:w-[66%] lg:pr-4 mb-4 lg:mb-0 group">
                   {/* Mobile: 4:3 aspect ratio, Desktop: original height */}
-                  <div className="relative rounded-2xl sm:rounded-3xl overflow-hidden shadow-xl sm:shadow-2xl hover:shadow-3xl transition-all duration-500 transform hover:-translate-y-2 h-[350px] sm:h-[400px] lg:h-[500px]">
+                  <div className="relative rounded-2xl sm:rounded-3xl overflow-hidden shadow-xl sm:shadow-2xl hover:shadow-3xl transition-all duration-500 transform hover:-translate-y-2 h-[350px] sm:h-[400px] lg:h-[500px]" style={{ contain: 'layout', willChange: 'transform' }}>
                     {/* Image Background */}
-                    <div className="absolute inset-0">
+                    <div className="absolute inset-0" style={{ contain: 'paint' }}>
                       {featuredProduct.image ? (
                         <img
                           src={featuredProduct.image}
                           alt={featuredProduct.name}
+                          width="1200"
+                          height="800"
                           className="w-full h-full object-contain bg-neutral-100 transform group-hover:scale-105 transition-transform duration-700"
+                          loading="eager"
+                          fetchPriority="high"
                         />
                       ) : (
                         <div className="w-full h-full bg-gradient-to-br from-primary-100 to-secondary-100"></div>
@@ -225,7 +229,10 @@ export default function FeaturedProducts() {
                           <img
                             src={secondProduct.image}
                             alt={secondProduct.name}
+                            width="600"
+                            height="800"
                             className="w-full h-full object-contain bg-neutral-100 transform group-hover:scale-105 transition-transform duration-700"
+                            loading="lazy"
                           />
                         ) : (
                           <div className="w-full h-full bg-gradient-to-br from-secondary-100 to-primary-100"></div>
@@ -288,7 +295,10 @@ export default function FeaturedProducts() {
                                 <img
                                   src={product.image}
                                   alt={product.name}
+                                  width="400"
+                                  height="533"
                                   className="w-full h-full object-contain bg-neutral-100 transform group-hover:scale-105 transition-transform duration-700"
+                                  loading="lazy"
                                 />
                               ) : (
                                 <div className="w-full h-full bg-gradient-to-br from-neutral-200 to-neutral-300"></div>
