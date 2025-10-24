@@ -6,8 +6,7 @@ originalPrice: "75000"
 images_section:
   card_image: /uploads/sablon.webp
   detail_image: /uploads/sablon.webp
-images:
-  - url: /uploads/produk1.jpg
+images: []
 description: Kami menyediakan kaos sablon dengan kualitas bahan premium.
 features:
   - item: Cotton Combed Premium
