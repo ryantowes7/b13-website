@@ -18,7 +18,7 @@ tags:
   - item: Sablon
   - item: DTF
 inStock: true
-minOrder: 7
+minOrder: 6
 stockType: order
 variants: []
 image: /uploads/sablon.webp
