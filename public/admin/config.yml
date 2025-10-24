@@ -298,10 +298,10 @@ collections:
     create: true
     slug: "{{slug}}"
     identifier_field: "name"
-    delete: false  # Prevent deletion of default "all" category
+    delete: true
     fields:
-      - { label: "Category Name", name: "name", widget: "string" }
-      - { label: "Slug", name: "slug", widget: "string", hint: "URL-friendly name (e.g., 'kaos', 'bordir', 'all' untuk Semua Produk)", pattern: ["^[a-z0-9-]+$", "Must be lowercase letters, numbers, and hyphens only"] }
+      - { label: "Category Name", name: "name", widget: "string", hint: "⚠️ JANGAN hapus kategori dengan slug 'all' - kategori ini WAJIB ada untuk sistem" }
+      - { label: "Slug", name: "slug", widget: "string", hint: "⚠️ PENTING: Slug 'all' adalah KATEGORI SISTEM yang WAJIB ada dan TIDAK BOLEH dihapus! Untuk kategori lain gunakan format: 'kaos', 'bordir', dll", pattern: ["^[a-z0-9-]+$", "Must be lowercase letters, numbers, and hyphens only"] }
       - { label: "Description", name: "description", widget: "text", hint: "Deskripsi singkat category" }
       - label: "Banner Images"
         name: "banners"
@@ -324,7 +324,7 @@ collections:
               - { label: "Subtitle Font Size", name: "subtitle_size", widget: "select", options: ["small", "medium", "large"], default: "medium", hint: "Ukuran font subtitle" }
       - { label: "Color Theme", name: "color", widget: "select", options: ["blue", "green", "red", "purple", "orange", "teal", "slate"], default: "blue", hint: "Color theme for category" }
       - { label: "Icon", name: "icon", widget: "string", required: false, hint: "Icon name from lucide-react" }
-      - { label: "Is Default (All Products)", name: "is_default", widget: "boolean", default: false, hint: "Set to true ONLY for 'Semua Produk' category" }
+      - { label: "Is Default (All Products)", name: "is_default", widget: "boolean", default: false, hint: "⚠️ HANYA untuk kategori 'all' (Semua Produk). Kategori ini WAJIB ada dan TIDAK BOLEH dihapus!" }
 
   # ==================== PRODUCTS ====================
   - name: "products"
@@ -373,10 +373,10 @@ collections:
     create: true
     slug: "{{slug}}"
     identifier_field: "name"
-    delete: false  # Prevent deletion of default "all" category
+    delete: true  # Prevent deletion of default "all" category
     fields:
-      - { label: "Category Name", name: "name", widget: "string" }
-      - { label: "Slug", name: "slug", widget: "string", hint: "URL-friendly name (e.g., 'garment', 'bordir', 'all' untuk Semua Portfolio)", pattern: ["^[a-z0-9-]+$", "Must be lowercase letters, numbers, and hyphens only"] }
+      - { label: "Category Name", name: "name", widget: "string", hint: "⚠️ JANGAN hapus kategori dengan slug 'all' - kategori ini WAJIB ada untuk sistem" }
+      - { label: "Slug", name: "slug", widget: "string", hint: "⚠️ PENTING: Slug 'all' adalah KATEGORI SISTEM yang WAJIB ada dan TIDAK BOLEH dihapus! Untuk kategori lain gunakan format: 'garment', 'bordir', dll", pattern: ["^[a-z0-9-]+$", "Must be lowercase letters, numbers, and hyphens only"] }
       - { label: "Description", name: "description", widget: "text", hint: "Deskripsi singkat category" }
       - label: "Banner Images"
         name: "banners"
@@ -399,7 +399,7 @@ collections:
               - { label: "Subtitle Font Size", name: "subtitle_size", widget: "select", options: ["small", "medium", "large"], default: "medium", hint: "Ukuran font subtitle" }
       - { label: "Color Theme", name: "color", widget: "select", options: ["blue", "green", "red", "purple", "orange", "teal", "slate"], default: "blue", hint: "Color theme for category" }
       - { label: "Icon", name: "icon", widget: "string", required: false, hint: "Icon name from lucide-react" }
-      - { label: "Is Default (All Portfolio)", name: "is_default", widget: "boolean", default: false, hint: "Set to true ONLY for 'Semua Portfolio' category" }
+      - { label: "Is Default (All Portfolio)", name: "is_default", widget: "boolean", default: false, hint: "⚠️ HANYA untuk kategori 'all' (Semua Portfolio). Kategori ini WAJIB ada dan TIDAK BOLEH dihapus!" }
 
   # ==================== PORTFOLIO ====================
   - name: "portfolio"
