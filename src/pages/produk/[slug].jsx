@@ -205,12 +205,12 @@ export default function ProductDetail() {
             {/* Product Images */}
             <div>
               {/* Main Image */}
-              <div className="bg-neutral-50 rounded-xl sm:rounded-2xl overflow-hidden mb-3 sm:mb-4 relative group" style={{ aspectRatio: '4/3', minHeight: '280px' }}>
+              <div className="bg-neutral-50 rounded-xl sm:rounded-2xl overflow-hidden mb-3 sm:mb-4 relative group" style={{ aspectRatio: '3/4', minHeight: '400px' }}>
                 {currentImage ? (
                   <img 
                     src={currentImage} 
                     alt={product.name}
-                    className="w-full h-full object-contain p-2 sm:p-4"
+                    className="w-full h-full object-cover"
                   />
                 ) : (
                   <div className="w-full h-full flex items-center justify-center text-neutral-400 text-center">
