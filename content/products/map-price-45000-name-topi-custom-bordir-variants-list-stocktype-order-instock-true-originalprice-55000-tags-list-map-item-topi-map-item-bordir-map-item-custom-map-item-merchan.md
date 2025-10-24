@@ -6,6 +6,7 @@ originalPrice: "55000"
 images_section:
   card_image: /uploads/topi1.webp
   detail_image: /uploads/topi1.webp
+  home_image: /uploads/topi1.webp
 description: Topi custom dengan bordir logo atau desain sesuai keinginan. Cocok
   untuk merchandise, event, atau souvenir
 features:
