@@ -11,6 +11,13 @@ hero_banners:
       text_align: center
       title_size: large
       subtitle_size: medium
+marquee_banner:
+  enabled: true
+  texts:
+    - text: "✦ Buka Setiap Hari (Weekday 09.00 - 17.00, Weekend 09.00 - 15.00)"
+  bg_color: primary
+  text_color: white
+  speed: medium
 services_title: Layanan Kami
 services:
   - icon: shirt
