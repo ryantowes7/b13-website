@@ -4,6 +4,12 @@ banner_title: About B13 Factory
 banner_subtitle: Specialist dalam garment dan advertising dengan pengalaman
   lebih dari 15 tahun. Kami berkomitmen memberikan solusi terbaik untuk
   kebutuhan bisnis Anda.
+banner_text_position:
+  horizontal: center
+  vertical: center
+  text_align: center
+  title_size: medium
+  subtitle_size: medium
 company_title: Garment & Advertising Specialist
 company_description: >-
   Sejak berdiri pada tahun 2015, **B13 Factory** telah menjadi mitra terpercaya
@@ -14,7 +20,7 @@ company_description: >-
 
 
   Berawal dari sebuah workshop kecil, kini B13 Factory berkembang menjadi perusahaan yang mampu menangani berbagai kebutuhan produksi untuk individu, komunitas, instansi, hingga perusahaan besar. Kami percaya bahwa setiap produk bukan sekadar barang, tetapi identitas dan representasi kualitas yang membawa cerita serta kepercayaan dari setiap klien.
-company_image: /uploads/logo.png
+company_image: /uploads/logo_webp.webp
 company_stats:
   years_experience: 15+
   projects_completed: 150+
