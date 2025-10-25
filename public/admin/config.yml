@@ -99,6 +99,22 @@ collections:
                   - { label: "Text Alignment", name: "text_align", widget: "select", options: ["left", "center", "right"], default: "center", hint: "Alignment teks (left/center/right)" }
                   - { label: "Title Font Size", name: "title_size", widget: "select", options: ["small", "medium", "large", "extra-large"], default: "large", hint: "Ukuran font judul" }
                   - { label: "Subtitle Font Size", name: "subtitle_size", widget: "select", options: ["small", "medium", "large"], default: "medium", hint: "Ukuran font subtitle" }
+          - label: "Marquee Banner Settings"
+            name: "marquee_banner"
+            widget: "object"
+            required: false
+            hint: "Pengaturan tulisan bergerak (marquee) yang muncul di bawah hero banner"
+            fields:
+              - { label: "Tampilkan Marquee", name: "enabled", widget: "boolean", default: true, hint: "Aktifkan/nonaktifkan tulisan bergerak" }
+              - label: "Marquee Texts"
+                name: "texts"
+                widget: "list"
+                hint: "Daftar teks yang akan ditampilkan di marquee. Jika lebih dari 1, akan berganti-ganti secara otomatis."
+                fields:
+                  - { label: "Text", name: "text", widget: "string", hint: "Contoh: ✦ Buka Setiap Hari (Weekday 09.00 - 17.00, Weekend 09.00 - 15.00)" }
+              - { label: "Background Color", name: "bg_color", widget: "select", options: ["primary", "blue", "green", "red", "purple", "orange", "teal", "slate", "black"], default: "primary", hint: "Warna background marquee" }
+              - { label: "Text Color", name: "text_color", widget: "select", options: ["white", "black", "gray"], default: "white", hint: "Warna teks marquee" }
+              - { label: "Animation Speed", name: "speed", widget: "select", options: ["slow", "medium", "fast"], default: "medium", hint: "Kecepatan animasi: slow (20s), medium (15s), fast (10s)" }
           - label: "Featured Products Section"
             name: "featured_products_section"
             widget: "object"

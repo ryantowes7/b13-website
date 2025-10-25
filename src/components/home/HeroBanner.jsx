@@ -95,9 +95,10 @@ export default function HeroBanner() {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [isHovering, setIsHovering] = useState(false);
   const [heroData, setHeroData] = useState(null);
-  const [contactData, setContactData] = useState(null);
+  const [marqueeData, setMarqueeData] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [fadeVisible, setFadeVisible] = useState(true);
+  const [currentMarqueeIndex, setCurrentMarqueeIndex] = useState(0);
 
   const defaultHeroData = {
     slides: [
@@ -122,8 +123,48 @@ export default function HeroBanner() {
     ]
   };
 
-  const defaultContactData = {
-    business_hours: "Buka Setiap Hari Pukul 09.00 - 17.00 WIB"
+  const defaultMarqueeData = {
+    enabled: true,
+    texts: [{ text: "✦ Buka Setiap Hari Pukul 09.00 - 17.00 WIB" }],
+    bg_color: "primary",
+    text_color: "white",
+    speed: "medium"
+  };
+
+  // Helper function to get background color class
+  const getMarqueeBgColor = (color) => {
+    const colorMap = {
+      'primary': 'bg-primary-600/90',
+      'blue': 'bg-blue-600/90',
+      'green': 'bg-green-600/90',
+      'red': 'bg-red-600/90',
+      'purple': 'bg-purple-600/90',
+      'orange': 'bg-orange-600/90',
+      'teal': 'bg-teal-600/90',
+      'slate': 'bg-slate-600/90',
+      'black': 'bg-black/90'
+    };
+    return colorMap[color] || 'bg-primary-600/90';
+  };
+
+  // Helper function to get text color class
+  const getMarqueeTextColor = (color) => {
+    const colorMap = {
+      'white': 'text-white',
+      'black': 'text-black',
+      'gray': 'text-gray-700'
+    };
+    return colorMap[color] || 'text-white';
+  };
+
+  // Helper function to get animation duration based on speed
+  const getAnimationDuration = (speed) => {
+    const durationMap = {
+      'slow': 20000,    // 20 seconds
+      'medium': 15000,  // 15 seconds
+      'fast': 10000     // 10 seconds
+    };
+    return durationMap[speed] || 15000;
   };
 
   // Use useCallback untuk stable function references
@@ -147,17 +188,14 @@ export default function HeroBanner() {
       try {
         setIsLoading(true);
 
-        // Fetch home content dan site config
-        const [homeRes, configRes] = await Promise.all([
-          fetch('/api/content/home'),
-          fetch('/api/content/site-config')
-        ]);
+        // Fetch home content
+        const homeRes = await fetch('/api/content/home');
         
         if (homeRes.ok) {
           const homeData = await homeRes.json();
           
           if (homeData.success && homeData.home) {
-            // Transform data dari CMS format ke format slides
+            // Transform hero banners data dari CMS format ke format slides
             const heroBanners = homeData.home.hero_banners || [];
             
             const slides = heroBanners.map((banner, index) => ({
@@ -166,7 +204,8 @@ export default function HeroBanner() {
               title: banner.title || 'GARMENT AND ADVERTISING',
               description: banner.subtitle || 'Professional garment and advertising solutions',
               button_text: banner.button_text,
-              button_link: banner.button_link
+              button_link: banner.button_link,
+              text_position: banner.text_position
             }));
             
             // Fallback jika tidak ada banners
@@ -183,14 +222,18 @@ export default function HeroBanner() {
             
             setHeroData({ slides });
             
-            // Get business hours from site config
-            if (configRes.ok) {
-              const configData = await configRes.json();
-              setContactData({ 
-                business_hours: configData.business_hours?.hours || "Buka Setiap Hari Pukul 09.00 - 17.00 WIB" 
+            // Get marquee settings from home content
+            const marquee = homeData.home.marquee_banner;
+            if (marquee) {
+              setMarqueeData({
+                enabled: marquee.enabled !== false, // default true
+                texts: marquee.texts && marquee.texts.length > 0 ? marquee.texts : [{ text: "✦ Buka Setiap Hari Pukul 09.00 - 17.00 WIB" }],
+                bg_color: marquee.bg_color || 'primary',
+                text_color: marquee.text_color || 'white',
+                speed: marquee.speed || 'medium'
               });
             } else {
-              setContactData({ business_hours: "Buka Setiap Hari Pukul 09.00 - 17.00 WIB" });
+              setMarqueeData(defaultMarqueeData);
             }
           } else {
             throw new Error('Invalid data format');
@@ -201,7 +244,7 @@ export default function HeroBanner() {
       } catch (error) {
         console.log('Using default data:', error.message);
         setHeroData(defaultHeroData);
-        setContactData(defaultContactData);
+        setMarqueeData(defaultMarqueeData);
       } finally {
         setIsLoading(false);
       }
@@ -222,18 +265,27 @@ export default function HeroBanner() {
 
   // Sequential marquee animation
   useEffect(() => {
+    if (!marqueeData || !marqueeData.enabled || marqueeData.texts.length === 0) return;
+    
+    const animationDuration = getAnimationDuration(marqueeData.speed);
+    
     // Reset animation by toggling state
-    const animationDuration = 18000; // Duration for one complete scroll
     const restartInterval = setInterval(() => {
       setFadeVisible(false);
-      setTimeout(() => setFadeVisible(true), 100);
+      setTimeout(() => {
+        setFadeVisible(true);
+        // If multiple texts, cycle through them
+        if (marqueeData.texts.length > 1) {
+          setCurrentMarqueeIndex((prev) => (prev + 1) % marqueeData.texts.length);
+        }
+      }, 100);
     }, animationDuration);
 
     return () => clearInterval(restartInterval);
-  }, []);
+  }, [marqueeData]);
 
   // Jangan render sampai data ready dan loading selesai
-  if (isLoading || !heroData || !contactData) {
+  if (isLoading || !heroData || !marqueeData) {
     return (
       <section 
         className="relative h-screen bg-gradient-to-br from-primary-600 to-primary-800 flex items-center justify-center" 
@@ -248,7 +300,9 @@ export default function HeroBanner() {
   }
 
   const { slides } = heroData;
-  const { business_hours } = contactData;
+  
+  // Get current marquee text
+  const currentMarqueeText = marqueeData?.texts?.[currentMarqueeIndex]?.text || "✦ Buka Setiap Hari Pukul 09.00 - 17.00 WIB";
 
   // Pastikan currentSlide valid
   const safeCurrentSlide = Math.min(currentSlide, slides.length - 1);
@@ -342,17 +396,24 @@ export default function HeroBanner() {
       )}
 
       {/* Marquee Banner - Sequential Scrolling Animation */}
-      <div className="absolute bottom-0 left-0 right-0 bg-primary-600/90 backdrop-blur-sm py-4 sm:py-5 overflow-hidden z-30">
-        <div className="relative w-full flex items-center justify-center" style={{ minHeight: '2rem' }}>
-          {fadeVisible && (
-            <div className="absolute w-full flex items-center justify-center animate-marquee-single">
-              <span className="text-white font-semibold text-base sm:text-lg whitespace-nowrap">
-                ✦ {business_hours}
-              </span>
-            </div>
-          )}
+      {marqueeData?.enabled && (
+        <div className={`absolute bottom-0 left-0 right-0 ${getMarqueeBgColor(marqueeData.bg_color)} backdrop-blur-sm py-4 sm:py-5 overflow-hidden z-30`}>
+          <div className="relative w-full flex items-center justify-center" style={{ minHeight: '2rem' }}>
+            {fadeVisible && (
+              <div 
+                className="absolute w-full flex items-center justify-center animate-marquee-single"
+                style={{
+                  animationDuration: `${getAnimationDuration(marqueeData.speed)}ms`
+                }}
+              >
+                <span className={`${getMarqueeTextColor(marqueeData.text_color)} font-semibold text-base sm:text-lg whitespace-nowrap`}>
+                  {currentMarqueeText}
+                </span>
+              </div>
+            )}
+          </div>
         </div>
-      </div>
+      )}
 
       {/* Slide Indicators - Mobile Optimized */}
       {slides.length > 1 && (
