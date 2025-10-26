@@ -74,6 +74,9 @@ export default function Document() {
         <link rel="dns-prefetch" href="//fonts.gstatic.com" />
         <link rel="dns-prefetch" href="//maps.googleapis.com" />
         <link rel="dns-prefetch" href="//maps.gstatic.com" />
+
+        {/* Preconnect untuk CDN dan APIs */}
+        <link rel="preconnect" href={process.env.NEXT_PUBLIC_SITE_URL} />
         
         {/* Additional Meta Tags */}
         <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -117,22 +120,18 @@ export default function Document() {
         <Main />
         <NextScript />
         
-        {/* Noscript fallback */}
+        {/* Noscript fallback - Improved for SEO */}
         <noscript>
           <div style={{
-            position: 'fixed',
-            top: 0,
-            left: 0,
-            right: 0,
-            bottom: 0,
-            backgroundColor: 'white',
-            color: 'black',
-            zIndex: 9999,
             padding: '20px',
-            textAlign: 'center'
+            textAlign: 'center',
+            backgroundColor: '#f3f4f6'
           }}>
-            <h1>JavaScript Required</h1>
-            <p>This website requires JavaScript to function properly. Please enable JavaScript in your browser settings.</p>
+            <h1 style={{ marginBottom: '10px' }}>B13 Factory - Garment & Advertising</h1>
+            <p>Specialist dalam garment dan advertising dengan pengalaman lebih dari 5 tahun.</p>
+            <p style={{ marginTop: '20px', fontSize: '14px', color: '#666' }}>
+              Untuk pengalaman terbaik, mohon aktifkan JavaScript di browser Anda.
+            </p>
           </div>
         </noscript>
       </body>

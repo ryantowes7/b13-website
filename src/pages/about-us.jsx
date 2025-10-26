@@ -1,90 +1,11 @@
 // website/src/pages/about-us.jsx
 import Head from 'next/head';
-import { useState, useEffect } from 'react';
+import Image from 'next/image';
 import { Users, Target, Award, Heart } from 'lucide-react';
 import Button from '@/components/ui/Button';
 import AboutBanner from '@/components/about/AboutBanner';
 
-export default function AboutUs() {
-  const [aboutData, setAboutData] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-
-  useEffect(() => {
-    const fetchAboutData = async () => {
-      try {
-        setLoading(true);
-        const response = await fetch('/api/content/about');
-        if (response.ok) {
-          const data = await response.json();
-          if (data.success && data.about) {
-            setAboutData(data.about);
-          }
-        } else {
-          throw new Error('Failed to fetch about data');
-        }
-      } catch (err) {
-        console.error('Error fetching about data:', err);
-        setError(err.message);
-        // Set default data if fetch fails
-        setAboutData({
-          banner_title: 'About B13 Factory',
-          banner_subtitle: 'Specialist dalam garment dan advertising dengan pengalaman lebih dari 5 tahun',
-          company_title: 'Garment & Advertising Specialist',
-          company_description: '**B13 Factory** telah berdiri sejak 2019 dan telah dipercaya oleh berbagai klien.',
-          company_stats: {
-            years_experience: '5+',
-            projects_completed: '150+',
-            happy_clients: '50+'
-          },
-          mission: {
-            title: 'Mission',
-            description: 'Memberikan solusi garment dan advertising terbaik dengan kualitas premium.'
-          },
-          vision: {
-            title: 'Vision',
-            description: 'Menjadi partner terpercaya dalam industri garment dan advertising di Indonesia.'
-          },
-          values: {
-            title: 'Values',
-            description: 'Integritas, kualitas, dan kepuasan pelanggan adalah nilai utama kami.'
-          },
-          team_sections: [
-            { name: 'Management Team', role: 'Professional & Experienced', description: 'Tim management yang berpengalaman.' },
-            { name: 'Production Team', role: 'Skilled Craftsmen', description: 'Tim produksi yang ahli.' },
-            { name: 'Design Team', role: 'Creative & Innovative', description: 'Tim design kreatif.' }
-          ],
-          why_choose_us: [
-            { title: 'Quality Materials', description: 'Menggunakan bahan berkualitas terbaik' },
-            { title: 'Expert Team', description: 'Tim berpengalaman dan profesional' },
-            { title: 'Competitive Price', description: 'Harga kompetitif dengan kualitas premium' },
-            { title: 'Fast Delivery', description: 'Proses cepat tanpa mengorbankan kualitas' }
-          ]
-        });
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchAboutData();
-  }, []);
-
-  // Show loading state
-  if (loading) {
-    return (
-      <>
-        <Head>
-          <title>About Us - B13 Factory</title>
-        </Head>
-        <section className="bg-gradient-to-r from-primary-600 to-primary-700 text-white py-12 sm:py-16 md:py-20">
-          <div className="container-custom text-center">
-            <div className="animate-spin rounded-full h-10 w-10 sm:h-12 sm:w-12 border-b-2 border-white mx-auto mb-4"></div>
-            <p className="text-white/90 text-sm sm:text-base">Memuat halaman...</p>
-          </div>
-        </section>
-      </>
-    );
-  }
+export default function AboutUs({ aboutData }) {
 
   // Prepare values array from aboutData
   const values = aboutData ? [
@@ -170,11 +91,15 @@ export default function AboutUs() {
 
             <div className="flex items-start justify-center lg:justify-end mt-6 lg:mt-0">
               {aboutData?.company_image ? (
-                <div className="rounded-xl sm:rounded-2xl overflow-hidden shadow-lg w-full aspect-square max-w-md">
-                  <img 
+                <div className="rounded-xl sm:rounded-2xl overflow-hidden shadow-lg w-full aspect-square max-w-md relative">
+                  <Image 
                     src={aboutData.company_image} 
                     alt="B13 Factory Team"
-                    className="w-full h-full object-cover"
+                    fill
+                    className="object-cover"
+                    loading="lazy"
+                    quality={80}
+                    sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 448px"
                   />
                 </div>
               ) : (
@@ -277,4 +202,103 @@ export default function AboutUs() {
       </section>
     </>
   );
+}
+
+// Server-side rendering dengan ISR
+export async function getStaticProps() {
+  try {
+    const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000';
+    const response = await fetch(`${baseUrl}/api/content/about`).catch(() => null);
+    
+    let aboutData = {
+      banner_title: 'About B13 Factory',
+      banner_subtitle: 'Specialist dalam garment dan advertising dengan pengalaman lebih dari 5 tahun',
+      company_title: 'Garment & Advertising Specialist',
+      company_description: '**B13 Factory** telah berdiri sejak 2019 dan telah dipercaya oleh berbagai klien.',
+      company_stats: {
+        years_experience: '5+',
+        projects_completed: '150+',
+        happy_clients: '50+'
+      },
+      mission: {
+        title: 'Mission',
+        description: 'Memberikan solusi garment dan advertising terbaik dengan kualitas premium.'
+      },
+      vision: {
+        title: 'Vision',
+        description: 'Menjadi partner terpercaya dalam industri garment dan advertising di Indonesia.'
+      },
+      values: {
+        title: 'Values',
+        description: 'Integritas, kualitas, dan kepuasan pelanggan adalah nilai utama kami.'
+      },
+      team_sections: [
+        { name: 'Management Team', role: 'Professional & Experienced', description: 'Tim management yang berpengalaman.' },
+        { name: 'Production Team', role: 'Skilled Craftsmen', description: 'Tim produksi yang ahli.' },
+        { name: 'Design Team', role: 'Creative & Innovative', description: 'Tim design kreatif.' }
+      ],
+      why_choose_us: [
+        { title: 'Quality Materials', description: 'Menggunakan bahan berkualitas terbaik' },
+        { title: 'Expert Team', description: 'Tim berpengalaman dan profesional' },
+        { title: 'Competitive Price', description: 'Harga kompetitif dengan kualitas premium' },
+        { title: 'Fast Delivery', description: 'Proses cepat tanpa mengorbankan kualitas' }
+      ]
+    };
+
+    if (response && response.ok) {
+      const data = await response.json();
+      if (data.success && data.about) {
+        aboutData = data.about;
+      }
+    }
+
+    return {
+      props: {
+        aboutData,
+      },
+      // Revalidate setiap 1 jam
+      revalidate: 3600,
+    };
+  } catch (error) {
+    console.error('Error in getStaticProps:', error);
+    return {
+      props: {
+        aboutData: {
+          banner_title: 'About B13 Factory',
+          banner_subtitle: 'Specialist dalam garment dan advertising dengan pengalaman lebih dari 5 tahun',
+          company_title: 'Garment & Advertising Specialist',
+          company_description: '**B13 Factory** telah berdiri sejak 2019 dan telah dipercaya oleh berbagai klien.',
+          company_stats: {
+            years_experience: '5+',
+            projects_completed: '150+',
+            happy_clients: '50+'
+          },
+          mission: {
+            title: 'Mission',
+            description: 'Memberikan solusi garment dan advertising terbaik dengan kualitas premium.'
+          },
+          vision: {
+            title: 'Vision',
+            description: 'Menjadi partner terpercaya dalam industri garment dan advertising di Indonesia.'
+          },
+          values: {
+            title: 'Values',
+            description: 'Integritas, kualitas, dan kepuasan pelanggan adalah nilai utama kami.'
+          },
+          team_sections: [
+            { name: 'Management Team', role: 'Professional & Experienced', description: 'Tim management yang berpengalaman.' },
+            { name: 'Production Team', role: 'Skilled Craftsmen', description: 'Tim produksi yang ahli.' },
+            { name: 'Design Team', role: 'Creative & Innovative', description: 'Tim design kreatif.' }
+          ],
+          why_choose_us: [
+            { title: 'Quality Materials', description: 'Menggunakan bahan berkualitas terbaik' },
+            { title: 'Expert Team', description: 'Tim berpengalaman dan profesional' },
+            { title: 'Competitive Price', description: 'Harga kompetitif dengan kualitas premium' },
+            { title: 'Fast Delivery', description: 'Proses cepat tanpa mengorbankan kualitas' }
+          ]
+        },
+      },
+      revalidate: 3600,
+    };
+  }
 }

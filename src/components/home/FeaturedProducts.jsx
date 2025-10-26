@@ -1,6 +1,7 @@
 // website/src/components/home/FeaturedProducts.jsx
 'use client';
 import { useState, useEffect, useRef } from 'react';
+import Image from 'next/image';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import Link from 'next/link';
 
@@ -172,14 +173,14 @@ export default function FeaturedProducts() {
                     {/* Image Background */}
                     <div className="absolute inset-0" style={{ contain: 'paint' }}>
                       {featuredProduct.image ? (
-                        <img
+                        <Image
                           src={featuredProduct.image}
                           alt={featuredProduct.name}
-                          width="1200"
-                          height="800"
-                          className="w-full h-full object-contain bg-neutral-100 transform group-hover:scale-105 transition-transform duration-700"
-                          loading="eager"
-                          fetchPriority="high"
+                          fill
+                          className="object-contain bg-neutral-100 transform group-hover:scale-105 transition-transform duration-700"
+                          priority
+                          quality={85}
+                          sizes="(max-width: 1024px) 100vw, 66vw"
                         />
                       ) : (
                         <div className="w-full h-full bg-gradient-to-br from-primary-100 to-secondary-100"></div>
@@ -226,13 +227,14 @@ export default function FeaturedProducts() {
                       {/* Image Background */}
                       <div className="absolute inset-0">
                         {secondProduct.image ? (
-                          <img
+                          <Image
                             src={secondProduct.image}
                             alt={secondProduct.name}
-                            width="600"
-                            height="800"
-                            className="w-full h-full object-contain bg-neutral-100 transform group-hover:scale-105 transition-transform duration-700"
+                            fill
+                            className="object-contain bg-neutral-100 transform group-hover:scale-105 transition-transform duration-700"
                             loading="lazy"
+                            quality={80}
+                            sizes="34vw"
                           />
                         ) : (
                           <div className="w-full h-full bg-gradient-to-br from-secondary-100 to-primary-100"></div>
@@ -292,13 +294,14 @@ export default function FeaturedProducts() {
                             {/* Image */}
                             <div className="absolute inset-0">
                               {product.image ? (
-                                <img
+                                <Image
                                   src={product.image}
                                   alt={product.name}
-                                  width="400"
-                                  height="533"
-                                  className="w-full h-full object-contain bg-neutral-100 transform group-hover:scale-105 transition-transform duration-700"
+                                  fill
+                                  className="object-contain bg-neutral-100 transform group-hover:scale-105 transition-transform duration-700"
                                   loading="lazy"
+                                  quality={75}
+                                  sizes="(max-width: 640px) 70vw, (max-width: 768px) 45vw, (max-width: 1024px) 30vw, 23vw"
                                 />
                               ) : (
                                 <div className="w-full h-full bg-gradient-to-br from-neutral-200 to-neutral-300"></div>

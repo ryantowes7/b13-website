@@ -1,36 +1,11 @@
 import Head from 'next/head';
-import { useState, useEffect } from 'react';
 import HeroBanner from '@/components/home/HeroBanner';
 import FeaturedProducts from '@/components/home/FeaturedProducts';
 import ProductCategories from '@/components/home/ProductCategories';
 import PortfolioShowcase from '@/components/home/PortfolioShowcase';
 import ContactSection from '@/components/home/ContactSection';
 
-export default function Home() {
-  const [siteData, setSiteData] = useState(null);
-
-  useEffect(() => {
-    // Load site data for meta tags
-    const loadSiteData = async () => {
-      try {
-        const response = await fetch('/api/content/site-config');
-        if (response.ok) {
-          const data = await response.json();
-          setSiteData(data);
-        } else {
-          throw new Error('Failed to load site data');
-        }
-      } catch (error) {
-        console.log('Using default site data');
-        setSiteData({
-          title: 'B13 Factory - Garment & Advertising Specialist',
-          description: 'Specialist dalam garment dan advertising. Jasa sablon, bordir, banner, dan berbagai kebutuhan promosi bisnis profesional.'
-        });
-      }
-    };
-
-    loadSiteData();
-  }, []);
+export default function Home({ siteData }) {
 
   return (
     <>
@@ -97,4 +72,46 @@ export default function Home() {
       </main>
     </>
   );
+}
+
+// Server-side rendering dengan ISR untuk performance dan SEO
+export async function getStaticProps() {
+  try {
+    // Fetch all data at build time (server-side)
+    const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000';
+    
+    const [siteConfigRes] = await Promise.all([
+      fetch(`${baseUrl}/api/content/site-config`).catch(() => null),
+    ]);
+    
+    let siteData = {
+      title: 'B13 Factory - Garment & Advertising Specialist',
+      description: 'Specialist dalam garment dan advertising. Jasa sablon, bordir, banner, dan berbagai kebutuhan promosi bisnis profesional.'
+    };
+
+    if (siteConfigRes && siteConfigRes.ok) {
+      const data = await siteConfigRes.json();
+      siteData = data;
+    }
+
+    return {
+      props: {
+        siteData,
+      },
+      // Revalidate setiap 3600 detik (1 jam) untuk ISR
+      // Konten akan diupdate otomatis setiap 1 jam
+      revalidate: 3600,
+    };
+  } catch (error) {
+    console.error('Error in getStaticProps:', error);
+    return {
+      props: {
+        siteData: {
+          title: 'B13 Factory - Garment & Advertising Specialist',
+          description: 'Specialist dalam garment dan advertising. Jasa sablon, bordir, banner, dan berbagai kebutuhan promosi bisnis profesional.'
+        },
+      },
+      revalidate: 3600,
+    };
+  }
 }

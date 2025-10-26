@@ -1,142 +1,34 @@
 import Head from 'next/head';
-import { useState, useEffect } from 'react';
+import { useState, useMemo, useEffect } from 'react';
+import Image from 'next/image';
 import { Filter, ZoomIn, ExternalLink, Calendar, MapPin, ChevronDown } from 'lucide-react';
 import Button from '@/components/ui/Button';
 import PortfolioBanner from '@/components/portfolio/PortfolioBanner';
 import Pagination from '@/components/ui/Pagination';
 
-export default function Portfolio() {
+export default function Portfolio({ initialPortfolio, initialCategories, initialStats }) {
   const [activeFilter, setActiveFilter] = useState('all');
   const [selectedProject, setSelectedProject] = useState(null);
-  const [portfolioProjects, setPortfolioProjects] = useState([]);
-  const [categories, setCategories] = useState([]);
+  const [portfolioProjects, setPortfolioProjects] = useState(initialPortfolio);
+  const [categories, setCategories] = useState(initialCategories);
   const [currentCategory, setCurrentCategory] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const [loading] = useState(false);
+  const [error] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
-  const [portfolioStats, setPortfolioStats] = useState(null);
+  const [portfolioStats] = useState(initialStats);
   const [isCategoryOpen, setIsCategoryOpen] = useState(false);
   
   const ITEMS_PER_PAGE = 9; // 3x3 grid
 
-  // Fetch portfolio categories
-  useEffect(() => {
-    const fetchCategories = async () => {
-      try {
-        const response = await fetch('/api/content/portfolio-categories');
-        if (!response.ok) throw new Error('Failed to fetch categories');
-        
-        const data = await response.json();
-        if (data.success && data.categories) {
-          setCategories(data.categories);
-          // Set default category
-          const defaultCat = data.categories.find(cat => cat.is_default || cat.slug === 'all');
-          setCurrentCategory(defaultCat || data.categories[0]);
-        }
-      } catch (err) {
-        console.error('Error fetching categories:', err);
-      }
-    };
-
-    fetchCategories();
-  }, []);
-
-  // Fetch portfolio stats
-  useEffect(() => {
-    const fetchStats = async () => {
-      try {
-        const response = await fetch('/api/content/home');
-        if (response.ok) {
-          const data = await response.json();
-          if (data.success && data.home?.portfolio_stats) {
-            setPortfolioStats(data.home.portfolio_stats);
-          }
-        }
-      } catch (err) {
-        console.error('Error fetching portfolio stats:', err);
-        // Set default stats if fetch fails
-        setPortfolioStats({
-          projects_completed: '150+',
-          happy_clients: '50+',
-          years_experience: '5+'
-        });
-      }
-    };
-
-    fetchStats();
-  }, []);
-
-
-  // Fetch portfolio from CMS API
-  useEffect(() => {
-    const fetchPortfolio = async () => {
-      try {
-        setLoading(true);
-        const response = await fetch('/api/content/portfolio');
-        
-        if (!response.ok) {
-          throw new Error('Failed to fetch portfolio');
-        }
-        
-        const data = await response.json();
-        
-        if (data.success && data.portfolio) {
-          // Transform portfolio data
-          const transformedPortfolio = data.portfolio.map((item, index) => {
-            // Parse gallery images
-            const gallery = item.gallery ? 
-              (Array.isArray(item.gallery) ? 
-                item.gallery.map(img => typeof img === 'object' ? img.url : img) : 
-                []) : 
-              [];
-            
-            // Extract year from date
-            const year = item.date ? new Date(item.date).getFullYear().toString() : '2024';
-            
-            return {
-              id: index + 1,
-              slug: item.slug,
-              title: item.name || 'Untitled Project',
-              name: item.name || 'Untitled Project',
-              category: item.category || 'kaos',
-              client: item.client || 'Client',
-              location: 'Jember, Jawa Timur',
-              year: year,
-              description: item.description || '',
-              image: item.image || '/uploads/placeholder.jpg',
-              images: gallery,
-              deliverables: [],
-              details: item.details || '',
-              testimonial: item.testimonial || '',
-              client_name: item.client_name || item.client || ''
-            };
-          });
-          
-          setPortfolioProjects(transformedPortfolio);
-        } else {
-          throw new Error('Invalid data format');
-        }
-      } catch (err) {
-        console.error('Error fetching portfolio:', err);
-        setError('Gagal memuat portfolio. Silakan coba lagi.');
-        setPortfolioProjects([]);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchPortfolio();
-  }, []);
-
-  // Update current category when filter changes
+  // Update current category when filter changes or on mount
   useEffect(() => {
     const category = categories.find(cat => cat.slug === activeFilter);
     setCurrentCategory(category);
     setCurrentPage(1); // Reset to page 1 when filter changes
   }, [activeFilter, categories]);
 
-  // Show loading state
-  if (loading) {
+  // Show loading state - simplified since data is pre-rendered
+  if (loading && portfolioProjects.length === 0) {
     return (
       <>
         <Head>
@@ -184,10 +76,12 @@ export default function Portfolio() {
     );
   }
 
-  // Filter projects
-  const filteredProjects = activeFilter === 'all' 
-    ? portfolioProjects 
-    : portfolioProjects.filter(project => project.category === activeFilter);
+  // Filter projects - use useMemo for performance
+  const filteredProjects = useMemo(() => {
+    return activeFilter === 'all' 
+      ? portfolioProjects 
+      : portfolioProjects.filter(project => project.category === activeFilter);
+  }, [activeFilter, portfolioProjects]);
 
   // Pagination calculations
   const totalProjects = filteredProjects.length;
@@ -309,10 +203,14 @@ export default function Portfolio() {
                 {/* Image Container */}
                 <div className="relative aspect-[4/3] overflow-hidden rounded-t-lg sm:rounded-t-xl md:rounded-t-2xl">
                   {project.image && project.image !== '/uploads/placeholder.jpg' ? (
-                    <img 
+                    <Image 
                       src={project.image} 
                       alt={project.title}
-                      className="w-full h-full object-cover"
+                      fill
+                      className="object-cover"
+                      loading="lazy"
+                      quality={75}
+                      sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 33vw"
                     />
                   ) : (
                     <div className="w-full h-full bg-gradient-to-br from-primary-100 to-secondary-100 flex items-center justify-center">
@@ -446,12 +344,16 @@ export default function Portfolio() {
               {/* Content */}
               <div className="p-4 sm:p-6">
                 {/* Main Image */}
-                <div className="aspect-video bg-gradient-to-br from-primary-100 to-secondary-100 rounded-lg sm:rounded-xl mb-4 sm:mb-6 flex items-center justify-center overflow-hidden">
+                <div className="aspect-video bg-gradient-to-br from-primary-100 to-secondary-100 rounded-lg sm:rounded-xl mb-4 sm:mb-6 flex items-center justify-center overflow-hidden relative">
                   {selectedProject.image && selectedProject.image !== '/uploads/placeholder.jpg' ? (
-                    <img 
+                    <Image 
                       src={selectedProject.image} 
                       alt={selectedProject.title}
-                      className="w-full h-full object-cover"
+                      fill
+                      className="object-cover"
+                      loading="lazy"
+                      quality={80}
+                      sizes="(max-width: 768px) 100vw, 896px"
                     />
                   ) : (
                     <div className="text-center text-neutral-600">
@@ -511,4 +413,101 @@ export default function Portfolio() {
       )}
     </>
   );
+}
+
+// Server-side rendering dengan ISR
+export async function getStaticProps() {
+  try {
+    const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000';
+    
+    // Fetch portfolio, categories, and stats in parallel
+    const [portfolioResponse, categoriesResponse, homeResponse] = await Promise.all([
+      fetch(`${baseUrl}/api/content/portfolio`).catch(() => null),
+      fetch(`${baseUrl}/api/content/portfolio-categories`).catch(() => null),
+      fetch(`${baseUrl}/api/content/home`).catch(() => null)
+    ]);
+    
+    let transformedPortfolio = [];
+    let transformedCategories = [];
+    let portfolioStats = {
+      projects_completed: '150+',
+      happy_clients: '50+',
+      years_experience: '5+'
+    };
+
+    // Transform portfolio data
+    if (portfolioResponse && portfolioResponse.ok) {
+      const data = await portfolioResponse.json();
+      
+      if (data.success && data.portfolio) {
+        transformedPortfolio = data.portfolio.map((item, index) => {
+          const gallery = item.gallery ? 
+            (Array.isArray(item.gallery) ? 
+              item.gallery.map(img => typeof img === 'object' ? img.url : img) : 
+              []) : 
+            [];
+          
+          const year = item.date ? new Date(item.date).getFullYear().toString() : '2024';
+          
+          return {
+            id: index + 1,
+            slug: item.slug,
+            title: item.name || 'Untitled Project',
+            name: item.name || 'Untitled Project',
+            category: item.category || 'kaos',
+            client: item.client || 'Client',
+            location: 'Jember, Jawa Timur',
+            year: year,
+            description: item.description || '',
+            image: item.image || '/uploads/placeholder.jpg',
+            images: gallery,
+            deliverables: [],
+            details: item.details || '',
+            testimonial: item.testimonial || '',
+            client_name: item.client_name || item.client || ''
+          };
+        });
+      }
+    }
+
+    // Transform categories
+    if (categoriesResponse && categoriesResponse.ok) {
+      const data = await categoriesResponse.json();
+      if (data.success && data.categories) {
+        transformedCategories = data.categories;
+      }
+    }
+
+    // Get stats from home data
+    if (homeResponse && homeResponse.ok) {
+      const data = await homeResponse.json();
+      if (data.success && data.home?.portfolio_stats) {
+        portfolioStats = data.home.portfolio_stats;
+      }
+    }
+
+    return {
+      props: {
+        initialPortfolio: transformedPortfolio,
+        initialCategories: transformedCategories,
+        initialStats: portfolioStats,
+      },
+      // Revalidate setiap 1 jam
+      revalidate: 3600,
+    };
+  } catch (error) {
+    console.error('Error in getStaticProps:', error);
+    return {
+      props: {
+        initialPortfolio: [],
+        initialCategories: [],
+        initialStats: {
+          projects_completed: '150+',
+          happy_clients: '50+',
+          years_experience: '5+'
+        },
+      },
+      revalidate: 3600,
+    };
+  }
 }

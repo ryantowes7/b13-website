@@ -1,39 +1,128 @@
 import Head from 'next/head';
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect, useMemo } from 'react';
 import { Filter, Grid, List, Download, Search, ChevronDown } from 'lucide-react';
 import Button from '@/components/ui/Button';
 import ProductCard from '@/components/products/ProductCard';
 import ProductBanner from '@/components/products/ProductBanner';
 import Pagination from '@/components/ui/Pagination';
-import { useProducts } from '@/hooks/useProducts';
 import { sortOptions } from '@/data/products';
 
-export default function Produk() {
-  const {
-    products,
-    allProducts,
-    loading,
-    error,
-    categories,
-    currentCategory,
-    selectedCategory,
-    setSelectedCategory,
-    searchTerm,
-    setSearchTerm,
-    sortBy,
-    setSortBy,
-    currentPage,
-    setCurrentPage,
-    totalPages,
-    viewMode,
-    setViewMode,
-    totalProducts,
-    showingProducts
-  } = useProducts();
+// Helper functions for data transformation
+const parsePrice = (priceString) => {
+  if (typeof priceString === 'number') return priceString;
+  if (!priceString) return 0;
+  return parseInt(priceString.replace(/[Rp\s.]/g, ''), 10) || 0;
+};
+
+const parseArray = (data) => {
+  if (!data) return [];
+  if (Array.isArray(data)) {
+    return data.map(item => {
+      if (typeof item === 'object' && item.item) return item.item;
+      if (typeof item === 'string') return item;
+      return String(item);
+    });
+  }
+  return [];
+};
+
+const parseImages = (data) => {
+  if (!data) return [];
+  if (Array.isArray(data)) {
+    return data.map(item => {
+      if (typeof item === 'object' && item.url) return item.url;
+      if (typeof item === 'string') return item;
+      return String(item);
+    });
+  }
+  return [];
+};
+
+const parseVariants = (data) => {
+  if (!data) return [];
+  if (Array.isArray(data)) return data;
+  return [];
+};
+
+export default function Produk({ initialProducts, initialCategories }) {
+  const [products, setProducts] = useState(initialProducts);
+  const [categories, setCategories] = useState(initialCategories);
+  
+  // Filter and search state
+  const [selectedCategory, setSelectedCategory] = useState('all');
+  const [searchTerm, setSearchTerm] = useState('');
+  const [sortBy, setSortBy] = useState('name');
+  const [currentPage, setCurrentPage] = useState(1);
+  const [viewMode, setViewMode] = useState('grid');
+  const [loading] = useState(false);
+  const [error] = useState(null);
+
+  const productsPerPage = 6;
 
   // State untuk kategori dropdown
   const [isCategoryOpen, setIsCategoryOpen] = useState(false);
   const closeTimeoutRef = useRef(null);
+
+  // Filter products berdasarkan kategori dan pencarian
+  const filteredProducts = useMemo(() => {
+    let filtered = products;
+
+    // Filter by category
+    if (selectedCategory !== 'all') {
+      filtered = filtered.filter(product => product.category === selectedCategory);
+    }
+
+    // Filter by search term
+    if (searchTerm) {
+      const term = searchTerm.toLowerCase();
+      filtered = filtered.filter(product => 
+        product.name.toLowerCase().includes(term) ||
+        product.description.toLowerCase().includes(term) ||
+        product.tags.some(tag => tag.toLowerCase().includes(term))
+      );
+    }
+
+    return filtered;
+  }, [products, selectedCategory, searchTerm]);
+
+  // Sort products
+  const sortedProducts = useMemo(() => {
+    const sorted = [...filteredProducts];
+    
+    switch (sortBy) {
+      case 'name':
+        return sorted.sort((a, b) => a.name.localeCompare(b.name));
+      case 'name-desc':
+        return sorted.sort((a, b) => b.name.localeCompare(a.name));
+      case 'price-low':
+        return sorted.sort((a, b) => a.price - b.price);
+      case 'price-high':
+        return sorted.sort((a, b) => b.price - a.price);
+      default:
+        return sorted;
+    }
+  }, [filteredProducts, sortBy]);
+
+  // Pagination
+  const paginatedProducts = useMemo(() => {
+    const indexOfLastProduct = currentPage * productsPerPage;
+    const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
+    return sortedProducts.slice(indexOfFirstProduct, indexOfLastProduct);
+  }, [sortedProducts, currentPage, productsPerPage]);
+
+  const totalPages = Math.ceil(sortedProducts.length / productsPerPage);
+  const totalProducts = sortedProducts.length;
+  const showingProducts = paginatedProducts.length;
+
+  // Get current category data
+  const currentCategory = useMemo(() => {
+    return categories.find(cat => cat.slug === selectedCategory) || null;
+  }, [categories, selectedCategory]);
+
+  // Reset to first page when filters change
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [selectedCategory, searchTerm, sortBy]);
 
   // Cleanup timeout on unmount
   useEffect(() => {
@@ -59,63 +148,6 @@ export default function Produk() {
       setIsCategoryOpen(false);
     }, 400); // 400ms delay sebelum menutup
   };
-
-  // Handle loading state
-  if (loading) {
-    return (
-      <>
-        <Head>
-          <title>Produk - B13 Factory</title>
-        </Head>
-        <section className="bg-gradient-to-r from-blue-600 to-blue-700 text-white py-12 sm:py-16 md:py-20">
-          <div className="container mx-auto px-4 sm:px-6 text-center">
-            <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-4">Our Products</h1>
-          </div>
-        </section>
-        <section className="py-8 sm:py-12 md:py-16 bg-white">
-          <div className="container mx-auto px-4 sm:px-6">
-            <div className="flex justify-center items-center py-12 sm:py-16 md:py-20">
-              <div className="text-center">
-                <div className="animate-spin rounded-full h-10 w-10 sm:h-12 sm:w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
-                <p className="text-sm sm:text-base text-slate-600">Memuat produk...</p>
-              </div>
-            </div>
-          </div>
-        </section>
-      </>
-    );
-  }
-
-  // Handle error state
-  if (error) {
-    return (
-      <>
-        <Head>
-          <title>Produk - B13 Factory</title>
-        </Head>
-        <section className="bg-gradient-to-r from-blue-600 to-blue-700 text-white py-12 sm:py-16 md:py-20">
-          <div className="container mx-auto px-4 sm:px-6 text-center">
-            <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-4">Our Products</h1>
-          </div>
-        </section>
-        <section className="py-8 sm:py-12 md:py-16 bg-white">
-          <div className="container mx-auto px-4 sm:px-6">
-            <div className="flex justify-center items-center py-12 sm:py-16 md:py-20">
-              <div className="text-center">
-                <p className="text-red-600 text-sm sm:text-base md:text-lg mb-4">{error}</p>
-                <Button 
-                  onClick={() => window.location.reload()}
-                  variant="primary"
-                >
-                  Coba Lagi
-                </Button>
-              </div>
-            </div>
-          </div>
-        </section>
-      </>
-    );
-  }
 
   return (
     <>
@@ -422,4 +454,92 @@ export default function Produk() {
       </section>
     </>
   );
+}
+
+// Server-side rendering dengan ISR
+export async function getStaticProps() {
+  try {
+    const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000';
+    
+    // Fetch products and categories in parallel
+    const [productsResponse, categoriesResponse] = await Promise.all([
+      fetch(`${baseUrl}/api/content/products`).catch(() => null),
+      fetch(`${baseUrl}/api/content/product-categories`).catch(() => null)
+    ]);
+    
+    let transformedProducts = [];
+    let transformedCategories = [];
+
+    if (productsResponse && productsResponse.ok) {
+      const productsData = await productsResponse.json();
+      
+      if (productsData.success && productsData.products) {
+        transformedProducts = productsData.products.map((product, index) => ({
+          id: index + 1,
+          slug: product.slug,
+          name: product.name || 'Untitled Product',
+          category: product.category || 'kaos',
+          price: parsePrice(product.price),
+          originalPrice: parsePrice(product.originalPrice),
+          home_image: product.images_section?.home_image || product.home_image || product.image || '/uploads/placeholder.jpg',
+          card_image: product.images_section?.card_image || product.card_image || product.image || '/uploads/placeholder.jpg',
+          detail_image: product.images_section?.detail_image || product.detail_image || product.image || '/uploads/placeholder.jpg',
+          image: product.image || product.images_section?.detail_image || '/uploads/placeholder.jpg',
+          images: parseImages(product.images),
+          description: product.description || '',
+          features: parseArray(product.features),
+          katalog: product.katalog || '',
+          tags: parseArray(product.tags),
+          inStock: product.inStock !== false,
+          minOrder: product.minOrder || 1,
+          stockType: product.stockType || 'order',
+          variants: parseVariants(product.variants),
+          body: product.body || ''
+        }));
+      }
+    }
+
+    if (categoriesResponse && categoriesResponse.ok) {
+      const categoriesData = await categoriesResponse.json();
+      
+      if (categoriesData.success && categoriesData.categories) {
+        // Calculate product counts for each category
+        const categoryCounts = {};
+        transformedProducts.forEach(product => {
+          const cat = product.category || 'kaos';
+          categoryCounts[cat] = (categoryCounts[cat] || 0) + 1;
+        });
+
+        transformedCategories = categoriesData.categories.map(cat => ({
+          id: cat.slug,
+          slug: cat.slug,
+          name: cat.name,
+          description: cat.description,
+          banners: cat.banners || [],
+          color: cat.color || 'blue',
+          icon: cat.icon || 'Package',
+          is_default: cat.is_default || false,
+          count: cat.slug === 'all' ? transformedProducts.length : (categoryCounts[cat.slug] || 0)
+        }));
+      }
+    }
+
+    return {
+      props: {
+        initialProducts: transformedProducts,
+        initialCategories: transformedCategories,
+      },
+      // Revalidate setiap 1 jam
+      revalidate: 3600,
+    };
+  } catch (error) {
+    console.error('Error in getStaticProps:', error);
+    return {
+      props: {
+        initialProducts: [],
+        initialCategories: [],
+      },
+      revalidate: 3600,
+    };
+  }
 }

@@ -1,5 +1,6 @@
 'use client';
 import { useState, useEffect, useCallback } from 'react';
+import Image from 'next/image';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import Button from '@/components/ui/Button';
 
@@ -326,19 +327,15 @@ export default function HeroBanner() {
             style={{ willChange: index === safeCurrentSlide ? 'opacity' : 'auto' }}
           >
             {slide.image ? (
-              <img
+              <Image
                 src={slide.image}
                 alt={slide.title}
-                className="w-full h-full object-cover"
-                style={{ 
-                  position: 'absolute',
-                  top: 0,
-                  left: 0,
-                  width: '100%',
-                  height: '100%'
-                }}
-                fetchPriority={index === 0 ? 'high' : 'low'}
-                loading={index === 0 ? 'eager' : 'lazy'}
+                fill
+                className="object-cover"
+                priority={index === 0}
+                loading={index === 0 ? undefined : 'lazy'}
+                quality={85}
+                sizes="100vw"
               />
             ) : (
               <div className="w-full h-full bg-gradient-to-br from-primary-600 to-primary-800 flex items-center justify-center">
