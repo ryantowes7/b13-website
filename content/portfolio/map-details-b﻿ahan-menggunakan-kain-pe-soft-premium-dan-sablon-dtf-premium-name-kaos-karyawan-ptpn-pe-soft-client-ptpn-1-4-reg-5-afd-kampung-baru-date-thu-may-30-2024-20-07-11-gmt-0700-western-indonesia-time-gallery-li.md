@@ -14,5 +14,5 @@ description: P﻿roduksi untuk karyawan PTPN 1 dan 4 Regional 5 Afd. Kampung Bar
   Kebun Kalisat Jampit, Ijen Bondowoso.
 details: B﻿ahan menggunakan kain PE Soft premium dan Sablon DTF premium
 testimonial: Kainnya lembut, cocok buat pekerja lapangan
-client_name: PTPN 1 & 4 Reg. 5 Afd. Kampung Baru
+client_name: ""
 ---
