@@ -215,7 +215,7 @@ export default function HeroBanner() {
                 id: 1,
                 image: '/uploads/hero-1.jpg',
                 title: 'GARMENT AND ADVERTISING',
-                description: 'Professional garment and advertising solutions',
+                description: ' ',
                 button_text: 'Lihat Produk',
                 button_link: '/produk'
               });
