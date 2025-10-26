@@ -2,7 +2,7 @@
 hero_banners:
   - image: /uploads/home_hero1b.webp
     title: "  "
-    subtitle: " ﻿"
+    subtitle: ""
     button_text: ""
     button_link: ""
     text_position:
@@ -14,10 +14,14 @@ hero_banners:
 marquee_banner:
   enabled: true
   texts:
-    - text: "✦ Buka Setiap Hari (Weekday 09.00 - 17.00, Weekend 09.00 - 15.00)"
+    - text: ✦ Buka Setiap Hari (Weekday 09.00 - 17.00, Weekend 09.00 - 15.00)
   bg_color: primary
   text_color: white
   speed: medium
+featured_products_section:
+  title: Kemeja Lapang
+product_carousel:
+  title: Jersey
 services_title: Layanan Kami
 services:
   - icon: shirt
