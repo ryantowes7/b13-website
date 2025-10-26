@@ -159,7 +159,7 @@ export default function PortfolioDetail() {
     if (!details) return null;
     
     const sections = [];
-    const lines = details.split('');
+    const lines = details.split('\n');
     let currentSection = { type: 'text', content: [] };
     
     lines.forEach((line) => {
