@@ -17,5 +17,5 @@ details: |-
   K﻿aos Sablon\
   B﻿ahan : Cotton Combed Premium 24s\
   S﻿ablon : DTF
-client_name: PT. Bayer Indonesia (Medan)
+client_name: ""
 ---
