@@ -3,12 +3,15 @@ name: Semua Portfolio
 slug: all
 description: Jelajahi seluruh portfolio karya terbaik B13 Factory dari berbagai kategori
 banners:
-  - image: /uploads/banner-portfolio-1.jpg
-    title: Portfolio Karya Terbaik Kami
-    subtitle: Lihat berbagai proyek berkualitas yang telah kami kerjakan
-  - image: /uploads/banner-portfolio-2.jpg
-    title: Pengalaman & Kualitas Terpercaya
-    subtitle: Dari garment hingga merchandise, kami siap membantu Anda
+  - text_position:
+      horizontal: center
+      vertical: center
+      text_align: center
+      title_size: medium
+      subtitle_size: medium
+    image: /uploads/bannerport.webp
+    title: Portofolio Karya Terbaik Kami
+    subtitle: L﻿ihat berbagai proyek berkualitas yang telah kami kerjakan!
 color: blue
 icon: Briefcase
 is_default: true
