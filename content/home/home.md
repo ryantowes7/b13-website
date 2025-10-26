@@ -1,7 +1,7 @@
 ---
 hero_banners:
   - image: /uploads/home_hero1b.webp
-    title: "  "
+    title: " "
     subtitle: ""
     button_text: ""
     button_link: ""
