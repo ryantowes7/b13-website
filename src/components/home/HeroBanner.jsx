@@ -203,7 +203,7 @@ export default function HeroBanner() {
               id: index + 1,
               image: banner.image || '/uploads/hero-1.jpg',
               title: banner.title || 'GARMENT AND ADVERTISING',
-              description: banner.subtitle || 'Professional garment and advertising solutions',
+              description: banner.subtitle || ' ',
               button_text: banner.button_text,
               button_link: banner.button_link,
               text_position: banner.text_position
