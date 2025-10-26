@@ -3,6 +3,7 @@ name: Kaos Karyawan PTPN (PE Soft)
 client: PTPN 1 & 4 Reg. 5 Afd. Kampung Baru
 category: kaos
 date: 2024-05-30T13:07:11.672Z
+location: Bondowoso, Jawa Timur
 image: /uploads/whatsapp-image-2025-10-25-at-13.55.21-1-.jpeg
 gallery:
   - url: /uploads/whatsapp-image-2025-10-25-at-13.55.20.jpeg

@@ -456,7 +456,7 @@ export async function getStaticProps() {
             name: item.name || 'Untitled Project',
             category: item.category || 'kaos',
             client: item.client || 'Client',
-            location: 'Jember, Jawa Timur',
+            location: item.location || 'Jember, Jawa Timur',
             year: year,
             description: item.description || '',
             image: item.image || '/uploads/placeholder.jpg',

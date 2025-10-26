@@ -58,6 +58,7 @@ export default function PortfolioDetail() {
             client: foundPortfolio.client || 'Client',
             category: foundPortfolio.category || 'garment',
             date: foundPortfolio.date || new Date().toISOString(),
+            location: foundPortfolio.location || 'Jember, Jawa Timur',
             image: foundPortfolio.image || '/uploads/placeholder.jpg',
             gallery: parseGallery(foundPortfolio.gallery),
             description: foundPortfolio.description || '',
@@ -254,7 +255,7 @@ export default function PortfolioDetail() {
               </div>
               <div className="flex items-center gap-2">
                 <MapPin size={22} />
-                <span>Jember, Jawa Timur</span>
+                <span>{portfolio.location}</span>
               </div>
             </div>
           </div>
