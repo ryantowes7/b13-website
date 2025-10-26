@@ -84,8 +84,8 @@ collections:
             hint: "Slider banner untuk hero section. Bisa tambahkan beberapa banner yang akan berganti otomatis."
             fields:
               - { label: "Banner Image", name: "image", widget: "image", hint: "Gambar banner untuk homepage hero section (recommended: 1920x1080px). Gambar ini akan muncul sebagai background banner utama di halaman depan." }
-              - { label: "Banner Title", name: "title", widget: "string", hint: "Judul utama banner" }
-              - { label: "Banner Subtitle", name: "subtitle", widget: "markdown", hint: "Deskripsi/subtitle banner. Mendukung paragraf, bullet points, bold, italic, dll." }
+              - { label: "Banner Title", name: "title", widget: "string", required: false, hint: "Judul utama banner" }
+              - { label: "Banner Subtitle", name: "subtitle", widget: "markdown", required: false, hint: "Deskripsi/subtitle banner. Mendukung paragraf, bullet points, bold, italic, dll." }
               - { label: "Button Text", name: "button_text", widget: "string", required: false, hint: "Text tombol CTA (opsional)" }
               - { label: "Button Link", name: "button_link", widget: "string", required: false, hint: "Link tujuan tombol (contoh: /produk)" }
               - label: "Text Position Settings"
