@@ -12,7 +12,9 @@ gallery:
   - url: /uploads/whatsapp-image-2025-10-25-at-13.55.21-2-.jpeg
 description: P﻿roduksi untuk karyawan PTPN 1 dan 4 Regional 5 Afd. Kampung Baru
   Kebun Kalisat Jampit, Ijen Bondowoso.
-details: B﻿ahan menggunakan kain PE Soft premium dan Sablon DTF premium
+details: |-
+  * B﻿ahan : PE Soft Premium
+  * S﻿ablon : DTF
 testimonial: Kainnya lembut, cocok buat pekerja lapangan
 client_name: ""
 ---
