@@ -24,7 +24,7 @@ export default function handler(req, res) {
       return {
         slug,
         ...data,
-        details: content
+        details: data.details || content
       };
     });
     
