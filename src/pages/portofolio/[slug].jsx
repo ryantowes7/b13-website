@@ -154,48 +154,6 @@ export default function PortfolioDetail() {
     });
   };
 
-  // Parse markdown-style details for better display
-  const parseDetails = (details) => {
-    if (!details) return null;
-    
-    const sections = [];
-    const lines = details.split('\n');
-    let currentSection = { type: 'text', content: [] };
-    
-    lines.forEach((line) => {
-      if (line.startsWith('## ')) {
-        if (currentSection.content.length > 0) {
-          sections.push(currentSection);
-        }
-        currentSection = { type: 'heading', content: line.replace('## ', '') };
-        sections.push(currentSection);
-        currentSection = { type: 'text', content: [] };
-      } else if (line.trim().startsWith('- ')) {
-        if (currentSection.type !== 'list') {
-          if (currentSection.content.length > 0) {
-            sections.push(currentSection);
-          }
-          currentSection = { type: 'list', content: [] };
-        }
-        currentSection.content.push(line.replace(/^- /, ''));
-      } else if (line.trim()) {
-        if (currentSection.type === 'list') {
-          sections.push(currentSection);
-          currentSection = { type: 'text', content: [] };
-        }
-        currentSection.content.push(line);
-      }
-    });
-    
-    if (currentSection.content.length > 0) {
-      sections.push(currentSection);
-    }
-    
-    return sections;
-  };
-
-  const detailSections = parseDetails(portfolio.details);
-
   return (
     <>
       <Head>
@@ -275,9 +233,49 @@ export default function PortfolioDetail() {
                   </div>
                   <h2 className="text-3xl font-bold text-neutral-900">Project Overview</h2>
                 </div>
-                <p className="text-lg text-neutral-700 leading-relaxed">
+                <p className="text-lg text-neutral-700 leading-relaxed mb-8">
                   {portfolio.description}
                 </p>
+
+                {/* Project Details - Moved Here */}
+                {portfolio.details && (
+                  <div className="mt-8 pt-8 border-t border-neutral-200">
+                    <div className="flex items-center gap-3 mb-6">
+                      <div className="w-10 h-10 bg-accent-100 rounded-lg flex items-center justify-center">
+                        <CheckCircle2 size={20} className="text-accent-600" />
+                      </div>
+                      <h3 className="text-2xl font-bold text-neutral-900">Project Details</h3>
+                    </div>
+                    
+                    <div 
+                      className="prose prose-lg max-w-none text-neutral-700"
+                      dangerouslySetInnerHTML={{ 
+                        __html: portfolio.details
+                          .split('\n')
+                          .map(line => {
+                            // Heading level 2
+                            if (line.startsWith('## ')) {
+                              return `<h4 class="text-xl font-bold text-neutral-900 mt-6 mb-3">${line.replace('## ', '')}</h4>`;
+                            }
+                            // Bullet list
+                            if (line.trim().startsWith('- ')) {
+                              return `<li class="ml-6 mb-2 list-disc">${line.replace(/^- /, '')}</li>`;
+                            }
+                            // Bold text
+                            let processedLine = line.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
+                            // Italic text
+                            processedLine = processedLine.replace(/\*(.+?)\*/g, '<em>$1</em>');
+                            // Regular paragraph
+                            if (line.trim()) {
+                              return `<p class="mb-3 leading-relaxed">${processedLine}</p>`;
+                            }
+                            return '';
+                          })
+                          .join('')
+                      }}
+                    />
+                  </div>
+                )}
               </div>
 
               {/* Quick Info Card */}
@@ -417,47 +415,6 @@ export default function PortfolioDetail() {
                   ))}
                 </div>
               )}
-            </div>
-          )}
-
-          {/* Project Details Section */}
-          {detailSections && detailSections.length > 0 && (
-            <div className="max-w-6xl mx-auto mb-16">
-              <div className="flex items-center gap-3 mb-8">
-                <div className="w-12 h-12 bg-accent-100 rounded-lg flex items-center justify-center">
-                  <CheckCircle2 size={24} className="text-accent-600" />
-                </div>
-                <h2 className="text-3xl font-bold text-neutral-900">Project Details</h2>
-              </div>
-
-              <div className="prose prose-lg max-w-none">
-                {detailSections.map((section, index) => {
-                  if (section.type === 'heading') {
-                    return (
-                      <h3 key={index} className="text-2xl font-bold text-neutral-900 mt-8 mb-4">
-                        {section.content}
-                      </h3>
-                    );
-                  } else if (section.type === 'list') {
-                    return (
-                      <ul key={index} className="space-y-3 mb-6">
-                        {section.content.map((item, i) => (
-                          <li key={i} className="flex items-start gap-3">
-                            <div className="mt-1.5 w-2 h-2 bg-primary-500 rounded-full flex-shrink-0" />
-                            <span className="text-neutral-700 leading-relaxed">{item}</span>
-                          </li>
-                        ))}
-                      </ul>
-                    );
-                  } else {
-                    return section.content.map((text, i) => (
-                      <p key={`${index}-${i}`} className="text-neutral-700 leading-relaxed mb-4">
-                        {text}
-                      </p>
-                    ));
-                  }
-                })}
-              </div>
             </div>
           )}
 
