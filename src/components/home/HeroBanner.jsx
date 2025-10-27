@@ -108,18 +108,6 @@ export default function HeroBanner() {
         image: '/uploads/hero-1.jpg',
         title: 'GARMENT AND ADVERTISING',
         description: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.'
-      },
-      {
-        id: 2, 
-        image: '/uploads/hero-2.jpg',
-        title: 'QUALITY & PROFESSIONAL',
-        description: 'Professional garment and advertising solutions for your business needs with the highest quality standards.'
-      },
-      {
-        id: 3,
-        image: '/uploads/hero-3.jpg', 
-        title: 'CREATIVE SOLUTIONS',
-        description: 'Innovative and creative solutions for all your garment and advertising requirements.'
       }
     ]
   };
