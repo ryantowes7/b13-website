@@ -400,7 +400,7 @@ export default function Produk({ initialProducts, initialCategories }) {
               </div>
 
               {/* Empty State */}
-              {products.length === 0 && (
+              {sortedProducts.length === 0 && (
                 <div className="text-center py-12">
                   <p className="text-neutral-600 text-sm sm:text-base md:text-lg mb-4">Tidak ada produk yang ditemukan</p>
                   <Button 
@@ -420,7 +420,7 @@ export default function Produk({ initialProducts, initialCategories }) {
               {/* Product Grid/List */}
               {viewMode === 'grid' ? (
                 <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4 md:gap-6">
-                  {products.map(product => (
+                  {paginatedProducts.map(product => (
                     <ProductCard 
                       key={product.id} 
                       product={product} 
@@ -430,7 +430,7 @@ export default function Produk({ initialProducts, initialCategories }) {
                 </div>
               ) : (
                 <div className="space-y-3 sm:space-y-4">
-                  {products.map(product => (
+                  {paginatedProducts.map(product => (
                     <ProductCard 
                       key={product.id} 
                       product={product} 
