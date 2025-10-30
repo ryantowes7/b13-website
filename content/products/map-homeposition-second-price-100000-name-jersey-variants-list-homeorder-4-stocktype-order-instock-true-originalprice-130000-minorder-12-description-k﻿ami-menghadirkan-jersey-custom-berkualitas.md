@@ -1,6 +1,6 @@
 ---
-name: Jersey
-category: kaos
+name: Jersey Custom
+category: jersey
 price: "100000"
 originalPrice: "130000"
 images_section:
