@@ -5,12 +5,14 @@ description: Portfolio proyek pembuatan kaos polo custom berkualitas untuk
   berbagai kebutuhan
 banners:
   - text_position:
-      horizontal: left
+      horizontal: center
       vertical: center
-      text_align: left
-      title_size: large
+      text_align: center
+      title_size: medium
       subtitle_size: medium
     image: /uploads/bannerport.webp
+    subtitle: L﻿ihat berbagai proyek berkualitas yang telah kami kerjakan!
+    title: Portofolio Kaos Wangkie
 color: blue
 is_default: false
 ---
