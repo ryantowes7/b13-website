@@ -1,6 +1,6 @@
 ---
 name: Kaos Wangkie/Polo Premium
-category: kaos
+category: polo
 price: "85000"
 originalPrice: "95000"
 images_section:
