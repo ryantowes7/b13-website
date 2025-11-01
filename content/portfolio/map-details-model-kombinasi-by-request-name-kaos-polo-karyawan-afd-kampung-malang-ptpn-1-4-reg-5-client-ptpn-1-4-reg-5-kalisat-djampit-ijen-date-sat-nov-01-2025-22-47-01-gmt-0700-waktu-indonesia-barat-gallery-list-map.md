@@ -2,7 +2,7 @@
 name: Kaos Polo Karyawan Afd. Kampung Malang PTPN 1&4 Reg.5
 client: PTPN 1&4 Reg.5 Kalisat Djampit Ijen
 category: polo
-date: 2025-11-01T15:47:01.449Z
+date: 2024-08-30T15:47:01.449Z
 location: Bondowoso, Jawa Timur
 image: /uploads/01_port1.webp
 gallery:
